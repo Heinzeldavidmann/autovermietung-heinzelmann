@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autovermietung Heinzelmann</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="images/Logo_Autovermietung Heinzelmann.png" alt="Autovermietung Heinzelmann">
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#home"><em>STARTSEITE</em></a></li>
+            <li><a href="fuhrpark.html"><em>FUHRPARK</em></a></li>
+            <li><a href="mieten.html"><em>MIETEN</em></a></li>
+            <li><a href=""><em>ÜBER UNS</em></a></li>
+            <li><a href="kontakt.html"><em>KONTAKT</em></a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="home">
+    <div class="home-wrapper">
+        <div class="intro">
+            <h1><em>WILLKOMMEN BEI DER AUTOVERMIETUNG HEINZELMANN GBR!</em></h1>
+            <img src="images/Außenwand_Autovermietung Heinzelmann.jpg" alt="Autovermietung Vorderseite">
+            <p><b>Verlässlich, flexibel und persönlich.</b> seit über 25 Jahren steht die Autovermietung Heinzelmann für maßgeschneiderte Mobilitätslösungen in Oberschwaben. Unser erfahrenes Team berät Sie individuell und sorgt für eine unkomplizierte Abwicklung, egal ob PKW für den Alltag oder Transporter für größere Vorhaben.</p><br>
+            <p>Profitieren Sie von unserem modernen Fuhrpark, kurzfristiger Verfügbarkeit und einem regional verankerten Familienbetrieb mit Handschlagqualität.</p>
+        </div>
+    </div>
+</section>
+
+<section id="anfahrt" class="map-section">
+    <h2><em>SO FINDEN SIE UNS:</em></h2>
+    <p class="map-description">Unsere Autovermietung liegt zentral in Herbertingen, direkt an der B32/311.</p>
+    <p><strong>Adresse:</strong><br>Saumstraße 2–4<br>88518 Herbertingen</p>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2697.5531503649945!2d9.457642115837666!3d48.05923877921681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47997c2eb4c80101%3A0x7a1836aa2e58ef44!2sSaumstra%C3%9Fe%202%2C%2088518%20Herbertingen!5e0!3m2!1sde!2sde!4v1693917223473!5m2!1sde!2sde"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+</section>
+
+<section id="fuhrpark">
+    <h2><em>UNSER FUHRPARK!</em></h2>
+    <div class="vehicle-container">
+        <div class="vehicle">
+            <h3>Transporter</h3>
+            <img src="images/BC 61_Autovermietung.HEIC">
+            <p>Unsere Transporter sind ideal für größere Transporte oder Gruppenfahrten. Sie bieten Platz für bis zu 8 Personen oder größere Lasten.</p>
+        </div>
+        <div class="vehicle">
+            <h3>PKWs</h3>
+            <img src="images/BC 20_Autovermietung.JPG">
+            <p>Unsere PKWs bieten Ihnen den Komfort und die Flexibilität für Ihre täglichen Fahrten oder Reisen.</p>
+        </div>
+        <a href="fuhrpark.html" class="button"><em>MEHR ERFAHREN</em></a>
+    </div>
+</section>
+
+<section id="vorteile">
+    <h2><em>WIR SIND DIE RICHTIGEN FÜR IHR VORHABEN!</em></h2><br>
+    <ul class="benefits">
+        <li>Persönlicher Service – familiengeführt &amp; nah am Kunden</li>
+        <li>Über 80 moderne Fahrzeuge, darunter Transporter, Busse und PKWs</li>
+        <li>Zentrale Lage in Herbertingen – direkt an der B 32/311</li>
+        <li>Schnelle Erreichbarkeit – auch kurzfristige Buchungen möglich</li>
+    </ul>
+</section>
+
+<section id="rezensionen">
+    <h2><em>WAS UNSERE KUNDEN SAGEN:</em></h2>
+
+    <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Sehr freundlicher und unkomplizierter Service. Der Transporter war top gepflegt und die Abholung lief reibungslos.</p>
+        <span class="author">A. Müller</span>
+    </div>
+
+    <div class="testimonial">
+        <div class="stars">★★★★</div>
+        <p>Faire Preise, kompetente Beratung und spontane Buchung möglich. Absolut empfehlenswert!</p>
+        <span class="author">J. Schneider</span>
+    </div>
+
+    <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Ich miete regelmäßig Fahrzeuge für meinen Handwerksbetrieb. Das Personal ist stets zuverlässig, schnell und freundlich!</p>
+        <span class="author">T. Weber</span>
+    </div>
+</section>
+
+<section id="kontakt">
+    <h2><em>KONTAKTIEREN SIE UNS!</em></h2><br>
+    <p>Haben Sie Fragen oder benötigen Sie ein Fahrzeug? Kontaktieren Sie uns über das Formular oder rufen Sie uns direkt an.</p>
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">E-Mail:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="fahrzeug">Gewünschte Fahrzeugart:</label>
+        <select id="fahrzeug" name="fahrzeug" required>
+            <option value="">Bitte wählen...</option>
+            <option value="pkw">PKW</option>
+            <option value="transporter">Personentransporter</option>
+            <option value="lkw">LKW</option>
+        </select>
+
+        <label for="datum">Wunschtermin zur Abholung:</label>
+        <input type="date" id="datum1" name="datum">
+
+        <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung:</label>
+        <input type="time" id="uhrzeit" name="uhrzeit">
+
+        <label for="datum">Geplante Rückgabe:</label>
+        <input type="date" id="datum2" name="datum">
+
+        <label for="nachricht">Nachricht:</label>
+        <textarea id="nachricht" name="nachricht" required></textarea>
+
+        <button type="submit">Absenden</button>
+    </form><br>
+    <div><b>Öffnungszeiten:</b>
+        <p>Montag bis Freitag: 8-18 Uhr</p>
+        <p>Samstag: 8-16 Uhr</p>
+        <p>Sonntag: 10-14 Uhr</p>
+    </div>
+</section>
+
+<section id="anforderungen">
+    <h2><em>WAS SIE ZUR ANMIETUNG MITBRINGEN SOLLTEN:</em></h2>
+    <ul class="requirements">
+        <li><b>Gültiger Personalausweis</b> oder Reisepass zur Identifikation</li>
+        <li><b>Führerschein</b> der passenden Fahrzeugklasse (mind. seit 12 Monaten gültig)</li>
+        <li><b>Voranzahlung</b>, zahlbar in bar oder mit EC-/Kreditkarte</li>
+        <li><b>Bei Firmenkunden:</b> Handelsregisterauszug oder Vollmacht (falls abweichender Fahrer)</li>
+        <li><b>Pünktliche Abholung</b> zum vereinbarten Termin. Bitte treffen Sie ca. 10 Minuten vorher ein</li>
+    </ul>
+    <a href="mieten.html" class="button"><em>MEHR ERFAHREN</em></a>
+</section>
+
+<footer>
+    <p>&copy; 2025 Autovermietung Heinzelmann | Alle Rechte vorbehalten</p>
+    <p>Herbertingen an der B 32/311 | Tel: 07586/9213-0 | Fax: 07586/9213-20</p>
+</footer>
+
+</body>
+</html>
