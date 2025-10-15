@@ -17,18 +17,63 @@ header {
     background-color: #e60000; /* Passend zum Logo */
     font-size: 24px;
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
+    display: grid;                  /* statt flex: robust bei engen Breiten */
+    grid-template-columns: auto 1fr;/* Logo links (auto), Nav rechts (1fr) */
     align-items: center;
+    column-gap: 16px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+header nav {
+    flex: 1 1 auto;              /* darf Platz nutzen und schrumpfen */
+    min-width: 0;                /* wichtig: erlaubt Überlauf/Scroll innerhalb */
+    overflow-x: auto;            /* horizontales Scrollen im Header */
+    overflow-y: hidden;          /* verhindert vertikales Scrollen */
+    -webkit-overflow-scrolling: touch; /* sanftes Scrollen auf iOS */
+    scroll-snap-type: x proximity;     /* optional: sanftes Einrasten */
+    position: relative;            /* für die Gradienten-Hinweise */
+    display: flex;                 /* Nav selbst als Flex-Container */
+    align-items: center;
+    justify-content: flex-end;     /* Menü rechts ausrichten, wenn Platz ist */
+    scrollbar-gutter: stable both-edges; /* verhindert Layout-Sprung durch Scrollbar */
+    padding-right: 32px;        /* etwas mehr Platz am rechten Rand */
+    padding-left: 8px;          /* kleiner Abstand links */
+    scroll-padding-right: 32px; /* sorgt dafür, dass beim Scroll-Snapping das letzte Item nicht abgeschnitten wird */
+    scroll-padding-inline-end: 32px; /* Zusatz für bessere Browser-Kompatibilität */
+}
+
+header nav::before,
+header nav::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 16px;
+    height: 100%;
+    pointer-events: none; /* nicht klickbar */
+}
+header nav::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(230,0,0,1), rgba(230,0,0,0));
+}
+header nav::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(230,0,0,0.95), rgba(230,0,0,0));
+}
+
+header .logo {
+    flex: 0 0 auto;
 }
 
 header .logo img {
-    height: 80px;
+    height: auto;
+    max-height: 70px; /* begrenzt maximale Höhe */
+    width: auto;
+    max-width: 100%; /* passt sich der Fenstergröße an */
     background-color: white;
     padding: 10px;
     border-radius: 8px;
@@ -37,10 +82,23 @@ header .logo img {
 nav ul {
     list-style: none;
     display: flex;
+    align-items: center;
+    flex-wrap: nowrap;            /* Elemente bleiben in einer Zeile */
+    gap: 1rem;                    /* Abstand zwischen Links */
+    margin: 0;
+    padding: 0;
+    width: max-content;           /* UL passt sich der Breite seiner Inhalte an */
+    padding-right: 8px;
+}
+
+header nav::-webkit-scrollbar {
+    display: none;
 }
 
 nav ul li {
-    margin-left: 20px;
+    margin: 0;            /* Abstand kommt über gap von nav ul */
+    flex: 0 0 auto;       /* verhindert, dass Items schrumpfen */
+    scroll-snap-align: start;
 }
 
 nav ul li a {
@@ -50,11 +108,15 @@ nav ul li a {
     padding: 6px 12px;
     border-radius: 4px;
     transition: background 0.3s ease;
+    white-space: nowrap;  /* kein Umbruch bei langen Labels */
 }
 
 nav ul li a:hover {
     background-color: white;
     color: #e60000;
+    border-radius: 20px; /* weicher, runder Effekt */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
 }
 
 h1, h2 {
@@ -389,4 +451,71 @@ form select {
 .overlay span {
     display: inline-block;
     margin-bottom: 10px; /* sorgt für etwas Abstand nach unten */
+}
+
+@media (max-width: 600px) {
+    header .logo img {
+        max-height: 50px;
+        width: auto;
+    }
+    body {
+        padding-top: 100px; /* gleicht die geringere Header-Höhe aus */
+    }
+    nav ul {
+        gap: 0.75rem; /* etwas enger auf kleineren Geräten */
+    }
+    nav ul li a {
+        padding: 8px 12px; /* größere Touch-Ziele beibehalten, aber kompakt */
+    }
+}
+/* FAQ Accordion Styles */
+.faq-question {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: normal;
+    color: #333;
+    background: none;
+    border: none;
+    padding: 1em;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Inhalt linksbündig ausrichten */
+    gap: 0.5em;                  /* Abstand zwischen Pfeil und Text */
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #f0f0f0;
+}
+
+.faq-arrow {
+    transition: transform 0.3s ease;
+    font-size: 1.2em;
+    margin-left: 0; /* entfernt zusätzlichen Abstand */
+}
+
+.faq-question.active .faq-arrow {
+    transform: rotate(90deg);
+}
+
+.faq-answer {
+    display: none;
+    padding: 1em 1em 1em 1em; /* zusätzlicher Abstand oben */
+    background-color: #f9f9f9;
+    border-left: 3px solid #e60000;
+    border-radius: 4px;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+.faq-item {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1em;
+}
+
+.faq-question:focus {
+    outline: none;
 }

@@ -13,3 +13,21 @@ function sendMail() {  // API über PHP-Skript, nodemailer oder EmailJS erforder
         .then(() => alert("Nachricht erfolgreich gesendet!"))
         .catch(() => alert("Fehler beim Senden der Nachricht."));
 }
+
+// Diese Funktion sorgt dafür, dass beim Klick auf eine FAQ-Frage die Antwort ein- oder ausgeklappt wird.
+function setupFaqAccordion() {
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('active');
+            const answer = button.nextElementSibling;
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+            } else {
+                answer.style.display = "block";
+            }
+        });
+    });
+}
+
+// Automatisch beim Laden der Seite aufrufen
+window.addEventListener('DOMContentLoaded', setupFaqAccordion);
