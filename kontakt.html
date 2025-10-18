@@ -36,7 +36,7 @@
 
     <a class="utility-item contact" href="kontakt.html" aria-label="Kontaktseite öffnen">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 12.5 5.4 7zM4 18V8.2l7.4 5.7a1 1 0 001.2 0L20 8.2V18z"/></svg>
-      <span class="utility-text">Kontakt</span>
+      <span class="utility-text">E-Mail</span>
     </a>
   </div>
 </div>
@@ -78,19 +78,32 @@
       <option value="transporter">Personentransporter (9 Personen)</option>
     </select>
 
-    <label for="datum1">Wunschtermin zur Abholung:</label>
-    <input type="date" id="datum1" name="datum">
+    <div class="datetime-row">
+      <div class="field">
+        <label for="datum1">Wunschtermin zur Abholung:</label>
+        <input type="date" id="datum1" name="datum">
+      </div>
+      <div class="field">
+        <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung:</label>
+        <input type="time" id="uhrzeit" name="uhrzeit">
+      </div>
+    </div>
 
-    <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung:</label>
-    <input type="time" id="uhrzeit" name="uhrzeit">
-
-    <label for="datum2">Geplante Rückgabe:</label>
-    <input type="date" id="datum2" name="datum">
+    <div class="datetime-row">
+      <div class="field">
+        <label for="datum2">Geplante Rückgabe:</label>
+        <input type="date" id="datum2" name="datum">
+      </div>
+      <div class="field">
+        <label for="uhrzeit2">Geplante Uhrzeit zur Rückgabe:</label>
+        <input type="time" id="uhrzeit2" name="uhrzeit2">
+      </div>
+    </div>
 
     <label for="nachricht">Nachricht:</label>
     <textarea id="nachricht" name="nachricht" required></textarea>
 
-    <button type="submit">Absenden</button>
+    <button type="submit" class="button">Absenden</button>
   </form><br>
   <div><b>Öffnungszeiten:</b>
     <p>Montag bis Freitag: 8-18 Uhr</p>
