@@ -1,4 +1,14 @@
+/* =========================
+   1. Base / Reset
+   2. Layout & Grundstruktur
+   3. Header & Navigation & Utility
+   4. Content-Sektionen
+   5. Komponenten (Buttons, Cards, FAQs, etc.)
+   6. Utilities & Helferklassen
+   7. Media Queries
+   ========================= */
 
+/* 1. Base / Reset */
 * {
     margin: 0;
     padding: 0;
@@ -13,40 +23,45 @@ body {
     padding-top: 120px;
 }
 
-.utility-bar {
-  position: sticky; top: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px; padding: 10px 20px;
-  background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.92));
-  color: #ffffff;
-  border-bottom: 1px solid rgba(255,255,255,0.14);
-  font-size: clamp(0.98rem, 0.90rem + 0.25vw, 1.10rem);
-  line-height: 1.25; letter-spacing: 0.2px;
-  backdrop-filter: saturate(140%) blur(8px);
-  -webkit-backdrop-filter: saturate(140%) blur(8px);
+/* 2. Layout & Grundstruktur */
+h1, h2 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    font-size: 2em;
+    text-transform: uppercase;
+    font-style: italic;
 }
 
-.utility-left, .utility-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.utility-item {
-  display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
-  padding: 6px 10px; border-radius: 999px;
-  transition: background 0.2s ease, transform 0.15s ease;
-}
-.utility-item svg { width: 20px; height: 20px; display: inline-block; flex-shrink: 0; opacity: 0.95; }
-.utility-bar a { color: inherit; text-decoration: none; }
-.utility-bar a:hover, .utility-bar a:focus { text-decoration: none; }
-.utility-item:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
-.utility-item:active { transform: translateY(0); }
-.utility-item.hours.closed { opacity: 0.85; }
-.utility-dot { width: 9px; height: 9px; border-radius: 999px; background: #22c55e; display: inline-block; box-shadow: 0 0 0 2px rgba(34,197,94,0.15); }
-.utility-item.hours.closed .utility-dot { background: #ef4444; }
-/* Mobile tweaks */
-@media (max-width: 680px) {
-    .utility-bar { font-size: 0.95rem; padding: 8px 12px; }
-    .utility-text { display: none; } /* show only icons/numbers on very small screens */
-    .utility-left, .utility-right { gap: 12px; }
+section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    font-size: 1.1em;
 }
 
+section img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+section {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 3. Header, Navigation & Utility */
 header {
     background-color: #e60000; /* Passend zum Logo */
     font-size: 24px;
@@ -153,38 +168,38 @@ nav ul li a:hover {
     transform: scale(1.05);
 }
 
-h1, h2 {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 2em;
+.utility-bar {
+    position: sticky; top: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; padding: 10px 20px;
+    background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.92));
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255,255,255,0.14);
+    font-size: clamp(0.98rem, 0.90rem + 0.25vw, 1.10rem);
+    line-height: 1.25; letter-spacing: 0.2px;
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
 }
 
-section {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 40px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
-    font-size: 1.1em;
+.utility-left, .utility-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.utility-item {
+    display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
+    padding: 6px 10px; border-radius: 999px;
+    transition: background 0.2s ease, transform 0.15s ease;
 }
-
-section img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 20px auto;
-    border-radius: 8px;
-    object-fit: contain;
-}
-
-section {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-section:hover {
-    transform: scale(1.01);
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+.utility-item svg { width: 20px; height: 20px; display: inline-block; flex-shrink: 0; opacity: 0.95; }
+.utility-bar a { color: inherit; text-decoration: none; }
+.utility-bar a:hover, .utility-bar a:focus { text-decoration: none; }
+.utility-item:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+.utility-item:active { transform: translateY(0); }
+.utility-item.hours.closed { opacity: 0.85; }
+.utility-dot { width: 9px; height: 9px; border-radius: 999px; background: #22c55e; display: inline-block; box-shadow: 0 0 0 2px rgba(34,197,94,0.15); }
+.utility-item.hours.closed .utility-dot { background: #ef4444; }
+/* Mobile tweaks */
+@media (max-width: 680px) {
+    .utility-bar { font-size: 0.95rem; padding: 8px 12px; }
+    .utility-text { display: none; } /* show only icons/numbers on very small screens */
+    .utility-left, .utility-right { gap: 12px; }
 }
 
 .vehicle-container {
@@ -211,7 +226,7 @@ section:hover {
 }
 
 footer {
-    background-color: #222;
+    background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.92));
     color: white;
     text-align: center;
     padding: 10px;
@@ -259,6 +274,32 @@ form button {
 
 form button:hover {
     background-color: #b30000;
+}
+
+#fahrzeug {
+    display: inline-block;
+    max-width: 360px;
+    padding: 8px 12px;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    background-color: #e60000;
+    border: 1px solid #e60000;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#fahrzeug:focus {
+    outline: none;
+    background-color: #b30000;
+}
+
+#fahrzeug::-ms-expand {
+    display: none;
 }
 
 .benefits,
@@ -620,28 +661,117 @@ form select {
   .datetime-row { grid-template-columns: 1fr; }
 }
 
-#fahrzeug {
-    display: inline-block;
-    max-width: 240px;
-    padding: 8px 12px;
-    font-size: 1em;
-    font-family: 'Poppins', sans-serif;
-    color: white;
+/* =========================
+   Timeline „Firmengeschichte“
+   ========================= */
+
+.about-timeline {
+    text-align: center;
+}
+
+.about-timeline h1 {
+    margin-bottom: 10px;
+}
+
+.about-timeline > p {
+    max-width: 720px;
+    margin: 0 auto 30px;
+}
+
+/* Horizontale Timeline-Linie */
+
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 60px 40px 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    height: 3px;
+    background-color: #e60000; /* Markenfarbe Heinzelmann */
+    z-index: 0;
+}
+
+/* Punkte + Inhalt */
+
+.timeline-item {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 120px;
+    text-align: center;
+}
+
+.timeline-point {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
     background-color: #e60000;
-    border: 1px solid #e60000;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #e60000;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
-#fahrzeug:focus {
-    outline: none;
-    background-color: #b30000;
+.timeline-content {
+    margin-top: 70px;
+    position: relative;
+    z-index: 1;
 }
 
-#fahrzeug::-ms-expand {
-    display: none;
+.timeline-year {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.timeline-content p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Mobile: Timeline untereinander statt horizontal */
+
+@media (max-width: 768px) {
+    .timeline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.8rem;
+        padding-top: 10px;
+    }
+
+    .timeline::before {
+        top: 10px;
+        bottom: 0;
+        left: 14px;
+        right: auto;
+        width: 3px;
+        height: auto;
+    }
+
+    .timeline-item {
+        text-align: left;
+        padding-left: 40px;
+        min-width: 0;
+    }
+
+    .timeline-point {
+        top: 4px;
+        left: 14px;
+        transform: none;
+    }
+
+    .timeline-content {
+        margin-top: 0;
+    }
 }
