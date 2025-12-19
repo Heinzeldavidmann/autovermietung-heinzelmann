@@ -3,7 +3,7 @@
 
 # Autovermietung Heinzelmann – Digital Transformation
 
-**Live:** https://<dein-github-user>.github.io/autovermietung-heinzelmann/  
+**Live:** https://heinzeldavidmann.github.io/autovermietung-heinzelmann/  
 **Repo:** https://github.com/<dein-github-user>/autovermietung-heinzelmann
 
 This repository is part of an ongoing initiative to modernize and digitize the operations of Autovermietung Heinzelmann GbR, a regional vehicle rental company in southern Germany.
