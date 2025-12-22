@@ -665,6 +665,10 @@ form select {
    Timeline „Firmengeschichte“
    ========================= */
 
+/* =========================
+   Timeline „Firmengeschichte“
+   ========================= */
+
 .about-timeline {
     text-align: center;
 }
@@ -682,8 +686,8 @@ form select {
 
 .timeline {
     list-style: none;
-    margin: 0;
-    padding: 60px 40px 0;
+    margin: 40px 0 0;          /* Abstand nach oben, statt padding-top */
+    padding: 0 40px;           /* nur links/rechts Padding */
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -693,12 +697,13 @@ form select {
 .timeline::before {
     content: "";
     position: absolute;
-    top: 40px;
+    top: 10px;                 /* Y-Position der Linie */
     left: 40px;
     right: 40px;
     height: 3px;
-    background-color: #e60000; /* Markenfarbe Heinzelmann */
+    background-color: #e60000;
     z-index: 0;
+    transform: translateY(-50%); /* Linie durch Punkt-Mitte */
 }
 
 /* Punkte + Inhalt */
@@ -710,6 +715,17 @@ form select {
     text-align: center;
 }
 
+/* Hover / Focus Effekt auf den Punkten */
+.timeline-point:hover,
+.timeline-point:focus-visible {
+    transform: translate(-50%, -50%) scale(1.15);
+    filter: brightness(1.05);
+    box-shadow:
+            0 0 0 3px #ffffff,
+            0 0 0 8px rgba(230, 0, 0, 0.55),
+            0 10px 22px rgba(0, 0, 0, 0.18);
+}
+
 .timeline-point {
     width: 20px;
     height: 20px;
@@ -717,14 +733,14 @@ form select {
     background-color: #e60000;
     box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #e60000;
     position: absolute;
-    top: 40px;
+    top: 10px;                 /* MUSS zur Linie passen */
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
 }
 
 .timeline-content {
-    margin-top: 70px;
+    margin-top: 48px;          /* Text unter den Punkten */
     position: relative;
     z-index: 1;
 }
@@ -747,7 +763,8 @@ form select {
         flex-direction: column;
         align-items: flex-start;
         gap: 1.8rem;
-        padding-top: 10px;
+        margin-top: 20px;
+        padding: 0;
     }
 
     .timeline::before {
@@ -757,6 +774,7 @@ form select {
         right: auto;
         width: 3px;
         height: auto;
+        transform: none;
     }
 
     .timeline-item {
@@ -766,9 +784,9 @@ form select {
     }
 
     .timeline-point {
-        top: 4px;
+        top: 10px;
         left: 14px;
-        transform: none;
+        transform: translate(-50%, -50%);
     }
 
     .timeline-content {
