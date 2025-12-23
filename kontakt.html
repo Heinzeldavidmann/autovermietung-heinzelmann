@@ -41,11 +41,17 @@
   </div>
 </div>
 
-<header>
-  <div class="logo">
+<header class="site-header">
+  <a href="index.html" class="logo" aria-label="Zur Startseite">
     <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
-  </div>
-  <nav>
+  </a>
+
+  <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
+    <span class="sr-only">Menü</span>
+    <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+  </button>
+
+  <nav id="primary-nav" class="primary-nav" aria-label="Hauptnavigation">
     <ul>
       <li><a href="index.html"><em>STARTSEITE</em></a></li>
       <li><a href="fuhrpark.html"><em>FUHRPARK</em></a></li>

@@ -29,8 +29,68 @@ function setupFaqAccordion() {
     });
 }
 
+// Mobile Navigation: Hamburger-Menü (öffnet/schließt die Hauptnavigation auf kleinen Screens)
+function setupMobileNavToggle() {
+  const header = document.querySelector('header.site-header');
+  const toggleBtn = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+
+  if (!header || !toggleBtn || !nav) return;
+
+  function setExpanded(isOpen) {
+    toggleBtn.setAttribute('aria-expanded', String(isOpen));
+    toggleBtn.setAttribute('aria-label', isOpen ? 'Menü schließen' : 'Menü öffnen');
+  }
+
+  function openMenu() {
+    header.classList.add('nav-open');
+    setExpanded(true);
+  }
+
+  function closeMenu() {
+    header.classList.remove('nav-open');
+    setExpanded(false);
+  }
+
+  function toggleMenu() {
+    const isOpen = header.classList.toggle('nav-open');
+    setExpanded(isOpen);
+  }
+
+  // Initial state
+  setExpanded(header.classList.contains('nav-open'));
+
+  // Toggle on click
+  toggleBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleMenu();
+  });
+
+  // Close when a nav link is clicked
+  nav.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    closeMenu();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // Close when clicking/tapping outside header
+  document.addEventListener('pointerdown', (e) => {
+    if (!header.classList.contains('nav-open')) return;
+    if (header.contains(e.target)) return;
+    closeMenu();
+  });
+}
+
 // Automatisch beim Laden der Seite aufrufen
-window.addEventListener('DOMContentLoaded', setupFaqAccordion);
+window.addEventListener('DOMContentLoaded', () => {
+  setupFaqAccordion();
+  setupMobileNavToggle();
+});
 
 // Utility Bar nach dem Header
 document.addEventListener('DOMContentLoaded', function () {
