@@ -990,3 +990,61 @@ html {
     transform: translate(-50%, -50%) !important;
   }
 }
+
+.slideshow-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-behavior: smooth;
+}
+
+.vehicle-slide {
+    background-color: #f9f9f9;
+    border-left: 5px solid #e60000;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    font-style: italic;
+    position: relative;
+    min-width: 300px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 320px;
+}
+
+.vehicle-slide:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+}
+
+.vehicle-slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    max-height: 200px;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+}
+
+.vehicle-slide small {
+    display: block;
+    margin-top: 0.5rem;
+    font-style: italic;
+    color: #666;
+}
+
+@media (max-width: 600px) {
+  .vehicle-slide {
+    width: 240px;
+    padding: 0.75rem;
+  }
+
+  .vehicle-slide img {
+    max-height: 160px;
+  }
+}
