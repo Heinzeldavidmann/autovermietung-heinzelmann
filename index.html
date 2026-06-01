@@ -54,107 +54,86 @@
 
     <nav id="primary-nav" class="primary-nav" aria-label="Hauptnavigation">
         <ul>
-            <li><a href="index.html"><em>STARTSEITE</em></a></li>
-            <li><a href="fuhrpark.html"><em>FUHRPARK</em></a></li>
-            <li><a href="mieten.html"><em>MIETEN</em></a></li>
-            <li><a href="ueber_uns.html"><em>ÜBER UNS</em></a></li>
-            <li><a href="kontakt.html"><em>KONTAKT</em></a></li>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="#quick-rental">Fahrzeug wählen</a></li>
+            <li><a href="fuhrpark.html">Fuhrpark</a></li>
+            <li><a href="mieten.html">Mieten</a></li>
+            <li><a href="ueber_uns.html">Über uns</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
         </ul>
     </nav>
 </header>
 
-<section id="home">
-    <div class="home-wrapper">
-        <div class="intro">
-            <h1><em>WILLKOMMEN BEI DER AUTOVERMIETUNG HEINZELMANN GBR!</em></h1>
-            <img src="images/Außenwand_Autovermietung Heinzelmann.jpg" alt="Autovermietung Vorderseite">
-            <p><b>Verlässlich, flexibel und persönlich.</b> seit über 25 Jahren steht die Autovermietung Heinzelmann für maßgeschneiderte Mobilitätslösungen in Oberschwaben. Unser erfahrenes Team berät Sie individuell und sorgt für eine unkomplizierte Abwicklung, egal ob PKW für den Alltag oder Transporter für größere Vorhaben.</p><br>
-            <p>Profitieren Sie von unserem modernen Fuhrpark, kurzfristiger Verfügbarkeit und einem regional verankerten Familienbetrieb mit Handschlagqualität.</p>
+<section id="home" class="hero-section">
+    <div class="hero-wrapper">
+        <div class="hero-content">
+            <p class="eyebrow">Autovermietung in Herbertingen</p>
+            <h1>Mietwagen, Transporter und 9-Sitzer – schnell, persönlich und unkompliziert.</h1>
+            <p class="hero-text">
+                Ob Alltag, Umzug, Ausflug oder Ersatzfahrzeug: Bei Heinzelmann finden Sie passende Fahrzeuge,
+                persönliche Beratung und eine direkte Anfrage ohne Umwege.
+            </p>
+
+            <div class="hero-actions" aria-label="Schnelleinstieg">
+                <a href="#kontakt" class="button button-primary">Fahrzeug anfragen</a>
+                <a href="fuhrpark.html" class="button button-secondary">Fuhrpark ansehen</a>
+            </div>
+
+            <div class="hero-trust" aria-label="Kurzüberblick">
+                <div class="trust-item">
+                    <strong>25+</strong>
+                    <span>Jahre Erfahrung</span>
+                </div>
+                <div class="trust-item">
+                    <strong>80+</strong>
+                    <span>Fahrzeuge im Fuhrpark</span>
+                </div>
+                <div class="trust-item">
+                    <strong>B32/311</strong>
+                    <span>Zentral in Herbertingen</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-media">
+            <img src="images/Außenwand_Autovermietung Heinzelmann.jpg" alt="Autovermietung Heinzelmann in Herbertingen">
+            <div class="hero-media-card">
+                <span>Heute erreichbar</span>
+                <strong>07586 / 9213-0</strong>
+            </div>
         </div>
     </div>
 </section>
 
-<section id="kontakt">
-    <h2><em>KONTAKTIEREN SIE UNS!</em></h2><br>
-    <p>Haben Sie Fragen oder benötigen Sie ein Fahrzeug? Kontaktieren Sie uns über das Formular oder rufen Sie uns direkt an.</p>
-    <form>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="z.B. Max Mustermann" required>
-
-        <label for="email">E-Mail:</label>
-        <input type="email" id="email" name="email" placeholder="z.B. max.mustermann@gmail.com" required>
-
-        <label for="telefon">Telefonnummer für Rückfragen:</label>
-        <input type="tel" id="telefon" name="telefon" placeholder="z. B. 0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 ()\/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
-
-        <label for="fahrzeug">Gewünschte Fahrzeugart:</label>
-        <select id="fahrzeug" name="fahrzeug" required>
-            <option value="">Bitte wählen...</option>
-            <option value="pkw">PKW</option>
-            <option value="lkw">LKW</option>
-            <option value="transporter">Personentransporter (bis 8 Personen)</option>
-            <option value="transporter">Personentransporter (9 Personen)</option>
-        </select>
-
-        <div class="datetime-row">
-            <div class="field">
-                <label for="datum1">Wunschtermin zur Abholung:</label>
-                <input type="date" id="datum1" name="datum">
-            </div>
-            <div class="field">
-                <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung:</label>
-                <input type="time" id="uhrzeit" name="uhrzeit">
-            </div>
-        </div>
-
-        <div class="datetime-row">
-            <div class="field">
-                <label for="datum2">Geplante Rückgabe:</label>
-                <input type="date" id="datum2" name="datum">
-            </div>
-            <div class="field">
-                <label for="uhrzeit2">Geplante Uhrzeit zur Rückgabe:</label>
-                <input type="time" id="uhrzeit2" name="uhrzeit2">
-            </div>
-        </div>
-
-        <label for="nachricht">Nachricht:</label>
-        <textarea id="nachricht" name="nachricht" required></textarea>
-
-        <a type="submit" class="button"><em>ABSENDEN</em></a>
-    </form><br>
-    <div><b>Öffnungszeiten:</b>
-        <p>Montag bis Freitag: 8-18 Uhr</p>
-        <p>Samstag: 8-16 Uhr</p>
-        <p>Sonntag: 10-14 Uhr</p>
+<section id="quick-rental" class="quick-rental-section" aria-labelledby="quick-rental-title">
+    <div class="section-heading">
+        <p class="eyebrow">Schnell zum passenden Fahrzeug</p>
+        <h2 id="quick-rental-title">Was möchten Sie mieten?</h2>
+        <p>Wählen Sie direkt den passenden Einstieg und finden Sie schneller das Fahrzeug für Ihr Vorhaben.</p>
     </div>
-</section>
 
-<section id="anfahrt" class="map-section">
-    <h2><em>SO FINDEN SIE UNS:</em></h2>
-    <p class="map-description">Unsere Autovermietung liegt zentral in Herbertingen, direkt an der B32/311.</p>
-    <p><strong>Adresse:</strong><br>Saumstraße 2–4<br>88518 Herbertingen</p>
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2697.5531503649945!2d9.457642115837666!3d48.05923877921681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47997c2eb4c80101%3A0x7a1836aa2e58ef44!2sSaumstra%C3%9Fe%202%2C%2088518%20Herbertingen!5e0!3m2!1sde!2sde!4v1693917223473!5m2!1sde!2sde"
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-</section>
+    <div class="rental-card-grid">
+        <article class="rental-card">
+            <span class="rental-card-label">Alltag &amp; Reise</span>
+            <h3>PKW</h3>
+            <p>Für Termine, Ausflüge, längere Strecken oder als Ersatzfahrzeug.</p>
+            <a href="fuhrpark.html#pkw">PKW ansehen</a>
+        </article>
 
-<section id="fuhrpark">
-    <h2><em>UNSER FUHRPARK!</em></h2><br>
-    <div class="vehicle-container">
-        <div class="vehicle">
+        <article class="rental-card rental-card-featured">
+            <span class="rental-card-label">Umzug &amp; Transport</span>
             <h3>Transporter</h3>
-            <img src="images/BC 61_Autovermietung.HEIC">
-            <p>Unsere Transporter sind ideal für größere Transporte oder Gruppenfahrten. Sie bieten Platz für bis zu 8 Personen oder größere Lasten.</p>
-        </div>
-        <div class="vehicle">
-            <h3>PKWs</h3>
-            <img src="images/BC 20_Autovermietung.JPG">
-            <p>Unsere PKWs bieten Ihnen den Komfort und die Flexibilität für Ihre täglichen Fahrten oder Reisen.</p>
-        </div>
+            <p>Für Umzüge, größere Einkäufe, Lieferfahrten oder gewerbliche Einsätze.</p>
+            <a href="fuhrpark.html#transporter">Transporter ansehen</a>
+        </article>
+
+        <article class="rental-card">
+            <span class="rental-card-label">Gruppen &amp; Vereine</span>
+            <h3>9-Sitzer</h3>
+            <p>Für Familien, Vereine, Teams und gemeinsame Fahrten mit mehreren Personen.</p>
+            <a href="fuhrpark.html#busse">9-Sitzer ansehen</a>
+        </article>
     </div>
-    <a href="fuhrpark.html" class="button"><em>MEHR ERFAHREN</em></a>
 </section>
 
 <section id="vorteile">
@@ -167,8 +146,121 @@
     </ul>
 </section>
 
+<section id="kontakt" class="inquiry-section" aria-labelledby="inquiry-title">
+    <div class="inquiry-layout">
+        <div class="inquiry-copy">
+            <p class="eyebrow">Direkte Anfrage</p>
+            <h2 id="inquiry-title">Sie wissen schon, wann Sie ein Fahrzeug brauchen?</h2>
+            <p>
+                Schicken Sie uns Ihre Anfrage mit den wichtigsten Eckdaten. Wir melden uns persönlich zurück
+                und klären gemeinsam, welches Fahrzeug am besten passt.
+            </p>
+
+            <div class="inquiry-contact-options" aria-label="Weitere Kontaktmöglichkeiten">
+                <a href="tel:+49758692130">07586 / 9213-0 anrufen</a>
+                <a href="https://wa.me/49758692130" target="_blank" rel="noopener">Per WhatsApp schreiben</a>
+                <a href="kontakt.html">Kontaktseite öffnen</a>
+            </div>
+        </div>
+
+        <form class="inquiry-form">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="z. B. Max Mustermann" required>
+                </div>
+
+                <div class="field">
+                    <label for="email">E-Mail</label>
+                    <input type="email" id="email" name="email" placeholder="z. B. max.mustermann@gmail.com" required>
+                </div>
+
+                <div class="field">
+                    <label for="telefon">Telefonnummer für Rückfragen</label>
+                    <input type="tel" id="telefon" name="telefon" placeholder="z. B. 0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 ()/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
+                </div>
+
+                <div class="field">
+                    <label for="fahrzeug">Gewünschte Fahrzeugart</label>
+                    <select id="fahrzeug" name="fahrzeug" required>
+                        <option value="">Bitte wählen...</option>
+                        <option value="pkw">PKW</option>
+                        <option value="lkw">LKW</option>
+                        <option value="transporter">Transporter</option>
+                        <option value="bus">Personentransporter / 9-Sitzer</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="datum1">Wunschtermin zur Abholung</label>
+                    <input type="date" id="datum1" name="abholung_datum">
+                </div>
+
+                <div class="field">
+                    <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung</label>
+                    <input type="time" id="uhrzeit" name="abholung_uhrzeit">
+                </div>
+
+                <div class="field">
+                    <label for="datum2">Geplante Rückgabe</label>
+                    <input type="date" id="datum2" name="rueckgabe_datum">
+                </div>
+
+                <div class="field">
+                    <label for="uhrzeit2">Geplante Uhrzeit zur Rückgabe</label>
+                    <input type="time" id="uhrzeit2" name="rueckgabe_uhrzeit">
+                </div>
+
+                <div class="field field-full">
+                    <label for="nachricht">Nachricht</label>
+                    <textarea id="nachricht" name="nachricht" placeholder="Worum geht es? Zum Beispiel Umzug, Ersatzfahrzeug, Gruppenfahrt oder längere Mietdauer." required></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="button button-primary">Anfrage senden</button>
+        </form>
+    </div>
+</section>
+
+<section id="anfahrt" class="map-section">
+    <div class="section-heading">
+        <p class="eyebrow">Standort</p>
+        <h2>So finden Sie uns</h2>
+    </div>
+    <p class="map-description">Unsere Autovermietung liegt zentral in Herbertingen, direkt an der B32/311.</p>
+    <p><strong>Adresse:</strong><br>Saumstraße 2–4<br>88518 Herbertingen</p>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2697.5531503649945!2d9.457642115837666!3d48.05923877921681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47997c2eb4c80101%3A0x7a1836aa2e58ef44!2sSaumstra%C3%9Fe%202%2C%2088518%20Herbertingen!5e0!3m2!1sde!2sde!4v1693917223473!5m2!1sde!2sde"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+</section>
+
+<section id="fuhrpark">
+    <div class="section-heading">
+        <p class="eyebrow">Fuhrpark</p>
+        <h2>Fahrzeuge für Alltag, Umzug und Gruppenfahrten</h2>
+        <p>Ein erster Überblick über die wichtigsten Fahrzeugbereiche. Weitere Details finden Sie im Fuhrpark.</p>
+    </div>
+    <div class="vehicle-container">
+        <div class="vehicle">
+            <h3>Transporter</h3>
+            <img src="images/BC 61_Autovermietung.HEIC">
+            <p>Unsere Transporter sind ideal für größere Transporte oder Gruppenfahrten. Sie bieten Platz für bis zu 8 Personen oder größere Lasten.</p>
+        </div>
+        <div class="vehicle">
+            <h3>PKWs</h3>
+            <img src="images/BC 20_Autovermietung.JPG">
+            <p>Unsere PKWs bieten Ihnen den Komfort und die Flexibilität für Ihre täglichen Fahrten oder Reisen.</p>
+        </div>
+    </div>
+    <a href="fuhrpark.html" class="button">Mehr erfahren</a>
+</section>
+
 <section id="rezensionen">
-    <h2><em>WAS UNSERE KUNDEN SAGEN:</em></h2>
+    <div class="section-heading">
+        <p class="eyebrow">Erfahrungen</p>
+        <h2>Was unsere Kunden sagen</h2>
+    </div>
 
     <div class="testimonial">
         <div class="stars">★★★★★</div>
@@ -190,7 +282,10 @@
 </section>
 
 <section id="anforderungen">
-    <h2><em>WAS SIE ZUR ANMIETUNG MITBRINGEN SOLLTEN:</em></h2>
+    <div class="section-heading">
+        <p class="eyebrow">Vor der Anmietung</p>
+        <h2>Was Sie zur Anmietung mitbringen sollten</h2>
+    </div>
     <ul class="requirements">
         <li><b>Gültiger Personalausweis</b> oder Reisepass zur Identifikation</li>
         <li><b>Führerschein</b> der passenden Fahrzeugklasse (mind. seit 12 Monaten gültig)</li>
@@ -198,7 +293,7 @@
         <li><b>Bei Firmenkunden:</b> Handelsregisterauszug oder Vollmacht (falls abweichender Fahrer)</li>
         <li><b>Pünktliche Abholung</b> zum vereinbarten Termin. Bitte treffen Sie ca. 10 Minuten vorher ein</li>
     </ul>
-    <a href="mieten.html" class="button"><em>MEHR ERFAHREN</em></a>
+    <a href="mieten.html" class="button">Mehr erfahren</a>
 </section>
 
 <footer>
