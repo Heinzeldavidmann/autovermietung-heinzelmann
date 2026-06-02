@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mieten – Autovermietung Heinzelmann</title>
   <link rel="stylesheet" href="style.css">
-  <script src="index.js"></script>
+  <script src="index.js" defer></script>
 </head>
 
 <body>
@@ -53,85 +54,99 @@
 
   <nav id="primary-nav" class="primary-nav" aria-label="Hauptnavigation">
     <ul>
-      <li><a href="index.html"><em>STARTSEITE</em></a></li>
-      <li><a href="fuhrpark.html"><em>FUHRPARK</em></a></li>
-      <li><a href="mieten.html"><em>MIETEN</em></a></li>
-      <li><a href="ueber_uns.html"><em>ÜBER UNS</em></a></li>
-      <li><a href="kontakt.html"><em>KONTAKT</em></a></li>
+      <li><a href="index.html">Startseite</a></li>
+      <li><a href="fuhrpark.html">Fuhrpark</a></li>
+      <li><a href="mieten.html">Mieten</a></li>
+      <li><a href="ueber_uns.html">Über uns</a></li>
+      <li><a href="index.html#kontakt">Kontakt</a></li>
     </ul>
   </nav>
 </header>
 
-<section id="anforderungen">
-  <h2><em>WAS SIE ZUR ANMIETUNG MITBRINGEN SOLLTEN:</em></h2>
-  <ul class="requirements">
-    <li><b>Gültiger Personalausweis</b> oder Reisepass zur Identifikation</li>
-    <li><b>Führerschein</b> der passenden Fahrzeugklasse (mind. seit 12 Monaten gültig)</li>
-    <li><b>Voranzahlung</b>, zahlbar in bar oder mit EC-/Kreditkarte</li>
-    <li><b>Bei Firmenkunden:</b> Handelsregisterauszug oder Vollmacht (falls abweichender Fahrer)</li>
-    <li><b>Pünktliche Abholung</b> zum vereinbarten Termin. Bitte treffen Sie ca. 10 Minuten vorher ein</li>
-  </ul>
+<section id="anforderungen" class="anforderungen-section">
+    <div class="anforderungen-layout">
+        <div class="anforderungen-intro">
+            <p class="eyebrow">Vor der Anmietung</p>
+            <h2>So einfach mieten Sie bei uns</h2>
+            <p>Alles was Sie brauchen, um schnell und unkompliziert loszufahren. Bei Fragen helfen wir Ihnen persönlich weiter.</p>
+            <a href="index.html#kontakt" class="button" style="margin-top: 28px;">Jetzt anfragen</a>
+        </div>
+        <ul class="anforderungen-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 1 1 0 10A5 5 0 0 1 12 2zm0 12c5.33 0 8 2.67 8 4v2H4v-2c0-1.33 2.67-4 8-4z"/></svg>
+                <div><strong>Personalausweis oder Reisepass</strong><span>Gültiges Ausweisdokument zur Identifikation</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v1h20V6a2 2 0 00-2-2zM2 19a2 2 0 002 2h16a2 2 0 002-2v-9H2v9zm7-5h6a1 1 0 010 2H9a1 1 0 010-2z"/></svg>
+                <div><strong>Führerschein</strong><span>Passende Klasse, mind. seit 12 Monaten gültig</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                <div><strong>Voranzahlung</strong><span>Bar oder per EC-/Kreditkarte vor Ort</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+                <div><strong>Pünktliche Abholung</strong><span>Bitte ca. 10 Minuten vor dem vereinbarten Termin</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 6h-2.18c.07-.44.18-.88.18-1a3 3 0 00-6 0c0 .12.11.56.18 1H10a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V8a2 2 0 00-2-2zm-7-1a1 1 0 012 0c0 .12-.18.7-.28 1h-1.44c-.1-.3-.28-.88-.28-1z"/></svg>
+                <div><strong>Bei Firmenkunden</strong><span>Handelsregisterauszug oder Vollmacht bei abweichendem Fahrer</span></div>
+            </li>
+        </ul>
+    </div>
 </section>
 
 <section id="preislisten">
-  <h2><em>AKTUELLE PREISLISTEN ZUM DOWNLOAD</em></h2><br>
-  <div class="preisliste-container">
-
-    <div class="preisliste-card">
-      <p><strong>Anhänger</strong></p>
-      <a href="preislisten/preisliste-anhaenger-2025.pdf" target="_blank">
-        <embed src="preislisten/preisliste-anhaenger-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
-        <div class="overlay">
-          <br><span>PDF ansehen</span>
-        </div>
-      </a>
+    <div class="section-heading">
+        <p class="eyebrow">Preise</p>
+        <h2>Aktuelle Preislisten</h2>
+        <p>Laden Sie unsere Preislisten direkt als PDF herunter oder klicken Sie zur Vorschau.</p>
     </div>
-
-    <div class="preisliste-card">
-      <p><strong>Transporter</strong></p>
-      <a href="preislisten/preisliste-busse-2025.pdf" target="_blank">
-        <embed src="preislisten/preisliste-busse-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
-        <div class="overlay">
-          <br><span>PDF ansehen</span>
+    <div class="preisliste-container">
+        <div class="preisliste-card">
+            <p><strong>Anhänger</strong></p>
+            <a href="preislisten/preisliste-anhaenger-2025.pdf" target="_blank">
+                <embed src="preislisten/preisliste-anhaenger-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
+                <div class="overlay"><span>PDF ansehen →</span></div>
+            </a>
         </div>
-      </a>
-    </div>
-
-    <div class="preisliste-card">
-      <p><strong>PKW</strong></p>
-      <a href="preislisten/preisliste-pkw-2025.pdf" target="_blank"> <!-- Datei ist die falsche und muss noch angefragt werden-->
-        <embed src="preislisten/preisliste-pkw-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
-        <div class="overlay">
-          <br><span>PDF ansehen</span>
+        <div class="preisliste-card">
+            <p><strong>Transporter</strong></p>
+            <a href="preislisten/preisliste-busse-2025.pdf" target="_blank">
+                <embed src="preislisten/preisliste-busse-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
+                <div class="overlay"><span>PDF ansehen →</span></div>
+            </a>
         </div>
-      </a>
-    </div>
-
-    <div class="preisliste-card">
-      <p><strong>LKW</strong></p>
-      <a href="preislisten/preisliste-lkw-2025.pdf" target="_blank">
-        <embed src="preislisten/preisliste-lkw-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
-        <div class="overlay">
-          <br><span>PDF ansehen</span>
+        <div class="preisliste-card">
+            <p><strong>PKW</strong></p>
+            <a href="preislisten/preisliste-pkw-2025.pdf" target="_blank">
+                <embed src="preislisten/preisliste-pkw-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
+                <div class="overlay"><span>PDF ansehen →</span></div>
+            </a>
         </div>
-      </a>
-    </div>
-
-    <div class="preisliste-card">
-      <p><strong>Umzugszubehör</strong></p>
-      <a href="preislisten/preisliste-umzugszubehoer.pdf" target="_blank">
-        <embed src="preislisten/preisliste-umzugszubehoer.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
-        <div class="overlay">
-          <br><span>PDF ansehen</span>
+        <div class="preisliste-card">
+            <p><strong>LKW</strong></p>
+            <a href="preislisten/preisliste-lkw-2025.pdf" target="_blank">
+                <embed src="preislisten/preisliste-lkw-2025.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
+                <div class="overlay"><span>PDF ansehen →</span></div>
+            </a>
         </div>
-      </a>
+        <div class="preisliste-card">
+            <p><strong>Umzugszubehör</strong></p>
+            <a href="preislisten/preisliste-umzugszubehoer.pdf" target="_blank">
+                <embed src="preislisten/preisliste-umzugszubehoer.pdf#page=1&zoom=100" type="application/pdf" class="listenvorschau">
+                <div class="overlay"><span>PDF ansehen →</span></div>
+            </a>
+        </div>
     </div>
-    <!-- Weitere Listen bei Bedarf hinzufügen -->
-  </div>
 </section>
 
 <section id="faq">
-  <h2><em>HÄUFIG GESTELLTE FRAGEN:</em></h2>
+    <div class="section-heading">
+        <p class="eyebrow">FAQ</p>
+        <h2>Häufig gestellte Fragen</h2>
+        <p>Die wichtigsten Antworten rund um Anmietung, Bezahlung und Versicherung.</p>
+    </div>
   <div class="faq-item">
     <button class="faq-question">
       <span class="faq-arrow">▶</span>
@@ -227,8 +242,34 @@
 </section>
 
 <footer>
-  <p>© 2025 Autovermietung Heinzelmann | Alle Rechte vorbehalten</p>
-  <p>Herbertingen an der B 32/311 | Tel: 07586/9213-0 | Fax: 07586/9213-20</p>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
+        </div>
+        <div class="footer-links">
+            <strong>Navigation</strong>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="fuhrpark.html">Fuhrpark</a></li>
+                <li><a href="mieten.html">Mieten</a></li>
+                <li><a href="ueber_uns.html">Über uns</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <strong>Kontakt</strong>
+            <ul>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>Saumstraße 2–4, 88518 Herbertingen</li>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg><a href="tel:+49758692130">07586 / 9213-0</a></li>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 12.5 5.4 7zM4 18V8.2l7.4 5.7a1 1 0 001.2 0L20 8.2V18z"/></svg><a href="index.html#kontakt">Nachricht senden</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Autovermietung Heinzelmann · Alle Rechte vorbehalten</p>
+        <p>Herbertingen an der B32/311</p>
+    </div>
 </footer>
 </body>
 </html>

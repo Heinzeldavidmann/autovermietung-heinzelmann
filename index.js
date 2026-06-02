@@ -177,3 +177,15 @@ document.addEventListener('DOMContentLoaded', function () {
     dotEl && dotEl.style.setProperty('background', '#ef4444');
   }
 });
+
+// Custom select display
+const fahrzeugSelect = document.getElementById('fahrzeug');
+if (fahrzeugSelect) {
+  const display = fahrzeugSelect.nextElementSibling;
+  const textEl = display && display.querySelector('.custom-select-text');
+  fahrzeugSelect.addEventListener('change', () => {
+    const selected = fahrzeugSelect.options[fahrzeugSelect.selectedIndex];
+    if (textEl) textEl.textContent = selected.value ? selected.text : 'Bitte wählen...';
+    if (display) display.classList.toggle('has-value', !!selected.value);
+  });
+}

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autovermietung Heinzelmann</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="style.css?v=2">
+    <script src="index.js" defer></script>
 </head>
 
 <body>
@@ -55,7 +55,6 @@
     <nav id="primary-nav" class="primary-nav" aria-label="Hauptnavigation">
         <ul>
             <li><a href="index.html">Startseite</a></li>
-            <li><a href="#quick-rental">Fahrzeug wählen</a></li>
             <li><a href="fuhrpark.html">Fuhrpark</a></li>
             <li><a href="mieten.html">Mieten</a></li>
             <li><a href="ueber_uns.html">Über uns</a></li>
@@ -70,7 +69,7 @@
             <p class="eyebrow">Autovermietung in Herbertingen</p>
             <h1>Mietwagen, Transporter und 9-Sitzer – schnell, persönlich und unkompliziert.</h1>
             <p class="hero-text">
-                Ob Alltag, Umzug, Ausflug oder Ersatzfahrzeug: Bei Heinzelmann finden Sie passende Fahrzeuge,
+                Ob Alltag, Umzug, Ausflug oder Ersatzfahrzeug: Bei der Autovermietung Heinzelmann finden Sie passende Fahrzeuge,
                 persönliche Beratung und eine direkte Anfrage ohne Umwege.
             </p>
 
@@ -81,7 +80,7 @@
 
             <div class="hero-trust" aria-label="Kurzüberblick">
                 <div class="trust-item">
-                    <strong>25+</strong>
+                    <strong>60+</strong>
                     <span>Jahre Erfahrung</span>
                 </div>
                 <div class="trust-item">
@@ -105,45 +104,50 @@
     </div>
 </section>
 
-<section id="quick-rental" class="quick-rental-section" aria-labelledby="quick-rental-title">
+<section id="fuhrpark">
     <div class="section-heading">
-        <p class="eyebrow">Schnell zum passenden Fahrzeug</p>
-        <h2 id="quick-rental-title">Was möchten Sie mieten?</h2>
-        <p>Wählen Sie direkt den passenden Einstieg und finden Sie schneller das Fahrzeug für Ihr Vorhaben.</p>
+        <p class="eyebrow">Fuhrpark</p>
+        <h2>Fahrzeuge für jeden Bedarf</h2>
+        <p>Von der Alltagsfahrt bis zum Großumzug – wählen Sie das passende Fahrzeug direkt aus unserem Fuhrpark.</p>
     </div>
-
-    <div class="rental-card-grid">
-        <article class="rental-card">
-            <span class="rental-card-label">Alltag &amp; Reise</span>
-            <h3>PKW</h3>
-            <p>Für Termine, Ausflüge, längere Strecken oder als Ersatzfahrzeug.</p>
-            <a href="fuhrpark.html#pkw">PKW ansehen</a>
-        </article>
-
-        <article class="rental-card rental-card-featured">
-            <span class="rental-card-label">Umzug &amp; Transport</span>
-            <h3>Transporter</h3>
-            <p>Für Umzüge, größere Einkäufe, Lieferfahrten oder gewerbliche Einsätze.</p>
-            <a href="fuhrpark.html#transporter">Transporter ansehen</a>
-        </article>
-
-        <article class="rental-card">
-            <span class="rental-card-label">Gruppen &amp; Vereine</span>
-            <h3>9-Sitzer</h3>
-            <p>Für Familien, Vereine, Teams und gemeinsame Fahrten mit mehreren Personen.</p>
-            <a href="fuhrpark.html#busse">9-Sitzer ansehen</a>
-        </article>
+    <div class="vehicle-container">
+        <a href="fuhrpark.html#pkw" class="vehicle">
+            <div class="vehicle-img-wrap">
+                <img src="images/BC 20_Autovermietung.JPG" alt="PKW">
+            </div>
+            <div class="vehicle-body">
+                <span class="vehicle-label">Alltag &amp; Reise</span>
+                <h3>PKW</h3>
+                <p>Komfortabel und flexibel – für Termine, Ausflüge oder als Ersatzfahrzeug.</p>
+                <span class="vehicle-link">PKW ansehen →</span>
+            </div>
+        </a>
+        <a href="fuhrpark.html#transporter" class="vehicle">
+            <div class="vehicle-img-wrap">
+                <img src="images/BC 61_Autovermietung.HEIC" alt="Transporter">
+            </div>
+            <div class="vehicle-body">
+                <span class="vehicle-label">Umzug &amp; Transport</span>
+                <h3>Transporter</h3>
+                <p>Für Umzüge, Lieferfahrten und gewerbliche Einsätze mit viel Laderaum.</p>
+                <span class="vehicle-link">Transporter ansehen →</span>
+            </div>
+        </a>
+        <a href="fuhrpark.html#busse" class="vehicle">
+            <div class="vehicle-img-wrap vehicle-img-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><circle cx="7" cy="17" r="1"/><circle cx="17" cy="17" r="1"/></svg>
+            </div>
+            <div class="vehicle-body">
+                <span class="vehicle-label">Gruppen &amp; Vereine</span>
+                <h3>9-Sitzer</h3>
+                <p>Platz für bis zu 9 Personen – ideal für Vereinsfahrten, Familien und Teams.</p>
+                <span class="vehicle-link">9-Sitzer ansehen →</span>
+            </div>
+        </a>
     </div>
-</section>
-
-<section id="vorteile">
-    <h2><em>WIR SIND DIE RICHTIGEN FÜR IHR VORHABEN!</em></h2><br>
-    <ul class="benefits">
-        <li>Persönlicher Service – familiengeführt &amp; nah am Kunden</li>
-        <li>Über 80 moderne Fahrzeuge, darunter Transporter, Busse und PKWs</li>
-        <li>Zentrale Lage in Herbertingen – direkt an der B 32/311</li>
-        <li>Schnelle Erreichbarkeit – auch kurzfristige Buchungen möglich</li>
-    </ul>
+    <div class="vehicle-cta">
+        <a href="fuhrpark.html" class="button">Fuhrpark ansehen</a>
+    </div>
 </section>
 
 <section id="kontakt" class="inquiry-section" aria-labelledby="inquiry-title">
@@ -153,13 +157,13 @@
             <h2 id="inquiry-title">Sie wissen schon, wann Sie ein Fahrzeug brauchen?</h2>
             <p>
                 Schicken Sie uns Ihre Anfrage mit den wichtigsten Eckdaten. Wir melden uns persönlich zurück
-                und klären gemeinsam, welches Fahrzeug am besten passt.
+                und klären gemeinsam, welches Fahrzeug am besten zu Ihrem Vorhaben passt.
             </p>
 
             <div class="inquiry-contact-options" aria-label="Weitere Kontaktmöglichkeiten">
                 <a href="tel:+49758692130">07586 / 9213-0 anrufen</a>
                 <a href="https://wa.me/49758692130" target="_blank" rel="noopener">Per WhatsApp schreiben</a>
-                <a href="kontakt.html">Kontaktseite öffnen</a>
+                <a href="index.html#kontakt">Kontaktseite öffnen</a>
             </div>
         </div>
 
@@ -182,13 +186,19 @@
 
                 <div class="field">
                     <label for="fahrzeug">Gewünschte Fahrzeugart</label>
-                    <select id="fahrzeug" name="fahrzeug" required>
-                        <option value="">Bitte wählen...</option>
-                        <option value="pkw">PKW</option>
-                        <option value="lkw">LKW</option>
-                        <option value="transporter">Transporter</option>
-                        <option value="bus">Personentransporter / 9-Sitzer</option>
-                    </select>
+                    <div class="custom-select-wrapper">
+                        <select id="fahrzeug" name="fahrzeug" required class="custom-select-hidden">
+                            <option value="">Bitte wählen...</option>
+                            <option value="pkw">PKW</option>
+                            <option value="lkw">LKW</option>
+                            <option value="transporter">Transporter</option>
+                            <option value="bus">Personentransporter / 9-Sitzer</option>
+                        </select>
+                        <div class="custom-select-display" aria-hidden="true">
+                            <span class="custom-select-text">Bitte wählen...</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="field">
@@ -198,7 +208,7 @@
 
                 <div class="field">
                     <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung</label>
-                    <input type="time" id="uhrzeit" name="abholung_uhrzeit">
+                    <input type="time" id="uhrzeit" name="abholung_uhrzeit" value="09:00">
                 </div>
 
                 <div class="field">
@@ -208,7 +218,7 @@
 
                 <div class="field">
                     <label for="uhrzeit2">Geplante Uhrzeit zur Rückgabe</label>
-                    <input type="time" id="uhrzeit2" name="rueckgabe_uhrzeit">
+                    <input type="time" id="uhrzeit2" name="rueckgabe_uhrzeit" value="16:00">
                 </div>
 
                 <div class="field field-full">
@@ -227,33 +237,38 @@
         <p class="eyebrow">Standort</p>
         <h2>So finden Sie uns</h2>
     </div>
-    <p class="map-description">Unsere Autovermietung liegt zentral in Herbertingen, direkt an der B32/311.</p>
-    <p><strong>Adresse:</strong><br>Saumstraße 2–4<br>88518 Herbertingen</p>
+    <div class="map-layout">
+        <div class="map-info">
+            <div class="map-info-item">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                <div>
+                    <strong>Adresse</strong>
+                    <span>Saumstraße 2–4<br>88518 Herbertingen</span>
+                </div>
+            </div>
+            <div class="map-info-item">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+                <div>
+                    <strong>Telefon</strong>
+                    <span><a href="tel:+49758692130">07586 / 9213-0</a></span>
+                </div>
+            </div>
+            <div class="map-info-item">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+                <div>
+                    <strong>Öffnungszeiten</strong>
+                    <span>Mo–Fr: 8–12 &amp; 13–18 Uhr<br>Sa: 9–13 Uhr</span>
+                </div>
+            </div>
+            <a href="https://maps.google.com/?q=Saumstraße+2,+88518+Herbertingen" target="_blank" rel="noopener" class="button">
+                Route planen →
+            </a>
+        </div>
         <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2697.5531503649945!2d9.457642115837666!3d48.05923877921681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47997c2eb4c80101%3A0x7a1836aa2e58ef44!2sSaumstra%C3%9Fe%202%2C%2088518%20Herbertingen!5e0!3m2!1sde!2sde!4v1693917223473!5m2!1sde!2sde"
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
-</section>
-
-<section id="fuhrpark">
-    <div class="section-heading">
-        <p class="eyebrow">Fuhrpark</p>
-        <h2>Fahrzeuge für Alltag, Umzug und Gruppenfahrten</h2>
-        <p>Ein erster Überblick über die wichtigsten Fahrzeugbereiche. Weitere Details finden Sie im Fuhrpark.</p>
     </div>
-    <div class="vehicle-container">
-        <div class="vehicle">
-            <h3>Transporter</h3>
-            <img src="images/BC 61_Autovermietung.HEIC">
-            <p>Unsere Transporter sind ideal für größere Transporte oder Gruppenfahrten. Sie bieten Platz für bis zu 8 Personen oder größere Lasten.</p>
-        </div>
-        <div class="vehicle">
-            <h3>PKWs</h3>
-            <img src="images/BC 20_Autovermietung.JPG">
-            <p>Unsere PKWs bieten Ihnen den Komfort und die Flexibilität für Ihre täglichen Fahrten oder Reisen.</p>
-        </div>
-    </div>
-    <a href="fuhrpark.html" class="button">Mehr erfahren</a>
 </section>
 
 <section id="rezensionen">
@@ -281,24 +296,73 @@
     </div>
 </section>
 
-<section id="anforderungen">
-    <div class="section-heading">
-        <p class="eyebrow">Vor der Anmietung</p>
-        <h2>Was Sie zur Anmietung mitbringen sollten</h2>
+<section id="anforderungen" class="anforderungen-section">
+    <div class="anforderungen-layout">
+        <div class="anforderungen-intro">
+            <p class="eyebrow">Vor der Anmietung</p>
+            <h2>So einfach mieten Sie bei uns</h2>
+            <p>Alles was Sie brauchen, um schnell und unkompliziert loszufahren. Bei Fragen helfen wir Ihnen persönlich weiter.</p>
+            <a href="mieten.html" class="button" style="margin-top: 28px;">Alle Mietinfos ansehen</a>
+        </div>
+        <ul class="anforderungen-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a5 5 0 1 1 0 10A5 5 0 0 1 12 2zm0 12c5.33 0 8 2.67 8 4v2H4v-2c0-1.33 2.67-4 8-4z"/></svg>
+                <div><strong>Personalausweis oder Reisepass</strong><span>Gültiges Ausweisdokument zur Identifikation</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v1h20V6a2 2 0 00-2-2zM2 19a2 2 0 002 2h16a2 2 0 002-2v-9H2v9zm7-5h6a1 1 0 010 2H9a1 1 0 010-2z"/></svg>
+                <div><strong>Führerschein</strong><span>Passende Klasse, mind. seit 12 Monaten gültig</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                <div><strong>Voranzahlung</strong><span>Bar oder per EC-/Kreditkarte vor Ort</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+                <div><strong>Pünktliche Abholung</strong><span>Bitte ca. 10 Minuten vor dem vereinbarten Termin</span></div>
+            </li>
+        </ul>
     </div>
-    <ul class="requirements">
-        <li><b>Gültiger Personalausweis</b> oder Reisepass zur Identifikation</li>
-        <li><b>Führerschein</b> der passenden Fahrzeugklasse (mind. seit 12 Monaten gültig)</li>
-        <li><b>Voranzahlung</b>, zahlbar in bar oder mit EC-/Kreditkarte</li>
-        <li><b>Bei Firmenkunden:</b> Handelsregisterauszug oder Vollmacht (falls abweichender Fahrer)</li>
-        <li><b>Pünktliche Abholung</b> zum vereinbarten Termin. Bitte treffen Sie ca. 10 Minuten vorher ein</li>
-    </ul>
-    <a href="mieten.html" class="button">Mehr erfahren</a>
 </section>
 
 <footer>
-    <p>&copy; 2025 Autovermietung Heinzelmann | Alle Rechte vorbehalten</p>
-    <p>Herbertingen an der B 32/311 | Tel: 07586/9213-0 | Fax: 07586/9213-20</p>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
+        </div>
+        <div class="footer-links">
+            <strong>Navigation</strong>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="fuhrpark.html">Fuhrpark</a></li>
+                <li><a href="mieten.html">Mieten</a></li>
+                <li><a href="ueber_uns.html">Über uns</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <strong>Kontakt</strong>
+            <ul>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                    Saumstraße 2–4, 88518 Herbertingen
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+                    <a href="tel:+49758692130">07586 / 9213-0</a>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 12.5 5.4 7zM4 18V8.2l7.4 5.7a1 1 0 001.2 0L20 8.2V18z"/></svg>
+                    <a href="index.html#kontakt">Nachricht senden</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Autovermietung Heinzelmann · Alle Rechte vorbehalten</p>
+        <p>Herbertingen an der B32/311</p>
+    </div>
 </footer>
 
 </body>
