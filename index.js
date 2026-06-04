@@ -166,8 +166,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   const dayText = intervalsToText(normIntervals);
-  const pauseSuffix = middayPauseNow ? ' – jetzt Mittagspause' : '';
-  if (textEl) textEl.textContent = `Heute: geöffnet von ${dayText}${pauseSuffix}`;
+  if (textEl) {
+    if (middayPauseNow) {
+      textEl.textContent = `Jetzt Mittagspause – heute geöffnet von ${dayText}`;
+    } else {
+      textEl.textContent = `Heute: geöffnet von ${dayText}`;
+    }
+  }
 
   if (openNow) {
     statusEl.classList.remove('closed');

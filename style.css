@@ -1896,8 +1896,10 @@ form:not(.inquiry-form) button:hover {
 
 @media (max-width: 680px) {
     .utility-bar {
-        font-size: 0.95rem;
-        padding: 8px 12px;
+        font-size: 0.68rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        letter-spacing: 0.03em;
     }
 
     .utility-text {
@@ -1905,15 +1907,24 @@ form:not(.inquiry-form) button:hover {
     }
 
     .utility-left, .utility-right {
-        gap: 12px;
+        gap: 10px;
     }
 }
 
 @media (max-width: 600px) {
+    header .logo {
+        align-self: center;
+    }
+
     header .logo img {
         max-height: 48px;
         width: auto;
         padding: 7px;
+        display: block;
+    }
+
+    .nav-toggle {
+        align-self: center;
     }
 
     nav ul {
