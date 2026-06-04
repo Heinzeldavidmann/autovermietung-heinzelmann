@@ -42,7 +42,12 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
+    overflow-x: hidden;
     --header-offset: 96px;
     --utility-height: 56px;
     font-family: 'Poppins', sans-serif;
@@ -1800,10 +1805,11 @@ form:not(.inquiry-form) button:hover {
 
     header .primary-nav {
         display: none;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: var(--header-offset);
         left: 0;
         right: 0;
+        width: 100%;
         overflow: visible;
         padding: 12px 14px;
         background-color: #e60000;
@@ -1869,6 +1875,17 @@ form:not(.inquiry-form) button:hover {
 @media (max-width: 700px) {
     .datetime-row {
         grid-template-columns: 1fr;
+    }
+
+    .about-story .about-content,
+    .about-story .about-content-reverse {
+        grid-template-columns: 1fr;
+        direction: ltr;
+        gap: 24px;
+    }
+
+    .about-figure img {
+        height: 220px;
     }
 }
 
