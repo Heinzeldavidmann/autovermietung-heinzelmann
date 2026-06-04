@@ -1806,7 +1806,7 @@ form:not(.inquiry-form) button:hover {
     header .primary-nav {
         display: none;
         position: fixed;
-        top: var(--header-offset);
+        top: calc(var(--header-offset) + var(--utility-height));
         left: 0;
         right: 0;
         width: 100%;
@@ -1886,6 +1886,11 @@ form:not(.inquiry-form) button:hover {
 
     .about-figure img {
         height: 220px;
+    }
+
+    .anforderungen-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
     }
 }
 
