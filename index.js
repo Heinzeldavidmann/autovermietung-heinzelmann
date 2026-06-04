@@ -168,7 +168,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const dayText = intervalsToText(normIntervals);
   if (textEl) {
     if (middayPauseNow) {
-      textEl.textContent = `Jetzt Mittagspause – heute geöffnet von ${dayText}`;
+      // Nächstes Intervall finden und dessen Startzeit anzeigen
+      let nextStart = '';
+      for (let i = 0; i < normIntervals.length - 1; i++) {
+        const endDate = parseTimeToDate(normIntervals[i][1]);
+        if (now > endDate) {
+          nextStart = prettyTime(normIntervals[i + 1][0]);
+          break;
+        }
+      }
+      textEl.textContent = `Jetzt Mittagspause – wieder geöffnet ab ${nextStart}`;
     } else {
       textEl.textContent = `Heute: geöffnet von ${dayText}`;
     }
