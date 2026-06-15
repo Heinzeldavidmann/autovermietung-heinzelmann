@@ -1,17 +1,81 @@
-function sendMail() {  // API über PHP-Skript, nodemailer oder EmailJS erforderlich
-    const params = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        fahrzeug: document.getElementById("fahrzeug").value,
-        datum1: document.getElementById("datum1").value,
-        datum2: document.getElementById("datum2").value,
-        uhrzeit: document.getElementById("uhrzeit").value,
-        nachricht: document.getElementById("nachricht").value,
-    };
+// ── Kontaktformular Submit-Handler ──
+// Vorbereitet für EmailJS – aktuell zeigt das Formular einen Fallback-Hinweis.
+// Sobald EmailJS eingerichtet ist: emailjs.send(...) einkommentieren und
+// den showFormFallback()-Aufruf im try-Block entfernen.
+function setupContactForm() {
+    const form = document.querySelector('.inquiry-form');
+    if (!form) return;
 
-    emailjs.send("service_id", "template_id", params)
-        .then(() => alert("Nachricht erfolgreich gesendet!"))
-        .catch(() => alert("Fehler beim Senden der Nachricht."));
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Wird gesendet…';
+        btn.disabled = true;
+
+        const params = {
+            name:     document.getElementById('name').value,
+            email:    document.getElementById('email').value,
+            telefon:  document.getElementById('telefon').value,
+            fahrzeug: document.getElementById('fahrzeug').value,
+            datum1:   document.getElementById('datum1').value,
+            uhrzeit:  document.getElementById('uhrzeit').value,
+            datum2:   document.getElementById('datum2').value,
+            uhrzeit2: document.getElementById('uhrzeit2').value,
+            nachricht: document.getElementById('nachricht').value,
+        };
+
+        try {
+            // TODO: EmailJS aktivieren sobald Account eingerichtet ist
+            // await emailjs.send('SERVICE_ID', 'TEMPLATE_ID', params);
+            // showFormSuccess(form);
+
+            // Vorläufiger Fallback bis EmailJS aktiv ist:
+            showFormFallback(form);
+        } catch (err) {
+            showFormError(form);
+        } finally {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    });
+}
+
+function showFormSuccess(form) {
+    showFormMessage(form,
+        'Vielen Dank für Ihre Anfrage! Wir melden uns so schnell wie möglich bei Ihnen.',
+        '#22c55e'
+    );
+    form.reset();
+}
+
+function showFormError(form) {
+    showFormMessage(form,
+        'Ihre Anfrage konnte leider nicht gesendet werden. Bitte rufen Sie uns an: 07586 / 9213-0 oder schreiben Sie uns direkt an info@autovermietung-heinzelmann.de',
+        '#e60000'
+    );
+}
+
+function showFormFallback(form) {
+    showFormMessage(form,
+        'Das Formular ist in Kürze vollständig verfügbar. Bis dahin erreichen Sie uns telefonisch unter 07586 / 9213-0 oder per E-Mail an info@autovermietung-heinzelmann.de',
+        '#f0b429'
+    );
+}
+
+function showFormMessage(form, text, color) {
+    let msg = form.querySelector('.form-status-msg');
+    if (!msg) {
+        msg = document.createElement('p');
+        msg.className = 'form-status-msg';
+        msg.style.cssText = 'margin-top:16px;padding:12px 16px;border-radius:8px;font-size:0.9em;line-height:1.5;font-weight:500;';
+        form.appendChild(msg);
+    }
+    msg.textContent = text;
+    msg.style.background = color + '18';
+    msg.style.color = color === '#f0b429' ? '#856404' : color;
+    msg.style.border = `1px solid ${color}55`;
 }
 
 // Diese Funktion sorgt dafür, dass beim Klick auf eine FAQ-Frage die Antwort ein- oder ausgeklappt wird.
@@ -90,6 +154,7 @@ function setupMobileNavToggle() {
 window.addEventListener('DOMContentLoaded', () => {
   setupFaqAccordion();
   setupMobileNavToggle();
+  setupContactForm();
 });
 
 // Utility Bar nach dem Header
