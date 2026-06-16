@@ -87,7 +87,7 @@ section img {
     width: 100%;
     height: auto;
     display: block;
-    margin: 20px auto;
+    margin: 0;
     border-radius: 8px;
     object-fit: contain;
 }
@@ -319,8 +319,8 @@ nav ul li a:hover {
 }
 
 .utility-dot {
-    width: 8px;
-    height: 8px;
+    width: 14px;
+    height: 14px;
     border-radius: 999px;
     background: #22c55e;
     display: inline-block;
@@ -1387,21 +1387,47 @@ form:not(.inquiry-form) button:hover {
     line-height: 1.35;
 }
 
+.hero-right {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+}
+
 .hero-media {
-    position: relative;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+    height: 380px;
+    flex-shrink: 0;
     border-radius: 36px;
     overflow: hidden;
-    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.22);
+    position: relative;
 }
 
 .hero-media img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center 40%;
     display: block;
-    margin: 0;
-    border-radius: 0;
+}
+
+.hero-logo-panel {
+    border-radius: 36px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 24px;
+}
+
+.hero-logo-panel img {
+    display: block;
+    width: 90%;
+    max-width: 90%;
+    height: auto;
+    object-fit: contain;
 }
 
 .hero-media-card {
