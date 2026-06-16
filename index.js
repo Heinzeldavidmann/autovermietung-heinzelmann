@@ -162,11 +162,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // Öffnungszeiten: Arrays aus Zeitintervallen pro Tag (0=So ... 6=Sa)
   const OPENING_HOURS = {
     0: null, // Sonntag: geschlossen
-    1: [["08:00", "12:00"], ["13:00", "18:00"]], // Montag (Mittagspause 12–13)
-    2: [["08:00", "12:00"], ["13:00", "18:00"]], // Dienstag ("-")
-    3: [["08:00", "12:00"], ["13:00", "18:00"]], // Mittwoch ("-")
-    4: [["08:00", "12:00"], ["13:00", "18:00"]], // Donnerstag ("-")
-    5: [["08:00", "12:00"], ["13:00", "18:00"]], // Freitag ("-")
+    1: [["07:30", "12:00"], ["13:00", "18:00"]], // Montag (Mittagspause 12–13)
+    2: [["07:30", "12:00"], ["13:00", "18:00"]], // Dienstag ("-")
+    3: [["07:30", "12:00"], ["13:00", "18:00"]], // Mittwoch ("-")
+    4: [["07:30", "12:00"], ["13:00", "18:00"]], // Donnerstag ("-")
+    5: [["07:30", "12:00"], ["13:00", "18:00"]], // Freitag ("-")
     6: [["09:00", "13:00"]]                        // Samstag (durchgehend)
   };
 

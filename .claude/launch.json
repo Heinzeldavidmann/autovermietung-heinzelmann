@@ -6,7 +6,7 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8743"],
       "port": 8743,
-      "autoPort": true
+      "cwd": "/Users/davidheinzelmann/Desktop/Autovermietung Heinzelmann/Website Autovermietung Heinzelmann"
     }
   ]
 }
