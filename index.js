@@ -9,6 +9,22 @@ function setupContactForm() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        // Pflichtfelder prüfen (außer Nachricht)
+        const required = form.querySelectorAll('input[required], select[required]');
+        let firstInvalid = null;
+        required.forEach(field => {
+            if (!field.value.trim()) {
+                field.closest('.field').classList.add('field-bounce');
+                setTimeout(() => field.closest('.field').classList.remove('field-bounce'), 600);
+                if (!firstInvalid) firstInvalid = field;
+            }
+        });
+        if (firstInvalid) {
+            showValidationToast('Bitte füllen Sie alle markierten Felder aus.');
+            firstInvalid.focus();
+            return;
+        }
+
         const btn = form.querySelector('button[type="submit"]');
         const originalText = btn.textContent;
         btn.textContent = 'Wird gesendet…';
@@ -19,10 +35,10 @@ function setupContactForm() {
             email:    document.getElementById('email').value,
             telefon:  document.getElementById('telefon').value,
             fahrzeug: document.getElementById('fahrzeug').value,
-            datum1:   document.getElementById('datum1').value,
-            uhrzeit:  document.getElementById('uhrzeit').value,
-            datum2:   document.getElementById('datum2').value,
-            uhrzeit2: document.getElementById('uhrzeit2').value,
+            abholung_datum:    document.getElementById('abholung_datum').value,
+            abholung_uhrzeit:  document.getElementById('abholung_uhrzeit').value,
+            rueckgabe_datum:   document.getElementById('rueckgabe_datum').value,
+            rueckgabe_uhrzeit: document.getElementById('rueckgabe_uhrzeit').value,
             nachricht: document.getElementById('nachricht').value,
         };
 
@@ -151,10 +167,51 @@ function setupMobileNavToggle() {
 }
 
 // Automatisch beim Laden der Seite aufrufen
+function setupTestimonialsSlider() {
+  const track = document.querySelector('.testimonials-track');
+  if (!track) return;
+
+  const cards = track.querySelectorAll('.testimonial');
+  const total = cards.length;
+  const visible = 3;
+  const maxIndex = total - visible;
+  let current = 0;
+
+  const prevBtn = document.getElementById('testimonials-prev');
+  const nextBtn = document.getElementById('testimonials-next');
+  const dotsContainer = document.getElementById('testimonials-dots');
+
+  // Dots erstellen
+  for (let i = 0; i <= maxIndex; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'testimonials-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Seite ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function goTo(index) {
+    current = Math.max(0, Math.min(index, maxIndex));
+    const cardWidth = cards[0].offsetWidth + 20;
+    track.style.transform = `translateX(-${current * cardWidth}px)`;
+
+    dotsContainer.querySelectorAll('.testimonials-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === maxIndex;
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+  goTo(0);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   setupFaqAccordion();
   setupMobileNavToggle();
   setupContactForm();
+  setupTestimonialsSlider();
 });
 
 // Utility Bar nach dem Header
@@ -254,17 +311,80 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
     statusEl.classList.add('closed');
     dotEl && dotEl.style.setProperty('background', '#ef4444');
+
+    // Toast-Banner anzeigen
+    let bannerMsg;
+    if (!intervals || intervals.length === 0) {
+      bannerMsg = 'Heute haben wir geschlossen. Sie erreichen uns telefonisch Mo–Fr 7:30–12:00 & 13:00–18:00 Uhr sowie Sa 9:00–13:00 Uhr.';
+    } else if (middayPauseNow) {
+      bannerMsg = null; // Mittagspause wird bereits in der Utility Bar angezeigt
+    } else {
+      // Vor oder nach den Öffnungszeiten
+      const firstStart = prettyTime(normIntervals[0][0]);
+      const lastEnd = prettyTime(normIntervals[normIntervals.length - 1][1]);
+      const nowBeforeOpen = now < parseTimeToDate(normIntervals[0][0]);
+      if (nowBeforeOpen) {
+        bannerMsg = `Wir öffnen heute um ${firstStart}. Für dringende Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
+      } else {
+        bannerMsg = `Wir sind heute bis ${lastEnd} geöffnet gewesen. Morgen sind wir wieder für Sie da. Für Notfälle: 07586 / 9213-0.`;
+      }
+    }
+    if (bannerMsg) showClosedBanner(bannerMsg);
   }
 });
 
+// Validierungs-Toast
+function showValidationToast(message) {
+  let toast = document.getElementById('validation-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'validation-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.remove('validation-toast-visible');
+  void toast.offsetWidth; // reflow für Animation-Reset
+  toast.classList.add('validation-toast-visible');
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('validation-toast-visible'), 3500);
+}
+
+// Außerhalb der Öffnungszeiten: Toast-Banner anzeigen
+function showClosedBanner(message) {
+  if (sessionStorage.getItem('closedBannerDismissed')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'closed-banner';
+  banner.innerHTML = `
+    <div class="closed-banner-inner">
+      <span class="closed-banner-icon">🕐</span>
+      <div class="closed-banner-text">
+        <strong>Aktuell außerhalb der Geschäftszeiten</strong>
+        <span>${message}</span>
+      </div>
+      <button class="closed-banner-close" aria-label="Hinweis schließen">✕</button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  setTimeout(() => banner.classList.add('closed-banner-visible'), 100);
+
+  banner.querySelector('.closed-banner-close').addEventListener('click', () => {
+    banner.classList.remove('closed-banner-visible');
+    sessionStorage.setItem('closedBannerDismissed', '1');
+    setTimeout(() => banner.remove(), 400);
+  });
+}
+
 // Custom select display
-const fahrzeugSelect = document.getElementById('fahrzeug');
-if (fahrzeugSelect) {
-  const display = fahrzeugSelect.nextElementSibling;
+['fahrzeug', 'getriebe'].forEach(id => {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  const display = sel.nextElementSibling;
   const textEl = display && display.querySelector('.custom-select-text');
-  fahrzeugSelect.addEventListener('change', () => {
-    const selected = fahrzeugSelect.options[fahrzeugSelect.selectedIndex];
+  sel.addEventListener('change', () => {
+    const selected = sel.options[sel.selectedIndex];
     if (textEl) textEl.textContent = selected.value ? selected.text : 'Bitte wählen...';
     if (display) display.classList.toggle('has-value', !!selected.value);
   });
-}
+});

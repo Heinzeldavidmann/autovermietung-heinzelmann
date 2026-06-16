@@ -60,7 +60,7 @@
             <p class="eyebrow">Autovermietung in Herbertingen</p>
             <h1>Mietwagen, Transporter und 9-Sitzer – schnell, unkompliziert und auf Ihre Bedürfnisse zugeschnitten.</h1>
             <p class="hero-text">
-                Ob Alltagsmobilität, Umzug, Ausflug oder Pannen- / Ersatzfahrzeug: <br> Bei der Autovermietung Heinzelmann finden Sie passende Fahrzeuge,
+                Ob Alltagsmobilität, Umzug, Ausflug oder Pannen-/Ersatzfahrzeug: <br> Bei der Autovermietung Heinzelmann finden Sie passende Fahrzeuge,
                 persönliche Beratung und eine direkte Anfrage ohne Umwege.
             </p>
 
@@ -161,21 +161,6 @@
         <form class="inquiry-form">
             <div class="form-grid">
                 <div class="field">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="z. B. Max Mustermann" required>
-                </div>
-
-                <div class="field">
-                    <label for="email">E-Mail</label>
-                    <input type="email" id="email" name="email" placeholder="z. B. max.mustermann@gmail.com" required>
-                </div>
-
-                <div class="field">
-                    <label for="telefon">Telefonnummer für Rückfragen</label>
-                    <input type="tel" id="telefon" name="telefon" placeholder="z. B. 0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 ()/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
-                </div>
-
-                <div class="field">
                     <label for="fahrzeug">Gewünschte Fahrzeugart</label>
                     <div class="custom-select-wrapper">
                         <select id="fahrzeug" name="fahrzeug" required class="custom-select-hidden">
@@ -193,28 +178,66 @@
                 </div>
 
                 <div class="field">
-                    <label for="datum1">Wunschtermin zur Abholung</label>
-                    <input type="date" id="datum1" name="abholung_datum">
+                    <label for="getriebe">Getriebetyp</label>
+                    <div class="custom-select-wrapper">
+                        <select id="getriebe" name="getriebe" required class="custom-select-hidden">
+                            <option value="">Bitte wählen...</option>
+                            <option value="automatik">Automatik</option>
+                            <option value="schaltung">Schaltgetriebe</option>
+                            <option value="egal">Keine Präferenz / Egal</option>
+                        </select>
+                        <div class="custom-select-display" aria-hidden="true">
+                            <span class="custom-select-text">Bitte wählen...</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="field">
-                    <label for="uhrzeit">Gewünschte Uhrzeit zur Abholung</label>
-                    <input type="time" id="uhrzeit" name="abholung_uhrzeit" value="09:00">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="z. B. Max Mustermann" required>
                 </div>
 
                 <div class="field">
-                    <label for="datum2">Geplante Rückgabe</label>
-                    <input type="date" id="datum2" name="rueckgabe_datum">
+                    <label for="telefon">Telefonnummer für Rückfragen</label>
+                    <input type="tel" id="telefon" name="telefon" placeholder="z. B. 0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 ()/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
                 </div>
 
                 <div class="field">
-                    <label for="uhrzeit2">Geplante Uhrzeit zur Rückgabe</label>
-                    <input type="time" id="uhrzeit2" name="rueckgabe_uhrzeit" value="16:00">
+                    <label for="email">E-Mail</label>
+                    <input type="email" id="email" name="email" placeholder="z. B. max.mustermann@gmail.com" required>
+                </div>
+
+                <div class="field">
+                    <label for="fahrtstrecke">Geplante Fahrtstrecke (insgesamt)</label>
+                    <div class="split-input">
+                        <input type="number" id="fahrtstrecke" name="fahrtstrecke" placeholder="z. B. 500" min="0" inputmode="numeric">
+                        <span class="split-divider"></span>
+                        <span class="split-unit">km</span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="abholung_datum">Wunschtermin zur Abholung</label>
+                    <div class="split-input">
+                        <input type="date" id="abholung_datum" name="abholung_datum" required>
+                        <span class="split-divider"></span>
+                        <input type="time" id="abholung_uhrzeit" name="abholung_uhrzeit" value="09:00" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="rueckgabe_datum">Geplanter Rückgabetermin</label>
+                    <div class="split-input">
+                        <input type="date" id="rueckgabe_datum" name="rueckgabe_datum" required>
+                        <span class="split-divider"></span>
+                        <input type="time" id="rueckgabe_uhrzeit" name="rueckgabe_uhrzeit" value="16:00" required>
+                    </div>
                 </div>
 
                 <div class="field field-full">
                     <label for="nachricht">Nachricht</label>
-                    <textarea id="nachricht" name="nachricht" placeholder="Worum geht es? Zum Beispiel Umzug, Ersatzfahrzeug, Gruppenfahrt oder längere Mietdauer." required></textarea>
+                    <textarea id="nachricht" name="nachricht" placeholder="Worum geht es? Zum Beispiel Umzug, Ersatzfahrzeug, Gruppenfahrt oder längere Mietdauer."></textarea>
                 </div>
             </div>
 
@@ -268,23 +291,38 @@
         <h2>Was unsere Kunden sagen</h2>
     </div>
 
-    <div class="testimonials-grid">
-        <div class="testimonial">
-            <div class="stars">★★★★★</div>
-            <p>Sehr freundlicher und unkomplizierter Service. Der Transporter war top gepflegt und die Abholung lief reibungslos.</p>
-            <span class="author">A. Müller</span>
+    <div class="testimonials-slider">
+        <div class="testimonials-track">
+            <div class="testimonial">
+                <div class="stars">★★★★☆</div>
+                <p>Wir benötigten aufgrund einer Panne am Sonntag für 2 Tage einen Mietwagen. Die Abwicklung ging trotz Sonntag reibungslos vonstatten. Die Abrechnung mit unserem Allianz Schutzbrief wickelte die Autovermietung ab.</p>
+                <span class="author">Herbert Reichart</span>
+            </div>
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p>Mega zu empfehlende Werkstatt und Autovermietung – schnelle Hilfsbereitschaft, schnelle Abwicklung, sehr gute Konditionen! Sehr zu empfehlen. Auch bei Absage sehr zuvorkommend! Vielen Dank an die Gebrüder Heinzelmann!</p>
+                <span class="author">Mobilereitschule Raab Schneider</span>
+            </div>
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p>Ich hatte eine großartige Erfahrung mit dieser Autovermietung. Der Manager war äußerst freundlich und hilfsbereit, was den gesamten Prozess sehr angenehm gemacht hat. Die Bedingungen waren ausgezeichnet und klar verständlich. Ich kann diesen Service nur wärmstens empfehlen!</p>
+                <span class="author">Yurii Vroda</span>
+            </div>
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p>Schon seit vielen Jahren, egal ob PKW, Transporter, Kleinbus oder LKW. Völlig unkomplizierter Umgang, Vermietung, Abholung und Rückgabe. Alles immer zu meiner vollsten Zufriedenheit. Jederzeit immer wieder gern.</p>
+                <span class="author">Daniel Lehleiter</span>
+            </div>
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p>Hart aber herzlicher Familienbetrieb mit viel Sinn für Humor und unschlagbar guten Angeboten. Preis-Leistung 10/10 – zurecht der Mietklassiker der Umgebung!</p>
+                <span class="author">Robin Gerhardt</span>
+            </div>
         </div>
-
-        <div class="testimonial">
-            <div class="stars">★★★★</div>
-            <p>Faire Preise, kompetente Beratung und spontane Buchung möglich. Absolut empfehlenswert!</p>
-            <span class="author">J. Schneider</span>
-        </div>
-
-        <div class="testimonial">
-            <div class="stars">★★★★★</div>
-            <p>Ich miete regelmäßig Fahrzeuge für meinen Handwerksbetrieb. Das Personal ist stets zuverlässig, schnell und freundlich!</p>
-            <span class="author">T. Weber</span>
+        <div class="testimonials-controls">
+            <button class="testimonials-btn" id="testimonials-prev" aria-label="Zurück">&#8592;</button>
+            <div class="testimonials-dots" id="testimonials-dots"></div>
+            <button class="testimonials-btn" id="testimonials-next" aria-label="Weiter">&#8594;</button>
         </div>
     </div>
 </section>
