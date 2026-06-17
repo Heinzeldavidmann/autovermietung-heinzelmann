@@ -177,7 +177,7 @@ header .logo img {
     border-radius: 16px;
     cursor: pointer;
     line-height: 1;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.10);
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -197,7 +197,7 @@ header .logo img {
 
 .nav-toggle:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.13);
 }
 
 .nav-toggle:active {
@@ -406,6 +406,16 @@ nav ul li a:hover {
 
 .vehicle:hover .vehicle-img-wrap img {
     transform: scale(1.04);
+}
+
+.img-zoom-transporter {
+    transform: scale(1.35);
+    transform-origin: center 60%;
+    object-position: center 60%;
+}
+
+.vehicle:hover .vehicle-img-wrap .img-zoom-transporter {
+    transform: scale(1.39);
 }
 
 .vehicle-img-placeholder {
@@ -1472,7 +1482,7 @@ form:not(.inquiry-form) button:hover {
     max-width: var(--container);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     gap: 56px;
     align-items: stretch;
 }
@@ -1571,7 +1581,9 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 40%;
+    object-position: 65% 35%;
+    transform: scale(1.3);
+    transform-origin: 65% 35%;
     display: block;
 }
 
@@ -2255,6 +2267,10 @@ form:not(.inquiry-form) button:hover {
 
     .hero-section {
         padding: 40px 18px 24px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
     }
 
     section {
