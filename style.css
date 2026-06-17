@@ -997,7 +997,7 @@ form:not(.inquiry-form) button:hover {
 
 .map-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: minmax(0, 280px) 1fr;
     gap: 28px;
     align-items: stretch;
     margin-top: 24px;
@@ -1012,6 +1012,21 @@ form:not(.inquiry-form) button:hover {
     border: 1px solid var(--color-border);
     border-radius: 24px;
     box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+}
+
+.map-info-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Desktop: inline map versteckt, standalone sichtbar */
+.map-inline {
+    display: none !important;
+}
+
+.map-standalone {
+    display: block;
 }
 
 .map-info-item {
@@ -1529,14 +1544,14 @@ form:not(.inquiry-form) button:hover {
 .hero-content h1 {
     margin: 0;
     text-align: left;
-    font-size: 3rem;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
 }
 
 .hero-text {
     max-width: 680px;
     margin-top: 24px;
     color: var(--color-muted);
-    font-size: 1.15rem;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
     line-height: 1.75;
 }
 
@@ -1673,7 +1688,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 .section-heading {
-    max-width: 760px;
+    max-width: 900px;
     margin: 0 auto 34px;
     text-align: center;
 }
@@ -1785,7 +1800,7 @@ form:not(.inquiry-form) button:hover {
 
 .inquiry-layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(420px, 1.15fr);
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
     gap: 44px;
     align-items: stretch;
 }
@@ -2097,29 +2112,66 @@ form:not(.inquiry-form) button:hover {
     }
 }
 
+@media (max-width: 1024px) {
+    body {
+        --header-offset: 72px;
+        --utility-height: 42px;
+        --logo-height: 68px;
+    }
+
+    header {
+        padding: 0 24px;
+    }
+
+    header .logo {
+        margin-bottom: 0;
+    }
+}
+
+/* Tablet: 2-spaltige Grids statt direkt 1-spaltig */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .rental-card-grid,
+    .vehicle-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-trust {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 900px) {
     .hero-wrapper,
     .inquiry-layout {
         grid-template-columns: 1fr;
     }
 
-    .rental-card-grid,
-    .vehicle-container,
     .form-grid {
         grid-template-columns: 1fr;
     }
 
     .hero-media,
     .hero-media img {
-        min-height: 420px;
+        min-height: 320px;
+    }
+}
+
+@media (max-width: 768px) and (min-width: 601px) {
+    .rental-card-grid,
+    .vehicle-container {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .hero-trust {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
+    .hero-media {
+        display: none;
+    }
+
     body {
         --header-offset: 80px;
         --utility-height: 44px;
@@ -2135,8 +2187,38 @@ form:not(.inquiry-form) button:hover {
         grid-template-columns: 1fr;
     }
 
-    #anfahrt iframe {
-        height: 300px;
+    /* Mobile: map-info wird 2-spaltig (Infos links, Karte rechts) */
+    .map-info {
+        padding: 16px;
+        flex-direction: row;
+        gap: 14px;
+        align-items: stretch;
+    }
+
+    .map-info-body {
+        flex: 1;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .map-info-body .button {
+        white-space: nowrap;
+        font-size: 0.72rem;
+        padding: 10px 14px;
+    }
+
+    .map-inline {
+        display: block !important;
+        flex: 0 0 130px;
+        height: auto;
+        min-height: 180px;
+        border-radius: 14px;
+        border: none;
+        box-shadow: none;
+    }
+
+    .map-standalone {
+        display: none !important;
     }
 
     .nav-toggle {
@@ -2238,6 +2320,11 @@ form:not(.inquiry-form) button:hover {
 
     .about-duo-images {
         flex-direction: row;
+        order: 2;
+    }
+
+    .about-duo-layout .about-text {
+        order: 1;
     }
 
     .about-duo-images .about-figure img {
@@ -2260,22 +2347,33 @@ form:not(.inquiry-form) button:hover {
 
 @media (max-width: 680px) {
     .utility-bar {
-        font-size: 0.65rem;
+        font-size: 0.72rem;
         font-weight: 600;
-        padding: 0 14px;
-        letter-spacing: 0.03em;
+        padding: 0 12px;
+        letter-spacing: 0.02em;
         justify-content: space-between;
-        gap: 8px;
+        gap: 6px;
     }
 
     .utility-text {
         display: none;
     }
 
+    .utility-item svg {
+        width: 16px;
+        height: 16px;
+    }
+
     .utility-left,
     .utility-center,
     .utility-right {
-        gap: 10px;
+        gap: 8px;
+    }
+
+    /* Öffnungszeiten-Text bleibt sichtbar, andere Texte ausgeblendet */
+    .utility-item.hours .hours-text {
+        display: inline;
+        font-size: 0.68rem;
     }
 }
 
@@ -2317,17 +2415,31 @@ form:not(.inquiry-form) button:hover {
     }
 
     .hero-section {
-        padding: 40px 18px 24px;
+        padding: 32px 16px 20px;
     }
 
     .hero-content h1 {
-        font-size: clamp(1.6rem, 6vw, 2.2rem);
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .hero-text {
+        font-size: 0.95rem;
+        margin-top: 16px;
+    }
+
+    .hero-trust {
+        grid-template-columns: 1fr;
+    }
+
+    .rental-card-grid,
+    .vehicle-container {
+        grid-template-columns: 1fr;
     }
 
     section {
-        margin: 22px 14px;
-        padding: 28px 20px;
-        border-radius: 22px;
+        margin: 18px 12px;
+        padding: 24px 18px;
+        border-radius: 20px;
     }
 
     .hero-media-card {
