@@ -21,7 +21,6 @@ python3 -m http.server 8000
 | `fuhrpark.html` | Vehicle fleet overview |
 | `mieten.html` | Rental info, price lists (PDF embed), FAQ accordion |
 | `ueber_uns.html` | Company history with timeline |
-| `kontakt.html` | Legacy page — no longer linked anywhere, can be deleted |
 | `style.css` | Single stylesheet for all pages |
 | `index.js` | Opening hours logic, mobile nav toggle, custom select sync |
 | `images/` | All photos (JPG/HEIC/WebP) |
@@ -90,7 +89,7 @@ All pages share the same header/utility bar HTML. Nav links use plain text (no `
 <li><a href="index.html#kontakt">Kontakt</a></li>  <!-- links to section, not subpage -->
 ```
 
-**Important:** `kontakt.html` is no longer used. "Kontakt" in the nav and all "Jetzt anfragen" / "Nachricht senden" buttons link to `index.html#kontakt`.
+**Important:** "Kontakt" in the nav and all "Jetzt anfragen" / "Nachricht senden" buttons link to `index.html#kontakt`.
 
 ## JavaScript (index.js)
 
@@ -102,24 +101,17 @@ Three responsibilities:
 
 Script must use `defer` attribute: `<script src="index.js" defer></script>`
 
-## Known TODOs
-
-- `fuhrpark.html` navigation still uses `<em>CAPS</em>` — should be updated to match other pages
-- 9-Sitzer vehicle card has no photo yet (shows SVG placeholder)
-- `preisliste-pkw-2025.pdf` may be incorrect file — needs verification
-- `kontakt.html` can be deleted (no longer linked)
-
 ## Opening Hours Data
 
 Defined in `index.js` — update here when hours change:
 ```js
 const OPENING_HOURS = {
     0: null,                                          // Sonntag: geschlossen
-    1: [["08:00", "12:00"], ["13:00", "18:00"]],    // Mo
-    2: [["08:00", "12:00"], ["13:00", "18:00"]],    // Di
-    3: [["08:00", "12:00"], ["13:00", "18:00"]],    // Mi
-    4: [["08:00", "12:00"], ["13:00", "18:00"]],    // Do
-    5: [["08:00", "12:00"], ["13:00", "18:00"]],    // Fr
+    1: [["07:30", "12:00"], ["13:00", "18:00"]],    // Mo
+    2: [["07:30", "12:00"], ["13:00", "18:00"]],    // Di
+    3: [["07:30", "12:00"], ["13:00", "18:00"]],    // Mi
+    4: [["07:30", "12:00"], ["13:00", "18:00"]],    // Do
+    5: [["07:30", "12:00"], ["13:00", "18:00"]],    // Fr
     6: [["09:00", "13:00"]]                          // Sa
 };
 ```
