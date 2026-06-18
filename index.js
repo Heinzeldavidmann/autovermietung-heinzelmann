@@ -290,7 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const dayText = intervalsToText(normIntervals);
   if (textEl) {
     if (middayPauseNow) {
-      // Nächstes Intervall finden und dessen Startzeit anzeigen
       let nextStart = '';
       for (let i = 0; i < normIntervals.length - 1; i++) {
         const endDate = parseTimeToDate(normIntervals[i][1]);
@@ -299,10 +298,19 @@ document.addEventListener('DOMContentLoaded', function () {
           break;
         }
       }
-      textEl.textContent = `Jetzt Mittagspause – wieder geöffnet ab ${nextStart}`;
+      textEl.dataset.full = `Jetzt Mittagspause – wieder geöffnet ab ${nextStart}`;
+      textEl.dataset.short = `Pause – ab ${nextStart}`;
     } else {
-      textEl.textContent = `Heute: geöffnet von ${dayText}`;
+      textEl.dataset.full = `Heute: geöffnet von ${dayText}`;
+      textEl.dataset.short = `Geöffnet ${dayText}`;
     }
+    function applyHoursText() {
+      textEl.textContent = window.innerWidth <= 680
+        ? textEl.dataset.short
+        : textEl.dataset.full;
+    }
+    applyHoursText();
+    window.addEventListener('resize', applyHoursText);
   }
 
   if (openNow) {

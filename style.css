@@ -1253,10 +1253,11 @@ form:not(.inquiry-form) button:hover {
 }
 
 .faq-arrow {
-    font-size: 0.8rem;
     flex-shrink: 0;
     transition: transform var(--transition);
     color: var(--color-primary);
+    display: flex;
+    align-items: center;
 }
 
 .faq-question.active .faq-arrow {
@@ -2352,7 +2353,7 @@ form:not(.inquiry-form) button:hover {
         padding: 0 12px;
         letter-spacing: 0.02em;
         justify-content: space-between;
-        gap: 6px;
+        gap: 0;
     }
 
     .utility-text {
@@ -2370,10 +2371,23 @@ form:not(.inquiry-form) button:hover {
         gap: 8px;
     }
 
-    /* Öffnungszeiten-Text bleibt sichtbar, andere Texte ausgeblendet */
+    /* Öffnungszeiten links, nimmt restlichen Platz */
+    .utility-item.hours {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
     .utility-item.hours .hours-text {
         display: inline;
         font-size: 0.68rem;
+    }
+
+    /* Icons rechts: feste Breite, kein Schrumpfen */
+    .utility-item.tel,
+    .utility-item.contact,
+    .utility-item.location {
+        flex: 0 0 auto;
+        margin-left: 10px;
     }
 }
 
