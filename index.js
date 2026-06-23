@@ -1,7 +1,4 @@
-// ── Kontaktformular Submit-Handler ──
-// Vorbereitet für EmailJS – aktuell zeigt das Formular einen Fallback-Hinweis.
-// Sobald EmailJS eingerichtet ist: emailjs.send(...) einkommentieren und
-// den showFormFallback()-Aufruf im try-Block entfernen.
+// ── Kontaktformular Submit-Handler (Netlify Forms) ──
 function setupContactForm() {
     const form = document.querySelector('.inquiry-form');
     if (!form) return;
@@ -30,25 +27,18 @@ function setupContactForm() {
         btn.textContent = 'Wird gesendet…';
         btn.disabled = true;
 
-        const params = {
-            name:     document.getElementById('name').value,
-            email:    document.getElementById('email').value,
-            telefon:  document.getElementById('telefon').value,
-            fahrzeug: document.getElementById('fahrzeug').value,
-            abholung_datum:    document.getElementById('abholung_datum').value,
-            abholung_uhrzeit:  document.getElementById('abholung_uhrzeit').value,
-            rueckgabe_datum:   document.getElementById('rueckgabe_datum').value,
-            rueckgabe_uhrzeit: document.getElementById('rueckgabe_uhrzeit').value,
-            nachricht: document.getElementById('nachricht').value,
-        };
-
         try {
-            // TODO: EmailJS aktivieren sobald Account eingerichtet ist
-            // await emailjs.send('SERVICE_ID', 'TEMPLATE_ID', params);
-            // showFormSuccess(form);
-
-            // Vorläufiger Fallback bis EmailJS aktiv ist:
-            showFormFallback(form);
+            const data = new FormData(form);
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(data).toString(),
+            });
+            if (response.ok) {
+                showFormSuccess(form);
+            } else {
+                showFormError(form);
+            }
         } catch (err) {
             showFormError(form);
         } finally {
