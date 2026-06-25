@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transporter mieten – Autovermietung Heinzelmann</title>
+    <link rel="stylesheet" href="style.css?v=3">
+    <script src="index.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const slider = document.getElementById('spec-slider');
+    const prevBtn = document.getElementById('spec-prev');
+    const nextBtn = document.getElementById('spec-next');
+    const dotsContainer = document.getElementById('spec-dots');
+
+    function getVisible() {
+        const w = window.innerWidth;
+        if (w <= 600) return 1;
+        if (w <= 900) return 2;
+        return 3;
+    }
+
+    const total = slider.children.length;
+    let current = 0;
+
+    function maxIndex() { return total - getVisible(); }
+
+    function buildDots() {
+        dotsContainer.innerHTML = '';
+        const count = maxIndex() + 1;
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'spec-slider-dot' + (i === current ? ' active' : '');
+            dot.setAttribute('aria-label', 'Gruppe ' + (i + 1));
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function goTo(index) {
+        current = Math.max(0, Math.min(index, maxIndex()));
+        const cardWidth = slider.children[0].offsetWidth + 24;
+        slider.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current >= maxIndex();
+        dotsContainer.querySelectorAll('.spec-slider-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === current);
+        });
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+        current = Math.min(current, maxIndex());
+        buildDots();
+        goTo(current);
+    });
+
+    buildDots();
+    goTo(0);
+});
+</script>
+</head>
+
+<body>
+<div class="utility-bar" role="banner" aria-label="Schnellzugriff">
+    <span class="utility-item hours" id="open-status" aria-live="polite">
+        <span class="utility-dot" aria-hidden="true"></span>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+        <span class="hours-text">Heute: —</span>
+    </span>
+    <a class="utility-item tel" href="tel:+49758692130" aria-label="Anrufen">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+        <span class="utility-text">07586&nbsp;/&nbsp;9213-0</span>
+    </a>
+    <a class="utility-item contact" href="index.html#kontakt" aria-label="Kontakt per E-Mail">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 12.5 5.4 7zM4 18V8.2l7.4 5.7a1 1 0 001.2 0L20 8.2V18z"/></svg>
+        <span class="utility-text">E-Mail</span>
+    </a>
+    <a class="utility-item location" href="index.html#kontakt" aria-label="Anfahrt & Standort">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+        <span class="utility-text">Herbertingen</span>
+    </a>
+</div>
+
+<header class="site-header">
+    <a href="index.html" class="logo" aria-label="Zur Startseite">
+        <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+    </a>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
+        <span class="sr-only">Menü</span>
+        <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+    </button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Hauptnavigation">
+        <ul>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="fuhrpark.html">Fuhrpark</a></li>
+            <li><a href="preise.html">Preise</a></li>
+            <li><a href="ueber_uns.html">Über uns</a></li>
+            <li><a href="index.html#kontakt">Kontakt</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="transporter-hero" class="transporter-hero-section">
+    <div>
+        <p class="eyebrow">Fuhrpark</p>
+        <h1 style="font-size:clamp(1.9rem,3.2vw,3rem);margin:0 0 16px;text-align:left;">Transporter mieten</h1>
+        <p style="color:#666;line-height:1.75;margin:0 0 20px;">Ob Umzug, Handwerksbetrieb oder Materialtransport: Unser Fuhrpark bietet die passende Größe für jedes Vorhaben. Alle Fahrzeuge der Gruppen 1 bis 4 sind mit der Führerscheinklasse B fahrbar.</p>
+        <ul class="hero-bullets">
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                6 Fahrzeuggruppen, vom Vito bis zum 12-Tonner
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Führerschein Klasse B reicht für Gruppen 1 bis 4
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Vollkaskoversicherung mit Selbstbeteiligung inklusive
+            </li>
+        </ul>
+        <a href="#transporter-modelle" class="button" style="margin-top:24px;display:inline-block;">Fahrzeuge vergleichen</a>
+    </div>
+    <div class="transporter-hero-img">
+        <img src="images/Sprinter_Halle.jpeg" alt="Transporter Heinzelmann" style="width:100%;height:100%;object-fit:cover;object-position:72% 58%;display:block;transform:scale(1.4);transform-origin:72% 58%;">
+    </div>
+</section>
+
+<section id="transporter-modelle" style="overflow:hidden;">
+    <div class="section-heading">
+        <p class="eyebrow">Fahrzeugklassen</p>
+        <h2>Sechs Gruppen – für jeden Bedarf das Richtige</h2>
+        <p>Von der kompakten Stadtlieferung bis zum großen Kofferaufbau mit Ladebordwand. Alle Preise inkl. MwSt. und Vollkaskoversicherung mit Selbstbeteiligung.</p>
+    </div>
+
+    <div class="spec-slider-wrapper">
+        <div class="spec-slider" id="spec-slider">
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 1 · Führerschein B</span>
+                    <h3>MB <mark class="spec-highlight">Vito</mark> Kasten / Kombi</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>5 m³ <small class="spec-gg">2 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>1,00 t <small class="spec-gg">max. 2,80 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Ladefläche</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">2,50 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,65 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,22 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Ladebordwand</span><span class="spec-nein">Nein</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">½ Tag / bis 50 km</span><strong>48 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 100 km</span><strong>78 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 300 km</span><strong>108 €</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,22 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=transporter&modell=Gruppe+1+%E2%80%93+MB+Vito+Kasten%2FKombi" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Ideal für kleine Transporte &amp; Lieferungen</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 2 · Führerschein B</span>
+                    <h3>MB <mark class="spec-highlight">Sprinter</mark> Kasten / Kombi</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>10 m³ <small class="spec-gg">4 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>1,15 t <small class="spec-gg">max. 3,50 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Ladefläche</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">3,30 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,80 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,90 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Ladebordwand</span><span class="spec-nein">Nein</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">½ Tag / bis 50 km</span><strong>68 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 100 km</span><strong>98 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 300 km</span><strong>128 €</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=transporter&modell=Gruppe+2+%E2%80%93+MB+Sprinter+Kasten%2FKombi" class="button spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für die meisten Umzüge &amp; Transporte</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 3 · Führerschein B</span>
+                    <h3>MB <mark class="spec-highlight">Sprinter</mark> Kasten / Kombi <mark class="spec-highlight">XL</mark></h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>15 m³ <small class="spec-gg">6 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>1,00 t <small class="spec-gg">max. 3,50 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Ladefläche</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">4,40-4,80 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,80 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,90 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Ladebordwand</span><span class="spec-nein">Nein</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">½ Tag / bis 50 km</span><strong>78 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 100 km</span><strong>118 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 300 km</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,29 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=transporter&modell=Gruppe+3+%E2%80%93+MB+Sprinter+Kasten%2FKombi+XL" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für größere Wohnungen &amp; viel Volumen</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 4 · Führerschein B</span>
+                    <h3>MB <mark class="spec-highlight">Sprinter</mark> <mark class="spec-highlight">Koffer</mark></h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>20 m³ <small class="spec-gg">8 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>0,90 t <small class="spec-gg">max. 3,50 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Ladefläche</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">4,40 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,05 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,05 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span class="spec-nein">Nein</span></li>
+                    <li><span>Ladebordwand</span><span>Ja</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">½ Tag / bis 50 km</span><strong>88 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 100 km</span><strong>128 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 300 km</span><strong>178 €</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,32 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=transporter&modell=Gruppe+4+%E2%80%93+MB+Sprinter+Koffer+mit+Ladebordwand" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für schwere Güter mit Ladebordwand</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 5 · Führerschein C1</span>
+                    <h3>MB <mark class="spec-highlight">Atego</mark> <mark class="spec-highlight">7,5 t</mark> Koffer / Plane</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>36 m³ <small class="spec-gg">15 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>2,30–2,50 t <small class="spec-gg">max. 7,50 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Ladefläche</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">6,10 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,45 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,40 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Ladebordwand</span><span>Ja</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">½ Tag / bis 50 km</span><strong>98 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 100 km</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 300 km</span><strong>228 €</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,42 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=lkw&modell=Gruppe+5+%E2%80%93+MB+Atego+Koffer%2FPlane+(F%C3%BChrerschein+C1)" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für große Umzüge &amp; Gewerbetransporte</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 6 · Führerschein C</span>
+                    <h3>MB <mark class="spec-highlight">Atego</mark> <mark class="spec-highlight">12 t</mark> Koffer / Plane</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>45 m³ <small class="spec-gg">18 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>6,00 t <small class="spec-gg">max. 12,0 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Ladefläche</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">7,00 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,50 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,50 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Ladebordwand</span><span>Ja</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">½ Tag / bis 50 km</span><strong>118 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 100 km</span><strong>178 €</strong></div>
+                    <div><span class="spec-price-label">1 Tag / bis 300 km</span><strong>268 €</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,48 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=lkw&modell=Gruppe+6+%E2%80%93+MB+Atego+Koffer%2FPlane+(F%C3%BChrerschein+C)" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für sehr große Mengen &amp; schwere Fracht</p>
+            </div>
+
+        </div>
+
+        <div class="spec-slider-nav">
+            <button class="spec-slider-btn" id="spec-prev" aria-label="Vorherige Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="spec-slider-dots" id="spec-dots"></div>
+            <button class="spec-slider-btn" id="spec-next" aria-label="Nächste Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);margin-top:16px;">Alle Preise inkl. 19 % MwSt. · Preise gelten ab Mietstation Herbertingen · gültig ab 01.01.2025</p>
+
+    <div class="spec-pdf-links">
+        <a href="preislisten/preisliste-lkw-2025.pdf" target="_blank" class="spec-pdf-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v1.5H8V13zm0 3h5v1.5H8V16zm0-6h2v1.5H8V10z"/></svg>
+            Preisliste Transporter &amp; LKW (PDF)
+        </a>
+        <a href="preislisten/preisliste-umzugszubehoer.pdf" target="_blank" class="spec-pdf-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v1.5H8V13zm0 3h5v1.5H8V16zm0-6h2v1.5H8V10z"/></svg>
+            Preisliste Umzugszubehör (PDF)
+        </a>
+    </div>
+</section>
+
+<section id="transporter-zubehoer" class="anforderungen-section">
+    <div class="anforderungen-layout zubehoer-layout">
+        <div class="anforderungen-intro">
+            <p class="eyebrow">Umzugszubehör</p>
+            <h2>Damit nichts verrutscht</h2>
+            <p>Schutz- und Sicherungszubehör ist bei jedem Transporter inklusive. Brauchen Sie mehr, buchen Sie einfach dazu.</p>
+            <a href="preislisten/preisliste-umzugszubehoer.pdf" target="_blank" class="spec-pdf-link" style="margin-top:20px;">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v1.5H8V13zm0 3h5v1.5H8V16zm0-6h2v1.5H8V10z"/></svg>
+                Preisliste Umzugszubehör (PDF)
+            </a>
+        </div>
+        <ul class="anforderungen-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <div><strong>5 Packdecken inklusive</strong><span>Schützen Möbel und Geräte zuverlässig vor Kratzern und Stößen während des Transports.</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <div><strong>5 Zurrgurte inklusive</strong><span>Halten das Ladegut sicher an Ort und Stelle. Die Zurrösen im Laderaum ermöglichen eine Befestigung in alle Richtungen.</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <div><strong>Weiteres Zubehör auf Anfrage</strong><span>Sackkarre, Möbelroller, zusätzliche Packdecken oder Zurrgurte: Einfach bei der Buchung angeben, wir bereiten alles vor.</span></div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section id="transporter-tipps">
+    <div class="section-heading">
+        <p class="eyebrow">Gut zu wissen</p>
+        <h2>Unsere Tipps für eine reibungslose Fahrt</h2>
+        <p>Damit Ihr Transport sicher und stressfrei verläuft. Aus langjähriger Erfahrung weitergegeben.</p>
+    </div>
+    <div class="anforderungen-list" style="max-width:700px;margin:0 auto;">
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Hecktür: erst links, dann rechts schließen</strong><span>Bei Mercedes-Transportern mit Flügeltüren schließen Sie bitte zuerst die linke Tür und rasten dann die rechte ein. Andersherum schließt die Tür nicht richtig und das Schloss verschleißt frühzeitig.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Beim Abbiegen großzügig ausholen</strong><span>Lange Transporter haben einen deutlich größeren Wendekreis als ein PKW. Setzen Sie den Bogen beim Abbiegen früh genug an, damit Sie nicht mit Bordsteinen oder Hindernissen am Straßenrand in Berührung kommen.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Navigation per Sprachbefehl</strong><span>Neuere Sprinter-Modelle sind mit dem Mercedes-Bediensystem MBUX ausgestattet. Sie können Ihr Ziel einfach per Sprachbefehl mit „Hey Mercedes, navigiere nach ..." eingeben oder es direkt über den Touchscreen im Armaturenbrett auswählen.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Ladegut immer sichern</strong><span>Im Laderaum befinden sich Zurrösen an den Seiten und am Boden. Sichern Sie Ihr Ladegut bitte auch bei kurzen Fahrten, denn bei einer Vollbremsung kann ungesichertes Gut zur ernsten Gefahr werden.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Vollgetankt zurückgeben</strong><span>Alle Fahrzeuge werden vollgetankt übergeben und sind bitte auch vollgetankt zurückzubringen. Bewahren Sie den Tankbeleg auf und legen Sie ihn bei der Rückgabe vor. Außerhalb der Öffnungszeiten genügt es, den Beleg im Fahrzeug zu hinterlassen.</span></div>
+        </li>
+    </div>
+</section>
+
+
+<section id="transporter-anfrage" class="inquiry-section" style="text-align:center;">
+    <div class="section-heading">
+        <p class="eyebrow">Jetzt anfragen</p>
+        <h2 style="color:#ffffff;">Den passenden Transporter sichern</h2>
+        <p style="color:rgba(255,255,255,0.75);">Teilen Sie uns Ihren Wunschtermin, die geplante Strecke und den benötigten Laderaum mit. Wir melden uns schnell zurück.</p>
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="index.html#kontakt" class="button">Jetzt anfragen</a>
+        <a href="fuhrpark.html" class="button button-secondary" style="color:#ffffff;border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.08);">Zurück zum Fuhrpark</a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
+        </div>
+        <div class="footer-links">
+            <strong>Navigation</strong>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="fuhrpark.html">Fuhrpark</a></li>
+                <li><a href="preise.html">Preise</a></li>
+                <li><a href="ueber_uns.html">Über uns</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <strong>Kontakt</strong>
+            <ul>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>Saumstraße 2–4, 88518 Herbertingen</li>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg><a href="tel:+49758692130">07586 / 9213-0</a></li>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v11a2 2 0 002 2h3l4 4 4-4h3a2 2 0 002-2V5a2 2 0 00-2-2zM7 8h10v2H7V8zm0 4h7v2H7v-2z"/></svg><a href="index.html#kontakt">Anfrage senden</a></li>
+            </ul>
+        </div>
+        <div class="footer-hours">
+            <strong>Öffnungszeiten</strong>
+            <ul>
+                <li><span>Mo–Fr</span><span>7:30–12:00 Uhr</span></li>
+                <li><span></span><span>13:00–18:00 Uhr</span></li>
+                <li><span>Sa</span><span>9:00–13:00 Uhr</span></li>
+                <li><span>So</span><span>Geschlossen</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Autovermietung Heinzelmann · Alle Rechte vorbehalten</p>
+        <p>Zentral in Herbertingen</p>
+    </div>
+</footer>
+</body>
+</html>

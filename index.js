@@ -197,11 +197,66 @@ function setupTestimonialsSlider() {
   goTo(0);
 }
 
+function prefillFormFromUrl() {
+    const hash = window.location.hash; // z.B. "#kontakt?fahrzeug=transporter&modell=..."
+    if (!hash.includes('?')) return;
+
+    const queryString = hash.split('?')[1];
+    const params = new URLSearchParams(queryString);
+
+    const fahrzeug = params.get('fahrzeug');
+    const modell = params.get('modell');
+
+    const fieldsToHighlight = [];
+
+    if (fahrzeug) {
+        const sel = document.getElementById('fahrzeug');
+        if (sel) {
+            sel.value = fahrzeug;
+            const display = sel.nextElementSibling;
+            const textEl = display && display.querySelector('.custom-select-text');
+            if (textEl) {
+                const selected = sel.options[sel.selectedIndex];
+                if (selected && selected.value) {
+                    textEl.textContent = selected.text;
+                    display.classList.add('has-value');
+                }
+            }
+            fieldsToHighlight.push(sel.closest('.field'));
+        }
+    }
+
+    if (modell) {
+        const textarea = document.getElementById('nachricht');
+        if (textarea) {
+            textarea.value = `Ich interessiere mich für: ${modell}`;
+            fieldsToHighlight.push(textarea.closest('.field'));
+        }
+    }
+
+    // Scrollen, dann Felder kurz aufleuchten lassen
+    const kontaktSection = document.getElementById('kontakt');
+    if (kontaktSection) {
+        setTimeout(() => {
+            kontaktSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Nach dem Scrollen aufleuchten
+            setTimeout(() => {
+                fieldsToHighlight.forEach(field => {
+                    if (!field) return;
+                    field.classList.add('field-prefilled');
+                    setTimeout(() => field.classList.remove('field-prefilled'), 2200);
+                });
+            }, 700);
+        }, 100);
+    }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   setupFaqAccordion();
   setupMobileNavToggle();
   setupContactForm();
   setupTestimonialsSlider();
+  prefillFormFromUrl();
 });
 
 // Utility Bar nach dem Header
@@ -251,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!intervals || intervals.length === 0) {
     if (textEl) textEl.textContent = 'Heute: geschlossen';
     statusEl.classList.add('closed');
-    dotEl && dotEl.style.setProperty('background', '#ef4444');
+    dotEl && dotEl.style.setProperty('background', '#e60000');
     return;
   }
 
@@ -308,23 +363,22 @@ document.addEventListener('DOMContentLoaded', function () {
     dotEl && dotEl.style.setProperty('background', '#22c55e');
   } else {
     statusEl.classList.add('closed');
-    dotEl && dotEl.style.setProperty('background', '#ef4444');
+    dotEl && dotEl.style.setProperty('background', '#e60000');
 
     // Toast-Banner anzeigen
     let bannerMsg;
     if (!intervals || intervals.length === 0) {
-      bannerMsg = 'Heute haben wir geschlossen. Sie erreichen uns telefonisch Mo–Fr 7:30–12:00 & 13:00–18:00 Uhr sowie Sa 9:00–13:00 Uhr.';
+      bannerMsg = 'Heute sind wir leider nicht geöffnet. Sie erreichen uns telefonisch Mo. bis Fr. von 7:30 bis 12:00 Uhr und 13:00 bis 18:00 Uhr sowie Sa. von 9:00 bis 13:00 Uhr.';
     } else if (middayPauseNow) {
       bannerMsg = null; // Mittagspause wird bereits in der Utility Bar angezeigt
     } else {
-      // Vor oder nach den Öffnungszeiten
       const firstStart = prettyTime(normIntervals[0][0]);
       const lastEnd = prettyTime(normIntervals[normIntervals.length - 1][1]);
       const nowBeforeOpen = now < parseTimeToDate(normIntervals[0][0]);
       if (nowBeforeOpen) {
-        bannerMsg = `Wir öffnen heute um ${firstStart}. Für dringende Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
+        bannerMsg = `Heute öffnen wir um ${firstStart}. Für dringende Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
       } else {
-        bannerMsg = `Wir sind heute bis ${lastEnd} geöffnet gewesen. Morgen sind wir wieder für Sie da. Für Notfälle: 07586 / 9213-0.`;
+        bannerMsg = `Wir hatten heute bis ${lastEnd} geöffnet. Ab morgen sind wir wieder für Sie da. Bei dringenden Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
       }
     }
     if (bannerMsg) showClosedBanner(bannerMsg);
@@ -355,9 +409,11 @@ function showClosedBanner(message) {
   banner.id = 'closed-banner';
   banner.innerHTML = `
     <div class="closed-banner-inner">
-      <span class="closed-banner-icon">🕐</span>
+      <span class="closed-banner-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+      </span>
       <div class="closed-banner-text">
-        <strong>Aktuell außerhalb der Geschäftszeiten</strong>
+        <strong>Aktuell außerhalb der Öffnungszeiten</strong>
         <span>${message}</span>
       </div>
       <button class="closed-banner-close" aria-label="Hinweis schließen">✕</button>

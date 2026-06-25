@@ -44,6 +44,7 @@
 
 html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -357,7 +358,6 @@ nav ul li a:hover {
 .utility-item.hours.closed .utility-dot::after {
     background: var(--color-primary);
     animation: dot-ring 3s ease-out infinite;
-    display: block;
 }
 
 .utility-bar::-webkit-scrollbar {
@@ -699,9 +699,31 @@ footer {
     border-left: 4px solid #e60000;
 }
 .closed-banner-icon {
-    font-size: 1.4rem;
     flex-shrink: 0;
-    margin-top: 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+.closed-banner-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    display: inline-block;
+    position: relative;
+    animation: dot-pulse 3s ease-out infinite;
+}
+
+.closed-banner-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--color-primary);
+    animation: dot-ring 3s ease-out infinite;
 }
 .closed-banner-text {
     flex: 1;
@@ -810,6 +832,12 @@ form:not(.inquiry-form) button:hover {
         "cta   list";
     gap: 48px;
     align-items: start;
+}
+
+.zubehoer-layout {
+    grid-template-areas: "intro list";
+    grid-template-rows: auto;
+    align-items: center;
 }
 
 .anforderungen-intro { grid-area: intro; }
@@ -1240,12 +1268,12 @@ form:not(.inquiry-form) button:hover {
     font-style: italic;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--color-primary);
+    color: var(--color-muted);
     transition: color var(--transition);
 }
 
 .preisliste-card a:hover .overlay span {
-    color: #8a0000;
+    color: var(--color-primary);
 }
 
 /* Subpage Hero Split Layout */
@@ -1398,6 +1426,8 @@ form:not(.inquiry-form) button:hover {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    align-items: flex-end;
+    text-align: right;
 }
 
 .spec-price-label {
@@ -2261,6 +2291,7 @@ form:not(.inquiry-form) button:hover {
     color: var(--color-dark);
     background-color: #ffffff;
     border-color: var(--color-border);
+    border-radius: 16px;
     box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
 }
 
@@ -2710,11 +2741,6 @@ form:not(.inquiry-form) button:hover {
 
 /* 9. Hover & Motion Preferences */
 @media (hover: hover) and (pointer: fine) {
-    section:hover {
-        transform: scale(1.01);
-        box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-    }
-
     .rental-card:hover,
     .inquiry-contact-options a:hover {
         transform: translateY(-3px);
@@ -2740,10 +2766,6 @@ form:not(.inquiry-form) button:hover {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-    }
-
-    section:hover {
-        transform: none !important;
     }
 
     .testimonial:hover {
@@ -2799,5 +2821,423 @@ form:not(.inquiry-form) button:hover {
         gap: 4px;
         text-align: center;
         padding: 16px 20px;
+    }
+}
+
+.preise-intro-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: start;
+    margin-top: 32px;
+}
+
+.preise-col-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin: 0 0 16px;
+}
+
+.preise-col-label--primary {
+    color: var(--color-primary);
+    font-size: 0.78rem;
+}
+
+.preise-pdf-col {
+    border-left: 1px solid var(--color-border);
+    padding-left: 40px;
+}
+
+.preise-pdf-slider-wrap {
+    overflow: hidden;
+    width: 100%;
+}
+
+.preise-pdf-slider {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preise-pdf-slider .preisliste-card {
+    flex: 0 0 30%;
+    width: 30%;
+}
+
+.preise-pdf-slider .listenvorschau {
+    width: 100%;
+    aspect-ratio: 1 / 1.414;
+    height: auto;
+    object-fit: contain;
+    object-position: top;
+    background: #fff;
+}
+
+.preise-pdf-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    justify-content: center;
+}
+
+.preise-nav-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.preise-nav-desc {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 20px;
+}
+
+.preise-nav-headline {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-dark);
+    line-height: 1.2;
+    margin: 0 0 20px;
+}
+
+.preise-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.preise-bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--color-dark);
+    line-height: 1.5;
+}
+
+.preise-bullets li svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--color-primary);
+}
+
+.preise-section-links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.preise-section-links-row .button {
+    font-size: 0.92rem;
+    padding: 12px 22px;
+}
+
+@media (max-width: 700px) {
+    .preise-intro-layout {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .preise-nav-col {
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 32px;
+        margin-bottom: 32px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .preise-nav-col .preise-bullets {
+        text-align: left;
+    }
+    .preise-pdf-col {
+        border-left: none;
+        padding-left: 0;
+    }
+}
+
+.hero-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hero-bullets li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--color-dark);
+}
+
+.hero-bullets li svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--color-primary);
+}
+
+/* Prefill highlight animation */
+@keyframes prefill-glow {
+    0%   { background-color: transparent; border-color: var(--color-border); }
+    20%  { background-color: rgba(230, 0, 0, 0.07); border-color: var(--color-primary); }
+    80%  { background-color: rgba(230, 0, 0, 0.07); border-color: var(--color-primary); }
+    100% { background-color: transparent; border-color: var(--color-border); }
+}
+
+.field-prefilled .custom-select-display,
+.field-prefilled textarea {
+    animation: prefill-glow 2.2s ease forwards;
+}
+
+/* Gesamtgewicht als gedimmte Zusatzinfo */
+.spec-gg {
+    display: block;
+    font-size: 0.78em;
+    color: var(--color-muted);
+    font-weight: 400;
+}
+
+/* Ladefläche drei Zeilen */
+.spec-list-ladeflaeche {
+    align-items: start !important;
+}
+
+.spec-ladeflaeche-table {
+    display: table;
+    border-collapse: collapse;
+    line-height: 1.4;
+}
+
+.spec-ladeflaeche-row {
+    display: table-row;
+}
+
+.spec-dim-label {
+    display: table-cell;
+    color: var(--color-muted);
+    font-size: 0.88rem;
+    padding: 0 10px 0 0;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.spec-dim-value {
+    display: table-cell;
+    color: var(--color-dark);
+    font-size: 0.88rem;
+    white-space: nowrap;
+    vertical-align: top;
+    text-align: right;
+}
+
+/* Spec Card Button */
+.spec-card-btn {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    border-radius: 10px;
+}
+
+.button-secondary.spec-card-btn {
+    color: var(--color-dark);
+    background-color: #ffffff;
+    border-color: var(--color-border);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+mark.spec-highlight {
+    background: none;
+    color: var(--color-primary);
+}
+
+.spec-card-hint {
+    margin: 8px 0 0;
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+.spec-pdf-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+}
+
+.spec-pdf-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2px;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+.spec-pdf-link svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.spec-pdf-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.spec-list li span.spec-nein {
+    color: var(--color-muted);
+    font-weight: 400;
+}
+
+.button-secondary.spec-card-btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-dark);
+    background-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
+/* Spec Slider */
+.spec-slider-wrapper {
+    position: relative;
+    /* overflow visible so the peeking card isn't clipped here;
+       the parent section clips at its border-radius edge */
+    overflow: visible;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.spec-slider {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.spec-slider .subpage-spec-card {
+    /* 3 cards + 32px peek of the 4th card on the right */
+    flex: 0 0 calc((100% - 48px - 32px) / 3);
+    min-width: 0;
+}
+
+.spec-slider-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.spec-slider-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: var(--color-dark);
+}
+
+.spec-slider-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.spec-slider-btn:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.spec-slider-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.spec-slider-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.spec-slider-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-border);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: var(--transition);
+}
+
+.spec-slider-dot.active {
+    background: var(--color-primary);
+    width: 24px;
+    border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+    .spec-slider .subpage-spec-card {
+        /* 2 cards + 48px peek of the 3rd */
+        flex: 0 0 calc((100% - 24px - 48px) / 2);
+    }
+}
+
+@media (max-width: 600px) {
+    .spec-slider .subpage-spec-card {
+        /* 1 card + 40px peek of the 2nd */
+        flex: 0 0 calc(100% - 40px);
+    }
+}
+
+/* Transporter Hero */
+.transporter-hero-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 32px 40px;
+}
+
+.transporter-hero-img {
+    border-radius: 16px;
+    overflow: hidden;
+    height: 360px;
+}
+
+@media (max-width: 700px) {
+    .transporter-hero-section {
+        grid-template-columns: 1fr;
+    }
+
+    .transporter-hero-img {
+        height: 220px;
     }
 }
