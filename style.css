@@ -451,6 +451,10 @@ nav ul li a:hover {
     font-weight: 800;
     letter-spacing: 0.07em;
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .vehicle-body h3 {
@@ -1401,6 +1405,22 @@ form:not(.inquiry-form) button:hover {
     padding-bottom: 0;
 }
 
+.spec-list li.spec-list-models {
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spec-list li.spec-list-models span:first-child {
+    min-width: unset;
+}
+
+.spec-list li.spec-list-models span:last-child {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    text-align: left;
+}
+
 .spec-list li span:first-child {
     color: var(--color-muted);
     flex-shrink: 0;
@@ -1938,6 +1958,25 @@ form:not(.inquiry-form) button:hover {
     max-width: 900px;
     margin: 0 auto 34px;
     text-align: center;
+}
+
+.preise-eyebrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.preise-eyebrow-row .eyebrow {
+    margin: 0;
+}
+
+.preise-eyebrow-row svg {
+    width: auto;
+    height: 22px;
+    color: var(--color-primary);
+    flex-shrink: 0;
 }
 
 .section-heading .eyebrow {
@@ -3075,6 +3114,31 @@ mark.spec-highlight {
     font-size: 0.78rem;
     color: var(--color-muted);
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spec-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--color-surface-soft);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px 20px;
+    margin: 0 auto 32px;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    line-height: 1.5;
+}
+
+.spec-disclaimer svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--color-primary);
 }
 
 .spec-pdf-links {

@@ -48,12 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const slider = document.getElementById('spec-slider');
+function initSpecSlider(sliderId, prevId, nextId, dotsId) {
+    const slider = document.getElementById(sliderId);
     if (!slider) return;
-    const prevBtn = document.getElementById('spec-prev');
-    const nextBtn = document.getElementById('spec-next');
-    const dotsContainer = document.getElementById('spec-dots');
+    const prevBtn = document.getElementById(prevId);
+    const nextBtn = document.getElementById(nextId);
+    const dotsContainer = document.getElementById(dotsId);
 
     function getVisible() {
         const w = window.innerWidth;
@@ -110,6 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     buildDots();
     goTo(0);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    initSpecSlider('pkw-slider', 'pkw-prev', 'pkw-next', 'pkw-dots');
+    initSpecSlider('spec-slider', 'spec-prev', 'spec-next', 'spec-dots');
+    initSpecSlider('bus-slider', 'bus-prev', 'bus-next', 'bus-dots');
+    initSpecSlider('anhaenger-slider', 'anhaenger-prev', 'anhaenger-next', 'anhaenger-dots');
 });
 </script>
 </head>
@@ -245,10 +252,177 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 </section>
 
+<section id="preise-pkw" style="overflow:hidden;">
+    <div class="section-heading">
+        <div class="preise-eyebrow-row">
+            <p class="eyebrow">PKW</p>
+            <svg viewBox="0 110 329.638 120" fill="currentColor" aria-hidden="true"><g transform="scale(-1,1) translate(-329.638,0)"><path d="M324.873,165.878c0,0-0.823-13.567-2.485-18.543c-1.657-4.971-1.652-4.971,0.828-8.119c2.48-3.144-7.291-0.994-8.953-0.663c-1.657,0.337-0.994,1.491-0.994,1.491c-19.222,0.829-63.303-23.86-98.26-27.34c-34.958-3.475-69.097-0.161-81.69,2.817c-12.593,2.982-54.018,25.352-58.652,26.512c-4.635,1.16-2.651-1.16-2.651-1.16c-23.855,0.989-64.783,21.375-64.783,21.375c-1.657,1.16-2.983,7.953-2.983,7.953l0.829,2.32c-6.794,6.302-4.806,19.558-4.806,19.558l3.325-1.165c1.175,2.154,1.481,6.959,1.481,6.959c-5.629,2.651-1.491,4.972-1.491,4.972s2.49-2.149,12.593,0.999c3.904,1.212,12.599,1.636,21.805,1.704c-1.294-3.268-2.03-6.814-2.03-10.538c0-15.84,12.883-28.723,28.723-28.723c15.834,0,28.723,12.883,28.723,28.723c0,3.438-0.642,6.727-1.755,9.792l147.467-0.248c-1.056-2.994-1.662-6.193-1.662-9.544c0-15.84,12.884-28.723,28.724-28.723c15.834,0,28.723,12.883,28.723,28.723c0,2.946-0.45,5.794-1.279,8.472c14.675-3.392,31.769-5.769,31.769-5.769l3.147-4.143c0,0,2.485-17.729,0-20.547C326.048,170.212,324.873,165.878,324.873,165.878z"/><path d="M64.672,218.42c9.419,0,17.487-5.598,21.205-13.618c1.382-2.988,2.211-6.286,2.211-9.803c0-12.935-10.486-23.42-23.42-23.42c-12.935,0-23.421,10.48-23.421,23.42c0,3.807,0.994,7.354,2.61,10.527C47.729,213.149,55.543,218.42,64.672,218.42z"/><path d="M266.163,218.42c9.311,0,17.284-5.479,21.055-13.349c1.471-3.056,2.361-6.452,2.361-10.072c0-12.935-10.486-23.42-23.421-23.42c-12.936,0-23.421,10.48-23.421,23.42c0,3.402,0.761,6.618,2.066,9.533C248.47,212.704,256.636,218.42,266.163,218.42z"/></g></svg>
+        </div>
+        <h2>Der richtige PKW für jeden Anlass</h2>
+        <p>Vom sparsamen Stadtauto bis zum komfortablen Allrad-SUV. Alle Preise inkl. MwSt. und Vollkaskoversicherung mit Selbstbeteiligung.</p>
+    </div>
+
+    <div class="spec-disclaimer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span>Für längere Mietzeiten und größere Strecken erstellen wir Ihnen gerne ein individuelles Angebot mit Streckenbonus.</span>
+    </div>
+
+    <div class="spec-slider-wrapper">
+        <div class="spec-slider" id="pkw-slider">
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 1 · Kleinwagen</span>
+                    <h3>Dacia Spring Elektro / Renault Twingo / Toyota Aygo</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>4 Personen</span></li>
+                    <li><span>Getriebe</span><span>Schaltgetriebe</span></li>
+                    <li><span>Anhängerkupplung</span><span class="spec-nein">Nein</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel / Elektro</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>Kia Picanto, Toyota Aygo (4-Sitzer)</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>58 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>98 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,19 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+1+%E2%80%93+Kleinwagen" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Ideal für die Stadt und kurze Strecken</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 2 · Kleinwagen</span>
+                    <h3>Dacia Sandero / Renault Clio / Toyota Yaris</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>4–5 Personen</span></li>
+                    <li><span>Getriebe</span><span>Schaltgetriebe / Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span class="spec-nein">Nein</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel / Benzin</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>Smart Forfour Aut. (4-Sitzer), Toyota Aygo Automatik (4-Sitzer)</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>68 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>118 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,19 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+2+%E2%80%93+Kleinwagen" class="button spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Sparsam und wendig für Alltag und Ausflüge</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 3 · Untere Mittelklasse</span>
+                    <h3>VW Golf / VW Caddy / Renault Kangoo</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5 Personen</span></li>
+                    <li><span>Getriebe</span><span>Schaltgetriebe / Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Optional (Caddy: Ja)</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>Dacia Sandero Automatik</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>78 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>138 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,23 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+3+%E2%80%93+Untere+Mittelklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Geräumig und vielseitig für jeden Bedarf</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 4 · Mittelklasse</span>
+                    <h3>MB A 180 d / MB B 200 d Aut. / Seat Arona Aut.</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5 Personen</span></li>
+                    <li><span>Getriebe</span><span>Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Optional (Citan: Ja)</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>MB B 180 d, MB Citan AHK, BMW X1 d Aut. AHK, MB GLA 200 Aut., MB C 220 d Aut.</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>98 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,23 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+4+%E2%80%93+Mittelklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Komfortabel für Geschäfts- und Privatreisen</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 5 · Obere Mittelklasse</span>
+                    <h3>MB C 220 d Kombi / MB Citan 7-Sitzer / Volvo V60 Kombi</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5–9 Personen</span></li>
+                    <li><span>Getriebe</span><span>Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>MB Vito 113 CDI 9-Sitzer-Bus, Renault Trafic / Citroen Jumpy Bus, Volvo XC40 d</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>128 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>198 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+5+%E2%80%93+Obere+Mittelklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für komfortable Reisen und größere Gruppen</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 6 · Oberklasse</span>
+                    <h3>MB E 220 d Aut. / MB GLC 300 Aut. / Volvo XC60 Allrad</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5–9 Personen</span></li>
+                    <li><span>Getriebe</span><span>Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Allradantrieb</span><span>Optional</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>MB GLC 250 d Aut. AHK, MB E 220 d Kombi Aut. AHK, MB Vito 116 CDI 8-Sitzer, MB Sprinter 317 CDI 9-Sitzer-Reisebus</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>248 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+6+%E2%80%93+Oberklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Maximaler Komfort, Allrad und große Kofferräume</p>
+            </div>
+
+        </div>
+        <div class="spec-slider-nav">
+            <button class="spec-slider-btn" id="pkw-prev" aria-label="Vorherige Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="spec-slider-dots" id="pkw-dots"></div>
+            <button class="spec-slider-btn" id="pkw-next" aria-label="Nächste Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+    </div>
+    <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);margin-top:16px;">Alle Preise inkl. 19 % MwSt. · Preise gelten ab Mietstation Herbertingen · gültig ab 01.01.2025</p>
+</section>
+
 <section id="preise-transporter" style="overflow:hidden;">
     <div class="section-heading">
-        <p class="eyebrow">Transporter &amp; LKW</p>
-        <h2>Sechs Gruppen, für jeden Bedarf das Richtige</h2>
+        <div class="preise-eyebrow-row">
+            <p class="eyebrow">Transporter &amp; LKW</p>
+            <svg viewBox="1 3.5 22 16" fill="currentColor" aria-hidden="true"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        </div>
+        <h2>Der richtige Transporter für jedes Vorhaben</h2>
         <p>Von der kompakten Stadtlieferung bis zum großen Kofferaufbau mit Ladebordwand. Alle Preise inkl. MwSt. und Vollkaskoversicherung mit Selbstbeteiligung.</p>
     </div>
 
@@ -401,40 +575,282 @@ document.addEventListener('DOMContentLoaded', function () {
     <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);margin-top:16px;">Alle Preise inkl. 19 % MwSt. · Preise gelten ab Mietstation Herbertingen · gültig ab 01.01.2025</p>
 </section>
 
-<section id="preise-pkw" style="overflow:hidden;">
-    <div class="section-heading">
-        <p class="eyebrow">PKW</p>
-        <h2>Komfortabel und flexibel</h2>
-        <p>Vom Kleinwagen bis zur Reise-Limousine, für Geschäftsreisen, Ausflüge oder als Unfallersatzwagen.</p>
-    </div>
-    <div style="text-align:center;padding:48px 0;color:var(--color-muted);">
-        <p style="font-size:1rem;">Detaillierte Preisübersicht folgt in Kürze.</p>
-        <a href="index.html#kontakt" class="button button-secondary" style="margin-top:20px;display:inline-block;">Jetzt anfragen</a>
-    </div>
-</section>
-
 <section id="preise-9sitzer" style="overflow:hidden;">
     <div class="section-heading">
-        <p class="eyebrow">Busse &amp; 9-Sitzer</p>
-        <h2>Platz für die ganze Gruppe</h2>
-        <p>Ideal für Vereinsausflüge, Familienreisen und Gruppenfahrten.</p>
+        <div class="preise-eyebrow-row">
+            <p class="eyebrow">Busse &amp; 9-Sitzer</p>
+            <svg viewBox="100 360 800 290" fill="currentColor" aria-hidden="true"><g transform="scale(-1,1) translate(-1000,0)"><path d="M847.079,383.445v-9.65c0-9.97-7.58-18.3-17.5-19.25l-18.82-1.8c-17.57-1.68-35.24-2.18-52.88-1.49l-287.08,11.23c-20.52,0.8-40.39,7.4-57.33,19.03l-81.38,55.87c-6.4,4.4-13.58,7.54-21.16,9.26l-75.71,17.15c-17.93,4.06-33.08,15.95-41.3,32.38l-15.52,31.03l-4.14,1.73c-8.84,3.68-15.76,10.86-19.13,19.82c-2.34,6.24-2.83,13.02-1.42,19.53l4.16,19.2c1.48,6.84,7.53,11.72,14.53,11.72h61.47c5.28,28.36,30.15,49.84,60.05,49.84s54.77-21.48,60.05-49.84h322.565c5.28,28.36,30.15,49.84,60.05,49.84s54.77-21.48,60.05-49.84h39.695c5.94,0,10.75-4.81,10.75-10.75v-22.41c0-4.75-3.07-8.76-7.34-10.19l4.37-65.89c1.95-29.54-2.98-59.14-14.4-86.45l-0.34-0.8C839.389,401.865,847.079,393.495,847.079,383.445z M513.169,417.165c0,17.58-4.86,34.81-14.03,49.8h-0.01c-3.08,5.04-8.56,8.11-14.47,8.11h-167.75c-1.33,0-2.06-1.04-2.06-2.07c0-0.87,0.51-1.73,1.6-1.98c10.71-2.43,20.73-6.81,29.79-13.02l81.39-55.88c13.05-8.97,28.32-14.04,44.15-14.66l23.76-0.93c9.62-0.37,17.63,7.33,17.63,16.96V417.165z M668.069,400.295l-8.2,64.11c-0.78,6.1-5.97,10.67-12.12,10.67h-82.57c-4.63,0-9.02-1.41-12.68-3.91c-3.66-2.49-6.58-6.06-8.27-10.36c-4.23-10.75-6.39-22.19-6.39-33.73v-18.04c0-12.43,10.07-22.51,22.51-22.51h95.6C663.319,386.525,669.009,392.995,668.069,400.295z M809.169,452.565c0,12.44-10.08,22.51-22.51,22.51h-95.6c-7.37,0-13.06-6.46-12.13-13.77l8.21-64.11c0.78-6.1,5.97-10.67,12.12-10.67h82.57c4.62,0,9.02,1.42,12.68,3.91c3.66,2.49,6.58,6.06,8.27,10.37c4.22,10.74,6.39,22.18,6.39,33.72V452.565z"/></g></svg>
+        </div>
+        <h2>Der richtige Bus für jede Gruppe</h2>
+        <p>Vom kompakten Stadtbus bis zum geräumigen Reisebus XL. Alle Preise inkl. MwSt. und Vollkaskoversicherung mit Selbstbeteiligung.</p>
     </div>
-    <div style="text-align:center;padding:48px 0;color:var(--color-muted);">
-        <p style="font-size:1rem;">Detaillierte Preisübersicht folgt in Kürze.</p>
-        <a href="index.html#kontakt" class="button button-secondary" style="margin-top:20px;display:inline-block;">Jetzt anfragen</a>
+
+    <div class="spec-disclaimer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span>Bei längeren Reisen und Urlaubsfahrten erstellen wir Ihnen gerne ein individuelles Mietpreisangebot, das pro Tag günstiger ausfallen kann.</span>
     </div>
+
+    <div class="spec-slider-wrapper">
+        <div class="spec-slider" id="bus-slider">
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 1 · Führerschein B</span>
+                    <h3>MB Citan / <mark class="spec-highlight">Vito</mark> / Trafic 7–9 Sitzer</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>7–9 Personen</span></li>
+                    <li><span>Stauraumtiefe</span><span>ca. 0,50-0,80 m</span></li>
+                    <li class="spec-list-ladeflaeche"><span>Außenmaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">5,24 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,34 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,93 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Navigation</span><span>Ja</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>128 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>198 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,19 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=bus&modell=Gruppe+1+%E2%80%93+7-9+Sitzer" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Ideal für kleinere Gruppen &amp; Tagesausflüge</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 2 · Führerschein B</span>
+                    <h3>MB <mark class="spec-highlight">Sprinter</mark> 9-Sitzer Bus</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>9 Personen</span></li>
+                    <li><span>Stauraumtiefe</span><span>1,70 m <small class="spec-gg">Reisebus: 0,85 m</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Außenmaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">5,91 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,43 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,35 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Navigation</span><span>Ja</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>248 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,23 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=bus&modell=Gruppe+2+%E2%80%93+MB+Sprinter+9-Sitzer" class="button spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für Gruppen bis 9 Personen mit viel Gepäck</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 3 · Führerschein B</span>
+                    <h3>MB <mark class="spec-highlight">Sprinter</mark> 9-Sitzer Bus <mark class="spec-highlight">XL</mark></h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>9 Personen</span></li>
+                    <li><span>Stauraumtiefe</span><span>2,40-2,90 m <small class="spec-gg">Reisebus: 1,70 m</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Außenmaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">6,94 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,43 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,65 m</span></div></div></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Navigation</span><span>Ja</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>248 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=bus&modell=Gruppe+3+%E2%80%93+MB+Sprinter+9-Sitzer+XL" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Optimal für Radsportler, Skifahrer &amp; Bands</p>
+            </div>
+
+        </div>
+
+        <div class="spec-slider-nav">
+            <button class="spec-slider-btn" id="bus-prev" aria-label="Vorherige Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="spec-slider-dots" id="bus-dots"></div>
+            <button class="spec-slider-btn" id="bus-next" aria-label="Nächste Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);margin-top:16px;">Alle Preise inkl. 19 % MwSt. · Preise gelten ab Mietstation Herbertingen · gültig ab 15.04.2025</p>
+
 </section>
 
 <section id="preise-anhaenger" style="overflow:hidden;">
     <div class="section-heading">
-        <p class="eyebrow">Anhänger</p>
+        <div class="preise-eyebrow-row">
+            <p class="eyebrow">Anhänger</p>
+            <svg viewBox="-58 50 320 145" fill="currentColor" aria-hidden="true"><path d="M15.798,150.626h-3.595v-14.264h3.605L15.798,150.626L15.798,150.626z M71.791,54.077h130.949v20.85h-30.747v17.039h30.747v74.136h-17.967l0.117-2.198c0-20.4-16.502-36.873-36.863-36.873s-36.863,16.482-36.863,36.873l0.127,2.198H94.683v-15.476H71.801L71.791,54.077L71.791,54.077z M125.635,92.053h35.495v-17h-35.495C125.635,75.053,125.635,92.053,125.635,92.053z M80.643,91.663h35.505V74.633H80.643V91.663z M175.541,163.913c0,15.202-12.32,27.493-27.513,27.493c-15.212,0-27.523-12.301-27.523-27.493c0-15.222,12.32-27.542,27.523-27.542C163.211,136.371,175.541,148.711,175.541,163.913z M157.866,163.913c0-5.462-4.426-9.887-9.868-9.887c-5.422,0-9.848,4.426-9.848,9.887c0,5.413,4.426,9.848,9.848,9.848C153.44,173.761,157.866,169.326,157.866,163.913z M26.282,136.371v-4.27H0v4.27h12.203h3.605H26.282z M15.798,158.373v-7.748h-3.595v7.748H15.798z M71.01,30.716v18.612h132.532V30.716C203.542,30.716,143.582-11.09,71.01,30.716z M71.791,150.626H15.798v7.748h-3.595v-7.748H0v15.486h94.663v-0.01H71.791V150.626z"/></svg>
+        </div>
         <h2>Mehr Laderaum, wenn es darauf ankommt</h2>
-        <p>Offene und geschlossene Anhänger in verschiedenen Größen, auch mit Rampe oder Kofferaufbau.</p>
+        <p>Offene und geschlossene Anhänger in verschiedenen Größen, auch mit Rampe oder Kofferaufbau. Alle Preise inkl. MwSt.</p>
     </div>
-    <div style="text-align:center;padding:48px 0;color:var(--color-muted);">
-        <p style="font-size:1rem;">Detaillierte Preisübersicht folgt in Kürze.</p>
-        <a href="index.html#kontakt" class="button button-secondary" style="margin-top:20px;display:inline-block;">Jetzt anfragen</a>
+
+    <div class="spec-disclaimer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span>Tagestarife gelten bei Ausnutzung der vollen 24 Stunden und sind nur gültig bei Anmietung morgens oder abends.</span>
     </div>
+
+    <div class="spec-slider-wrapper">
+        <div class="spec-slider" id="anhaenger-slider">
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Planenanhänger EA</span>
+                    <h3>Klein</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>5 m³ <small class="spec-gg">2 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>0,58 t <small class="spec-gg">0,75 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">2,60 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,35 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,35 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>29 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>7 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Planenhaenger+EA+Klein" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Ideal für kleine Transporte und Einkäufe</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Planen- & Kofferanhänger EA</span>
+                    <h3>Mittel</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>10 m³ <small class="spec-gg">4 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>1,00 t <small class="spec-gg">1,30 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">3,50 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,50 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,80 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>39 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>9 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Planenhaenger+EA+Mittel" class="button spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für Umzüge und mittlere Transporte</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Kofferanhänger EA</span>
+                    <h3>Groß</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>8,5 m³ <small class="spec-gg">3 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>1,35 t <small class="spec-gg">2,00 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">3,04 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,52 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">1,81 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>49 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>12 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Kofferhaenger+EA" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Witterungsgeschützt transportieren</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Planenanhänger TD</span>
+                    <h3>Extra Groß</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>20 m³ <small class="spec-gg">8 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>1,70 t <small class="spec-gg">2,60 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">4,20 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,00 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,00 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>59 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>15 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Planenhaenger+TD+Gross" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für große Mengen und Umzüge</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">LKW-Koffer- & Planenanhänger TD</span>
+                    <h3>LKW</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ladevolumen</span><span>36 m³ <small class="spec-gg">15 Europaletten</small></span></li>
+                    <li><span>Zuladung</span><span>6,00 t <small class="spec-gg">10,00 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">6,10 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,45 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Höhe</span><span class="spec-dim-value">2,40 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>99 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=LKW-Anhaenger+TD" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für gewerbliche Großtransporte</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Dreiseitenkipper TD</span>
+                    <h3>Kipper</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Ausführung</span><span>Hydraulisch, mit/ohne Gitteraufsatz</span></li>
+                    <li><span>Zuladung</span><span>1,80 t <small class="spec-gg">2,50 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">3,33 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,71 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>59 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>15 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Dreiseitenkipper+TD" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für Schüttgut, Erde und Bauschutt</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Pferdeanhänger TD</span>
+                    <h3>Pferdeanhänger</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Kapazität</span><span>2 Pferde</span></li>
+                    <li><span>Zuladung</span><span>1,00 t <small class="spec-gg">2,00 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Maße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">3,20 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">1,80 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>59 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>15 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Pferdehaenger+TD" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Sicherer Transport für 2 Pferde</p>
+            </div>
+
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Fahrzeugtransportanhänger</span>
+                    <h3>Fahrzeugtransporter</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Geeignet für</span><span>PKW, Motorräder, Quad</span></li>
+                    <li><span>Zuladung</span><span>2,40 t <small class="spec-gg">3,00 t gesamt</small></span></li>
+                    <li class="spec-list-ladeflaeche"><span>Lademaße</span><div class="spec-ladeflaeche-table"><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Länge</span><span class="spec-dim-value">4,75 m</span></div><div class="spec-ladeflaeche-row"><span class="spec-dim-label">Breite</span><span class="spec-dim-value">2,00 m</span></div></div></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">Tagestarif (24 Std)</span><strong>59 €</strong></div>
+                    <div><span class="spec-price-label">Stundentarif (mind. 2 Std)</span><strong>15 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=anhaenger&modell=Fahrzeugtransportanhaenger" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für PKW, Motorräder und Quads</p>
+            </div>
+
+        </div>
+        <div class="spec-slider-nav">
+            <button class="spec-slider-btn" id="anhaenger-prev" aria-label="Vorherige Anhänger">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="spec-slider-dots" id="anhaenger-dots"></div>
+            <button class="spec-slider-btn" id="anhaenger-next" aria-label="Nächste Anhänger">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+    </div>
+    <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);margin-top:16px;">Alle Preise inkl. 19 % MwSt. · Preise gelten ab Mietstation Herbertingen · gültig ab 01.01.2025</p>
+
 </section>
 
 <section id="preise-anfrage" class="inquiry-section" style="text-align:center;">

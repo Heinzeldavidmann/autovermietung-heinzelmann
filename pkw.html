@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKW mieten – Autovermietung Heinzelmann</title>
+    <link rel="stylesheet" href="style.css?v=3">
+    <script src="index.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const slider = document.getElementById('spec-slider');
+    const prevBtn = document.getElementById('spec-prev');
+    const nextBtn = document.getElementById('spec-next');
+    const dotsContainer = document.getElementById('spec-dots');
+
+    function getVisible() {
+        const w = window.innerWidth;
+        if (w <= 600) return 1;
+        if (w <= 900) return 2;
+        return 3;
+    }
+
+    const total = slider.children.length;
+    let current = 0;
+
+    function maxIndex() { return total - getVisible(); }
+
+    function buildDots() {
+        dotsContainer.innerHTML = '';
+        const count = maxIndex() + 1;
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'spec-slider-dot' + (i === current ? ' active' : '');
+            dot.setAttribute('aria-label', 'Gruppe ' + (i + 1));
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function goTo(index) {
+        current = Math.max(0, Math.min(index, maxIndex()));
+        const cardWidth = slider.children[0].offsetWidth + 24;
+        slider.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current >= maxIndex();
+        dotsContainer.querySelectorAll('.spec-slider-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === current);
+        });
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+        current = Math.min(current, maxIndex());
+        buildDots();
+        goTo(current);
+    });
+
+    buildDots();
+    goTo(0);
+});
+</script>
+</head>
+
+<body>
+<div class="utility-bar" role="banner" aria-label="Schnellzugriff">
+    <span class="utility-item hours" id="open-status" aria-live="polite">
+        <span class="utility-dot" aria-hidden="true"></span>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+        <span class="hours-text">Heute: —</span>
+    </span>
+    <a class="utility-item tel" href="tel:+49758692130" aria-label="Anrufen">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+        <span class="utility-text">07586&nbsp;/&nbsp;9213-0</span>
+    </a>
+    <a class="utility-item contact" href="index.html#kontakt" aria-label="Kontakt per E-Mail">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm-1.4 3L12 12.5 5.4 7zM4 18V8.2l7.4 5.7a1 1 0 001.2 0L20 8.2V18z"/></svg>
+        <span class="utility-text">E-Mail</span>
+    </a>
+    <a class="utility-item location" href="index.html#kontakt" aria-label="Anfahrt & Standort">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+        <span class="utility-text">Herbertingen</span>
+    </a>
+</div>
+
+<header class="site-header">
+    <a href="index.html" class="logo" aria-label="Zur Startseite">
+        <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+    </a>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
+        <span class="sr-only">Menü</span>
+        <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+    </button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Hauptnavigation">
+        <ul>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="fuhrpark.html">Fuhrpark</a></li>
+            <li><a href="preise.html">Preise</a></li>
+            <li><a href="ueber_uns.html">Über uns</a></li>
+            <li><a href="index.html#kontakt">Kontakt</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="pkw-hero" class="transporter-hero-section">
+    <div>
+        <p class="eyebrow">Fuhrpark</p>
+        <h1 style="font-size:clamp(1.9rem,3.2vw,3rem);margin:0 0 16px;text-align:left;">PKW mieten</h1>
+        <p style="color:#666;line-height:1.75;margin:0 0 20px;">Vom sparsamen Kleinwagen bis zur komfortablen Oberklasse: Unser PKW-Fuhrpark bietet für jeden Anlass das passende Fahrzeug. Ob Geschäftsreise, Familienausflug oder Unfallersatzwagen.</p>
+        <ul class="hero-bullets">
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                6 Fahrzeuggruppen, vom Kleinwagen bis zur Oberklasse
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Alle Fahrzeuge mit Führerschein Klasse B fahrbar
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Vollkaskoversicherung mit Selbstbeteiligung inklusive
+            </li>
+        </ul>
+        <a href="#pkw-modelle" class="button" style="margin-top:24px;display:inline-block;">Fahrzeuge vergleichen</a>
+    </div>
+    <div class="transporter-hero-img">
+        <img src="images/PKW_Fuhrpark.jpeg" alt="PKW Fuhrpark Heinzelmann" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">
+    </div>
+</section>
+
+<section id="pkw-modelle" style="overflow:hidden;">
+    <div class="section-heading">
+        <p class="eyebrow">Fahrzeugklassen</p>
+        <h2>Der richtige PKW für jeden Anlass</h2>
+        <p>Vom sparsamen Stadtauto bis zum komfortablen Allrad-SUV. Alle Preise inkl. MwSt. und Vollkaskoversicherung mit Selbstbeteiligung.</p>
+    </div>
+
+    <div class="spec-disclaimer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span>Für längere Mietzeiten und größere Strecken erstellen wir Ihnen gerne ein individuelles Angebot mit Streckenbonus.</span>
+    </div>
+
+    <div class="spec-slider-wrapper">
+        <div class="spec-slider" id="spec-slider">
+
+            <!-- Gruppe 1: Kleinwagen -->
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 1 · Kleinwagen</span>
+                    <h3>Dacia Spring Elektro / Renault Twingo / Toyota Aygo</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>4 Personen</span></li>
+                    <li><span>Getriebe</span><span>Schaltgetriebe</span></li>
+                    <li><span>Anhängerkupplung</span><span class="spec-nein">Nein</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel / Elektro</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>Kia Picanto, Toyota Aygo (4-Sitzer)</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>58 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>98 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,19 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+1+%E2%80%93+Kleinwagen" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Ideal für die Stadt und kurze Strecken</p>
+            </div>
+
+            <!-- Gruppe 2: Kleinwagen -->
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 2 · Kleinwagen</span>
+                    <h3>Dacia Sandero / Renault Clio / Toyota Yaris</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>4–5 Personen</span></li>
+                    <li><span>Getriebe</span><span>Schaltgetriebe / Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span class="spec-nein">Nein</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel / Benzin</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>Smart Forfour Aut. (4-Sitzer), Toyota Aygo Automatik (4-Sitzer)</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>68 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>118 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,19 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+2+%E2%80%93+Kleinwagen" class="button spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Sparsam und wendig für Alltag und Ausflüge</p>
+            </div>
+
+            <!-- Gruppe 3: Untere Mittelklasse -->
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 3 · Untere Mittelklasse</span>
+                    <h3>VW Golf / VW Caddy / Renault Kangoo</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5 Personen</span></li>
+                    <li><span>Getriebe</span><span>Schaltgetriebe / Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Optional (Caddy: Ja)</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>Dacia Sandero Automatik</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>78 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>138 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,23 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+3+%E2%80%93+Untere+Mittelklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Geräumig und vielseitig für jeden Bedarf</p>
+            </div>
+
+            <!-- Gruppe 4: Mittelklasse -->
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 4 · Mittelklasse</span>
+                    <h3>MB A 180 d / MB B 200 d Aut. / Seat Arona Aut.</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5 Personen</span></li>
+                    <li><span>Getriebe</span><span>Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Optional (Citan: Ja)</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>MB B 180 d, MB Citan AHK, BMW X1 d Aut. AHK, MB GLA 200 Aut., MB C 220 d Aut.</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>98 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,23 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+4+%E2%80%93+Mittelklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Komfortabel für Geschäfts- und Privatreisen</p>
+            </div>
+
+            <!-- Gruppe 5: Obere Mittelklasse -->
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 5 · Obere Mittelklasse</span>
+                    <h3>MB C 220 d Kombi / MB Citan 7-Sitzer / Volvo V60 Kombi</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5–9 Personen</span></li>
+                    <li><span>Getriebe</span><span>Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Kraftstoff</span><span>Diesel</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>MB Vito 113 CDI 9-Sitzer-Bus, Renault Trafic / Citroen Jumpy Bus, Volvo XC40 d</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>128 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>198 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+5+%E2%80%93+Obere+Mittelklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Für komfortable Reisen und größere Gruppen</p>
+            </div>
+
+            <!-- Gruppe 6: Oberklasse -->
+            <div class="subpage-spec-card">
+                <div class="spec-card-header">
+                    <span class="vehicle-label">Gruppe 6 · Oberklasse</span>
+                    <h3>MB E 220 d Aut. / MB GLC 300 Aut. / Volvo XC60 Allrad</h3>
+                </div>
+                <ul class="spec-list">
+                    <li><span>Sitzplätze</span><span>5–9 Personen</span></li>
+                    <li><span>Getriebe</span><span>Automatik</span></li>
+                    <li><span>Anhängerkupplung</span><span>Ja</span></li>
+                    <li><span>Allradantrieb</span><span>Optional</span></li>
+                    <li class="spec-list-models"><span>Weitere Modelle</span><span>MB GLC 250 d Aut. AHK, MB E 220 d Kombi Aut. AHK, MB Vito 116 CDI 8-Sitzer, MB Sprinter 317 CDI 9-Sitzer-Reisebus</span></li>
+                </ul>
+                <div class="spec-price-row">
+                    <div><span class="spec-price-label">1 Tag / 500 km</span><strong>158 €</strong></div>
+                    <div><span class="spec-price-label">Wochenendtarif</span><strong>248 €</strong></div>
+                    <div><span class="spec-price-label">Längere Reisen</span><strong>Individ. Preis</strong></div>
+                    <div><span class="spec-price-label">Mehr-km</span><strong>0,25 €</strong></div>
+                </div>
+                <a href="index.html#kontakt?fahrzeug=pkw&modell=Gruppe+6+%E2%80%93+Oberklasse" class="button button-secondary spec-card-btn">Jetzt anfragen</a>
+                <p class="spec-card-hint">Maximaler Komfort, Allrad und große Kofferräume</p>
+            </div>
+
+        </div>
+
+        <div class="spec-slider-nav">
+            <button class="spec-slider-btn" id="spec-prev" aria-label="Vorherige Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <div class="spec-slider-dots" id="spec-dots"></div>
+            <button class="spec-slider-btn" id="spec-next" aria-label="Nächste Fahrzeuge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <p style="text-align:center;font-size:0.85rem;color:var(--color-muted);margin-top:16px;">Alle Preise inkl. 19 % MwSt. · Preise gelten ab Mietstation Herbertingen · gültig ab 01.01.2025</p>
+
+    <div class="spec-pdf-links">
+        <a href="preislisten/preisliste-pkw-2025.pdf" target="_blank" class="spec-pdf-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v1.5H8V13zm0 3h5v1.5H8V16zm0-6h2v1.5H8V10z"/></svg>
+            Preisliste PKW (PDF)
+        </a>
+    </div>
+</section>
+
+<section id="pkw-tipps">
+    <div class="section-heading">
+        <p class="eyebrow">Gut zu wissen</p>
+        <h2>Wichtige Hinweise rund um Ihre PKW-Miete</h2>
+        <p>Damit Ihre Fahrt reibungslos verläuft. Aus langjähriger Erfahrung weitergegeben.</p>
+    </div>
+    <div class="anforderungen-list" style="max-width:700px;margin:0 auto;">
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Reservierung gilt für die Fahrzeuggruppe</strong><span>Reservierungen werden nur für die jeweilige Fahrzeugkategorie angenommen, nicht für einzelne Fahrzeugtypen. Welches Modell aus der Gruppe Sie erhalten, hängt von der Verfügbarkeit zum Abholtag ab.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Mindestalter und Kreditkarte</strong><span>Das Mindestalter des Fahrers liegt ab Gruppe 3 (Untere Mittelklasse) bei 25 Jahren, davon mindestens 3 Jahre im Besitz eines Führerscheins. Für die Gruppen ab Untere Mittelklasse sind zwei Kreditkarten erforderlich. Eine Kaution wird vor Abholung erhoben.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Vollgetankt zurückgeben</strong><span>Alle Fahrzeuge werden vollgetankt übergeben und sind bitte auch vollgetankt zurückzubringen. Bewahren Sie den Tankbeleg auf und legen Sie ihn bei der Rückgabe vor.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Zusatzausstattungen auf Anfrage</strong><span>Wunschausstattungen wie Automatikgetriebe, Anhängerkupplung, Navigationssystem, Kombiversion oder Winterreifen können je nach Verfügbarkeit gegen Aufpreis bereitgestellt werden.</span></div>
+        </li>
+        <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <div><strong>Abholung außerhalb der Öffnungszeiten</strong><span>Für Unfallersatzanmietungen steht ein 24-Std-Service zur Verfügung. Die frühe Fahrzeugabholung am Vorabend des Anmiettages ist auf Anfrage möglich.</span></div>
+        </li>
+    </div>
+</section>
+
+<section id="pkw-anfrage" class="inquiry-section" style="text-align:center;">
+    <div class="section-heading">
+        <p class="eyebrow">Jetzt anfragen</p>
+        <h2 style="color:#ffffff;">Das passende Fahrzeug sichern</h2>
+        <p style="color:rgba(255,255,255,0.75);">Teilen Sie uns Ihren Wunschtermin, die geplante Strecke und die benötigte Fahrzeugklasse mit. Wir melden uns schnell zurück.</p>
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="index.html#kontakt" class="button">Jetzt anfragen</a>
+        <a href="fuhrpark.html" class="button button-secondary" style="color:#ffffff;border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.08);">Zurück zum Fuhrpark</a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <img src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
+        </div>
+        <div class="footer-links">
+            <strong>Navigation</strong>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="fuhrpark.html">Fuhrpark</a></li>
+                <li><a href="preise.html">Preise</a></li>
+                <li><a href="ueber_uns.html">Über uns</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <strong>Kontakt</strong>
+            <ul>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>Saumstraße 2–4, 88518 Herbertingen</li>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg><a href="tel:+49758692130">07586 / 9213-0</a></li>
+                <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v11a2 2 0 002 2h3l4 4 4-4h3a2 2 0 002-2V5a2 2 0 00-2-2zM7 8h10v2H7V8zm0 4h7v2H7v-2z"/></svg><a href="index.html#kontakt">Anfrage senden</a></li>
+            </ul>
+        </div>
+        <div class="footer-hours">
+            <strong>Öffnungszeiten</strong>
+            <ul>
+                <li><span>Mo–Fr</span><span>7:30–12:00 Uhr</span></li>
+                <li><span></span><span>13:00–18:00 Uhr</span></li>
+                <li><span>Sa</span><span>9:00–13:00 Uhr</span></li>
+                <li><span>So</span><span>Geschlossen</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Autovermietung Heinzelmann · Alle Rechte vorbehalten</p>
+        <p>Zentral in Herbertingen</p>
+    </div>
+</footer>
+</body>
+</html>
