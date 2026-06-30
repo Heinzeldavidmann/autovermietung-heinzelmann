@@ -1618,12 +1618,6 @@ form:not(.inquiry-form) button:hover {
 
 .inquiry-form input[type="date"],
 .inquiry-form input[type="time"] {
-    color: var(--color-dark) !important;
-    -webkit-text-fill-color: var(--color-dark) !important;
-}
-
-.inquiry-form input[type="date"]:invalid,
-.inquiry-form input[type="time"]:invalid {
     color: #c8d0db !important;
     -webkit-text-fill-color: #c8d0db !important;
 }
