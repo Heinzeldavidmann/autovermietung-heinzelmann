@@ -1618,6 +1618,12 @@ form:not(.inquiry-form) button:hover {
 
 .inquiry-form input[type="date"],
 .inquiry-form input[type="time"] {
+    color: var(--color-dark) !important;
+    -webkit-text-fill-color: var(--color-dark) !important;
+}
+
+.inquiry-form input[type="date"]:invalid,
+.inquiry-form input[type="time"]:invalid {
     color: #c8d0db !important;
     -webkit-text-fill-color: #c8d0db !important;
 }
@@ -2440,6 +2446,16 @@ form:not(.inquiry-form) button:hover {
     .hero-media,
     .hero-media img {
         min-height: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .form-grid .field:not(.field-pair-mobile) {
+        grid-column: 1 / -1;
     }
 }
 
