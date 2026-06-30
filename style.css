@@ -2187,6 +2187,15 @@ form:not(.inquiry-form) button:hover {
     padding: 13px 14px;
     min-width: 0;
 }
+
+.split-input input[type="date"] {
+    flex: 1.4;
+}
+
+.split-input input[type="time"] {
+    flex: 1;
+    min-width: 86px;
+}
 .split-divider {
     width: 1px;
     height: 22px;
@@ -2449,15 +2458,6 @@ form:not(.inquiry-form) button:hover {
     }
 }
 
-@media (max-width: 480px) {
-    .form-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .form-grid .field:not(.field-pair-mobile) {
-        grid-column: 1 / -1;
-    }
-}
 
 @media (max-width: 768px) and (min-width: 601px) {
     .rental-card-grid,
