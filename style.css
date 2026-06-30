@@ -2173,7 +2173,7 @@ form:not(.inquiry-form) button:hover {
     background: #fff;
 }
 .split-input input {
-    flex: 1;
+    flex: 1.4;
     border: none !important;
     border-radius: 0 !important;
     background: transparent !important;
@@ -2182,13 +2182,19 @@ form:not(.inquiry-form) button:hover {
     min-width: 0;
 }
 
-.split-input input[type="date"] {
-    flex: 1.4;
-}
-
 .split-input input[type="time"] {
     flex: 1;
     min-width: 86px;
+}
+
+.split-input input[type="number"]::-webkit-outer-spin-button,
+.split-input input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.split-input input[type="number"] {
+    -moz-appearance: textfield;
 }
 .split-divider {
     width: 1px;
@@ -2198,11 +2204,13 @@ form:not(.inquiry-form) button:hover {
 }
 
 .split-unit {
+    flex: 1;
+    display: flex;
+    align-items: center;
     padding: 0 14px;
     font-size: 0.88rem;
     font-weight: 700;
     color: var(--color-muted);
-    flex-shrink: 0;
 }
 
 .inquiry-form label {
@@ -2720,6 +2728,9 @@ form:not(.inquiry-form) button:hover {
     .utility-item.location {
         flex: 0 0 auto;
         margin-left: 10px;
+        padding: 15px 4px;
+        margin-top: -15px;
+        margin-bottom: -15px;
     }
 }
 
@@ -2820,6 +2831,36 @@ form:not(.inquiry-form) button:hover {
 
     :where(h1, h2, h3, section) {
         scroll-margin-top: calc(var(--header-offset) + var(--utility-height) + 12px);
+    }
+
+    /* Preislisten-Karten: zwei pro Zeile statt fixer 180px-Breite mit Leerraum */
+    .preisliste-card {
+        width: calc(50% - 10px);
+    }
+
+    .listenvorschau {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 180 / 250;
+    }
+
+    /* Datum + Uhrzeit auf sehr schmalen Screens untereinander statt nebeneinander */
+    #field-abholung .split-input,
+    #field-rueckgabe .split-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #field-abholung .split-input input,
+    #field-rueckgabe .split-input input {
+        flex: none;
+        width: 100%;
+    }
+
+    #field-abholung .split-divider,
+    #field-rueckgabe .split-divider {
+        width: auto;
+        height: 1px;
     }
 }
 
