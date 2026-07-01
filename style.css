@@ -1085,6 +1085,7 @@ form:not(.inquiry-form) button:hover {
     border: 1px solid var(--color-border);
     border-radius: 24px;
     box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
 }
 
 .map-info-body {
@@ -2578,8 +2579,7 @@ form:not(.inquiry-form) button:hover {
     .map-inline {
         display: block !important;
         flex: 0 0 130px;
-        height: auto;
-        min-height: 180px;
+        height: 180px;
         border-radius: 14px;
         border: none;
         box-shadow: none;
@@ -2687,7 +2687,8 @@ form:not(.inquiry-form) button:hover {
     .map-inline {
         flex: none;
         width: 100%;
-        min-height: 220px;
+        height: 220px;
+        min-height: 0;
     }
 }
 
