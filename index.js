@@ -516,12 +516,68 @@ function prefillFormFromUrl() {
     }
 }
 
+// Cookie-Consent-Banner: erscheint beim ersten Besuch, Ablehnen sperrt die Seite nicht
+function setupCookieConsent() {
+    const CONSENT_KEY = 'cookieConsent'; // 'all' | 'essential'
+
+    if (localStorage.getItem(CONSENT_KEY)) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'cookie-consent-banner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Cookie-Einstellungen');
+    banner.innerHTML = `
+        <div class="cookie-consent-inner">
+            <div class="cookie-consent-text">
+                <strong>Diese Website nutzt Cookies</strong>
+                <span>Technisch notwendige Cookies sorgen für die Grundfunktionen der Website. Optionale Dienste wie eingebettete Karten laden wir nur nach Ihrer Zustimmung. Details finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
+            </div>
+            <div class="cookie-consent-actions">
+                <button type="button" class="button button-secondary" id="cookie-consent-essential">Nur notwendige</button>
+                <button type="button" class="button" id="cookie-consent-all">Alle akzeptieren</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(banner);
+
+    setTimeout(() => banner.classList.add('cookie-consent-visible'), 100);
+
+    function dismiss(value) {
+        localStorage.setItem(CONSENT_KEY, value);
+        banner.classList.remove('cookie-consent-visible');
+        setTimeout(() => banner.remove(), 400);
+    }
+
+    document.getElementById('cookie-consent-all').addEventListener('click', () => dismiss('all'));
+    document.getElementById('cookie-consent-essential').addEventListener('click', () => dismiss('essential'));
+}
+
+// Google-Maps-Karten erst nach Klick laden (Datenschutz: keine Drittanbieter-Cookies ohne Nutzeraktion)
+function setupMapConsent() {
+    document.querySelectorAll('.map-consent-placeholder').forEach(placeholder => {
+        const btn = placeholder.querySelector('.map-consent-load-btn');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            const src = placeholder.dataset.mapSrc;
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.referrerPolicy = 'no-referrer-when-downgrade';
+            iframe.setAttribute('loading', 'lazy');
+            iframe.classList.add(...placeholder.classList);
+            iframe.classList.remove('map-consent-placeholder');
+            placeholder.replaceWith(iframe);
+        });
+    });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   setupFaqAccordion();
   setupMobileNavToggle();
   setupContactForm();
   setupTestimonialsSlider();
   setupFuhrparkFinder();
+  setupMapConsent();
+  setupCookieConsent();
   prefillFormFromUrl();
 });
 

@@ -646,6 +646,33 @@ nav ul li a:hover {
     line-height: 1.6;
 }
 
+.legal-content {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.legal-content h3 {
+    margin: 32px 0 10px;
+    color: var(--color-dark);
+    font-size: 1.1rem;
+}
+
+.legal-content h3:first-child {
+    margin-top: 0;
+}
+
+.legal-content p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.96rem;
+    line-height: 1.7;
+}
+
+.legal-content a {
+    color: var(--color-primary);
+}
+
 footer {
     background: #0f172a;
     color: rgba(255, 255, 255, 0.75);
@@ -782,12 +809,24 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding: 20px 40px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 6px 16px;
     max-width: var(--container);
     margin: 0 auto;
     font-size: 0.78rem;
     color: rgba(255, 255, 255, 0.35);
+}
+
+.footer-bottom a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    color: #ffffff;
+    text-decoration: underline;
 }
 
 /* ── Validation Toast & Bounce ── */
@@ -914,6 +953,81 @@ footer {
 }
 .closed-banner-close:hover {
     color: #ffffff;
+}
+
+#cookie-consent-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#cookie-consent-banner.cookie-consent-visible {
+    transform: translateY(0);
+}
+
+.cookie-consent-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 20px 24px;
+    background: linear-gradient(145deg, #111827, #242b38);
+    color: #ffffff;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.cookie-consent-text {
+    flex: 1;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cookie-consent-text strong {
+    font-size: 0.98rem;
+    color: #ffffff;
+}
+
+.cookie-consent-text span {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.cookie-consent-text a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.cookie-consent-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .cookie-consent-inner {
+        flex-direction: column;
+        align-items: stretch;
+        border-radius: 0;
+    }
+
+    .cookie-consent-actions {
+        flex-direction: column;
+    }
+
+    .cookie-consent-actions .button {
+        width: 100%;
+    }
 }
 
 form label {
@@ -1260,6 +1374,36 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
     height: 100%;
     border-radius: 24px;
+}
+
+.map-inline.map-consent-placeholder,
+.map-standalone.map-consent-placeholder {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+    background: #eef2f7;
+    border: 1px solid var(--color-border);
+}
+
+.map-standalone.map-consent-placeholder {
+    display: flex;
+}
+
+.map-consent-placeholder p {
+    margin: 0;
+    max-width: 320px;
+    color: var(--color-muted);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+.map-consent-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .map-info-item {
@@ -2743,6 +2887,15 @@ form:not(.inquiry-form) button:hover {
         box-shadow: none;
     }
 
+    .map-inline.map-consent-placeholder {
+        display: flex !important;
+        padding: 10px;
+    }
+
+    .map-inline.map-consent-placeholder p {
+        display: none;
+    }
+
     .map-standalone {
         display: none !important;
     }
@@ -2848,6 +3001,10 @@ form:not(.inquiry-form) button:hover {
         height: 220px;
         min-height: 0;
     }
+
+    .map-inline.map-consent-placeholder p {
+        display: block;
+    }
 }
 
 @media (max-width: 700px) {
@@ -2898,6 +3055,13 @@ form:not(.inquiry-form) button:hover {
 }
 
 @media (max-width: 680px) {
+    .footer-bottom {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+        padding: 16px 20px;
+    }
+
     .utility-bar {
         font-size: 0.72rem;
         font-weight: 600;
@@ -3153,12 +3317,6 @@ form:not(.inquiry-form) button:hover {
     .footer-contact li,
     .footer-hours li span {
         font-size: 0.78rem;
-    }
-    .footer-bottom {
-        flex-direction: column;
-        gap: 4px;
-        text-align: center;
-        padding: 16px 20px;
     }
 }
 
