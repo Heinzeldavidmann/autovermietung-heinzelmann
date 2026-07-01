@@ -1315,15 +1315,15 @@ form:not(.inquiry-form) button:hover {
 }
 
 .subpage-hero-text h1 {
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
     line-height: 1.15;
     margin: 0;
 }
 
 .subpage-hero-text p {
-    font-size: 1rem;
+    font-size: 0.98rem;
     color: var(--color-muted);
-    line-height: 1.65;
+    line-height: 1.6;
     margin: 0;
 }
 
@@ -1989,13 +1989,14 @@ form:not(.inquiry-form) button:hover {
 
 .section-heading h2 {
     margin: 0;
-    font-size: clamp(1.9rem, 3.2vw, 3rem);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
 }
 
 .section-heading p:not(.eyebrow) {
-    margin: 16px auto 0;
+    margin: 14px auto 0;
     color: var(--color-muted);
-    line-height: 1.75;
+    font-size: 0.98rem;
+    line-height: 1.6;
 }
 
 .rental-card-grid {
@@ -2108,13 +2109,14 @@ form:not(.inquiry-form) button:hover {
     margin: 0;
     color: #ffffff;
     text-align: left;
-    font-size: clamp(2rem, 3.5vw, 3.35rem);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
 }
 
 .inquiry-copy p {
-    margin-top: 18px;
+    margin-top: 16px;
     color: rgba(255, 255, 255, 0.78);
-    line-height: 1.8;
+    font-size: 0.98rem;
+    line-height: 1.6;
 }
 
 .inquiry-contact-options {
@@ -2126,9 +2128,9 @@ form:not(.inquiry-form) button:hover {
 
 .inquiry-contact-note {
     margin: 0 0 6px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.86rem;
-    font-weight: 600;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.98rem;
+    line-height: 1.6;
 }
 
 .inquiry-contact-options a {
@@ -2828,12 +2830,20 @@ form:not(.inquiry-form) button:hover {
         padding: 32px 16px 20px;
     }
 
-    .hero-content h1 {
+    .hero-content h1,
+    .section-heading h2,
+    .subpage-hero-text h1,
+    .inquiry-copy h2 {
         font-size: clamp(1.5rem, 6vw, 2rem);
     }
 
-    .hero-text {
+    .hero-text,
+    .section-heading p:not(.eyebrow),
+    .subpage-hero-text p,
+    .inquiry-copy p,
+    .inquiry-contact-note {
         font-size: 0.95rem;
+        line-height: 1.55;
         margin-top: 16px;
     }
 
@@ -2897,24 +2907,6 @@ form:not(.inquiry-form) button:hover {
         aspect-ratio: 180 / 250;
     }
 
-    /* Datum + Uhrzeit auf sehr schmalen Screens untereinander statt nebeneinander */
-    #field-abholung .split-input,
-    #field-rueckgabe .split-input {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    #field-abholung .split-input input,
-    #field-rueckgabe .split-input input {
-        flex: none;
-        width: 100%;
-    }
-
-    #field-abholung .split-divider,
-    #field-rueckgabe .split-divider {
-        width: auto;
-        height: 1px;
-    }
 }
 
 
