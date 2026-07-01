@@ -1100,6 +1100,9 @@ form:not(.inquiry-form) button:hover {
 
 .map-standalone {
     display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
 }
 
 .map-info-item {
@@ -2087,11 +2090,15 @@ form:not(.inquiry-form) button:hover {
 .inquiry-layout {
     display: grid;
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    grid-template-areas:
+        "copy form"
+        "options form";
     gap: 44px;
     align-items: stretch;
 }
 
 .inquiry-copy {
+    grid-area: copy;
     display: flex;
     flex-direction: column;
 }
@@ -2110,10 +2117,17 @@ form:not(.inquiry-form) button:hover {
 }
 
 .inquiry-contact-options {
+    grid-area: options;
     display: grid;
     gap: 12px;
-    margin-top: auto;
-    padding-top: 28px;
+    align-self: end;
+}
+
+.inquiry-contact-note {
+    margin: 0 0 6px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.86rem;
+    font-weight: 600;
 }
 
 .inquiry-contact-options a {
@@ -2125,6 +2139,7 @@ form:not(.inquiry-form) button:hover {
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.06);
+    transition: transform var(--transition);
 }
 
 .inquiry-contact-options a::after {
@@ -2133,6 +2148,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 .inquiry-form {
+    grid-area: form;
     padding: 26px;
     background: #ffffff;
     color: var(--color-text);
@@ -2450,6 +2466,17 @@ form:not(.inquiry-form) button:hover {
         grid-template-columns: 1fr;
     }
 
+    .inquiry-layout {
+        grid-template-areas:
+            "copy"
+            "form"
+            "options";
+    }
+
+    .inquiry-contact-options {
+        align-self: auto;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
     }
@@ -2636,6 +2663,31 @@ form:not(.inquiry-form) button:hover {
 
     .timeline-content {
         margin-top: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    /* Sehr schmale Screens: map-info wird wieder 1-spaltig gestapelt */
+    .map-info {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .map-info-body {
+        flex: none;
+        min-width: 0;
+    }
+
+    .map-info-body .button {
+        white-space: normal;
+        font-size: 0.82rem;
+        padding: 11px 18px;
+    }
+
+    .map-inline {
+        flex: none;
+        width: 100%;
+        min-height: 220px;
     }
 }
 
@@ -2867,9 +2919,12 @@ form:not(.inquiry-form) button:hover {
 
 /* 9. Hover & Motion Preferences */
 @media (hover: hover) and (pointer: fine) {
-    .rental-card:hover,
-    .inquiry-contact-options a:hover {
+    .rental-card:hover {
         transform: translateY(-3px);
+    }
+
+    .inquiry-contact-options a:hover {
+        transform: translateY(-2px);
     }
 
     .button:hover {
