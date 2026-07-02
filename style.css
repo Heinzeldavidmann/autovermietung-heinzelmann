@@ -2506,6 +2506,27 @@ form:not(.inquiry-form) button:hover {
     min-width: 86px;
 }
 
+.date-input-wrap {
+    position: relative;
+    flex: 1.4;
+    min-width: 0;
+}
+.date-input-wrap input[type="date"] {
+    width: 100%;
+}
+.date-input-placeholder {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+    font-size: inherit;
+}
+.date-input-wrap.has-value .date-input-placeholder {
+    display: none;
+}
+
 .split-input input[type="number"]::-webkit-outer-spin-button,
 .split-input input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;

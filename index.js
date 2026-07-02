@@ -12,6 +12,7 @@
 //   8. setupMapConsent()       – Google-Maps-Karten erst nach Klick laden
 //   9. Öffnungszeiten-Anzeige  – aktualisiert #open-status im Header
 //  10. Custom-Select-Sync      – verbindet echtes <select> mit dem gestylten Dropdown
+//  11. Datumsfeld-Placeholder  – zeigt "Datum wählen" solange <input type="date"> leer ist
 // Alle setup*-Funktionen werden zentral im DOMContentLoaded-Listener weiter
 // unten aufgerufen. Neue Funktionen dort mit ergänzen, sonst laufen sie nie.
 // ============================================================
@@ -819,4 +820,16 @@ function showClosedBanner(message) {
     if (textEl) textEl.textContent = selected.value ? selected.text : 'Bitte wählen...';
     if (display) display.classList.toggle('has-value', !!selected.value);
   });
+});
+
+// ── 11. Datumsfeld-Placeholder ──
+// Native <input type="date"> zeigen auf iOS Safari ohne gesetzten Wert keinen
+// Platzhaltertext an. Der Wrapper blendet stattdessen ein eigenes Label ein,
+// solange kein Datum gewählt wurde.
+document.querySelectorAll('.date-input-wrap input[type="date"]').forEach(input => {
+  const wrap = input.closest('.date-input-wrap');
+  const sync = () => wrap.classList.toggle('has-value', !!input.value);
+  input.addEventListener('change', sync);
+  input.addEventListener('input', sync);
+  sync();
 });

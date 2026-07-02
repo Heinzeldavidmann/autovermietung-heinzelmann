@@ -229,7 +229,10 @@
                 <div class="field" id="field-abholung">
                     <label for="abholung_datum">Wunschtermin zur Abholung</label>
                     <div class="split-input">
-                        <input type="date" id="abholung_datum" name="abholung_datum" required>
+                        <div class="date-input-wrap">
+                            <span class="date-input-placeholder">Datum wählen</span>
+                            <input type="date" id="abholung_datum" name="abholung_datum" required>
+                        </div>
                         <span class="split-divider"></span>
                         <input type="time" id="abholung_uhrzeit" name="abholung_uhrzeit" value="09:00" required>
                     </div>
@@ -238,7 +241,10 @@
                 <div class="field" id="field-rueckgabe">
                     <label for="rueckgabe_datum">Geplanter Rückgabetermin</label>
                     <div class="split-input">
-                        <input type="date" id="rueckgabe_datum" name="rueckgabe_datum" required>
+                        <div class="date-input-wrap">
+                            <span class="date-input-placeholder">Datum wählen</span>
+                            <input type="date" id="rueckgabe_datum" name="rueckgabe_datum" required>
+                        </div>
                         <span class="split-divider"></span>
                         <input type="time" id="rueckgabe_uhrzeit" name="rueckgabe_uhrzeit" value="16:00" required>
                     </div>
