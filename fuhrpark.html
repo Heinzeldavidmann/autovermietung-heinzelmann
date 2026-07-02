@@ -54,6 +54,11 @@
     </nav>
 </header>
 
+<!--
+    Fahrzeugtyp-Finder: der Container #finder-steps startet leer und wird komplett
+    per JavaScript befüllt (siehe setupFuhrparkFinder + FINDER_TREE/FINDER_RESULTS
+    in index.js). Um Fragen/Ergebnisse zu ändern, dort ansetzen, nicht hier im HTML.
+-->
 <section id="finder" class="finder-section">
     <div class="section-heading">
         <p class="eyebrow">Entscheidungshilfe</p>
@@ -63,6 +68,7 @@
     <div class="finder-steps" id="finder-steps"></div>
 </section>
 
+<!-- Vertrauens-/Vorteile-Section, gleiches Layout-Pattern wie #anforderungen auf index.html -->
 <section id="vorteile" class="anforderungen-section">
     <div class="anforderungen-layout">
         <div class="anforderungen-intro">
@@ -92,6 +98,7 @@
     </div>
 </section>
 
+<!-- Zeigt zuletzt hinzugekommene Fahrzeuge; Karten sind statisch und müssen hier manuell gepflegt werden -->
 <section id="neuzugaenge">
     <div class="section-heading">
         <p class="eyebrow">Neu im Fuhrpark</p>
@@ -135,6 +142,7 @@
     </div>
 </section>
 
+<!-- Die 3 Fahrzeug-Hauptkategorien, verlinkt auf die jeweiligen Subpages -->
 <section id="fuhrpark">
     <div class="section-heading">
         <p class="eyebrow">Fuhrpark</p>

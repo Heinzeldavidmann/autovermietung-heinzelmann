@@ -1,4 +1,22 @@
-// ── Kontaktformular Submit-Handler (Netlify Forms) ──
+// ============================================================
+// index.js – gemeinsames JavaScript für alle Seiten der Website
+// ============================================================
+// Inhaltsverzeichnis (Funktionen in Aufruf-Reihenfolge):
+//   1. setupContactForm()      – Kontaktformular absenden (Netlify Forms)
+//   2. setupFaqAccordion()     – FAQ-Fragen auf-/zuklappen
+//   3. setupMobileNavToggle()  – Hamburger-Menü auf kleinen Screens
+//   4. setupFuhrparkFinder()   – Fahrzeugtyp-Finder (Fragenbaum auf fuhrpark.html)
+//   5. setupTestimonialsSlider() – Kundenstimmen-Karussell
+//   6. prefillFormFromUrl()    – Formularfelder aus Link-Parametern vorausfüllen
+//   7. setupCookieConsent()    – Cookie-Banner beim ersten Besuch
+//   8. setupMapConsent()       – Google-Maps-Karten erst nach Klick laden
+//   9. Öffnungszeiten-Anzeige  – aktualisiert #open-status im Header
+//  10. Custom-Select-Sync      – verbindet echtes <select> mit dem gestylten Dropdown
+// Alle setup*-Funktionen werden zentral im DOMContentLoaded-Listener weiter
+// unten aufgerufen. Neue Funktionen dort mit ergänzen, sonst laufen sie nie.
+// ============================================================
+
+// ── 1. Kontaktformular Submit-Handler (Netlify Forms) ──
 function setupContactForm() {
     const form = document.querySelector('.inquiry-form');
     if (!form) return;
@@ -70,6 +88,7 @@ function showFormFallback(form) {
     );
 }
 
+// Zeigt die Erfolgs-/Fehler-/Fallback-Meldung unterhalb des Formulars an (erstellt sie beim ersten Mal).
 function showFormMessage(form, text, color) {
     let msg = form.querySelector('.form-status-msg');
     if (!msg) {
@@ -84,7 +103,7 @@ function showFormMessage(form, text, color) {
     msg.style.border = `1px solid ${color}55`;
 }
 
-// Diese Funktion sorgt dafür, dass beim Klick auf eine FAQ-Frage die Antwort ein- oder ausgeklappt wird.
+// ── 2. FAQ-Accordion: Klick auf eine Frage klappt die zugehörige Antwort auf/zu ──
 function setupFaqAccordion() {
     document.querySelectorAll('.faq-question').forEach(button => {
         button.addEventListener('click', () => {
@@ -99,7 +118,7 @@ function setupFaqAccordion() {
     });
 }
 
-// Mobile Navigation: Hamburger-Menü (öffnet/schließt die Hauptnavigation auf kleinen Screens)
+// ── 3. Mobile Navigation: Hamburger-Menü (öffnet/schließt die Hauptnavigation auf kleinen Screens) ──
 function setupMobileNavToggle() {
   const header = document.querySelector('header.site-header');
   const toggleBtn = document.querySelector('.nav-toggle');
@@ -156,7 +175,14 @@ function setupMobileNavToggle() {
   });
 }
 
-// Fuhrpark-Finder: mehrstufiger Fragenbaum zeigt die passende Fahrzeugkategorie
+// ── 4. Fuhrpark-Finder (nur auf fuhrpark.html) ──
+// Mehrstufiger Fragenbaum: der Nutzer klickt sich durch ein paar Fragen,
+// am Ende wird eine passende Fahrzeugkategorie empfohlen (mit Link zur Subpage).
+//
+// FINDER_TREE: jede Frage hat eine ID (Objekt-Key) und eine Liste von Antwort-Optionen.
+// Jede Option führt entweder zur nächsten Frage (`next: '<frage-id>'`)
+// oder direkt zu einem Ergebnis (`result: '<ergebnis-id>'`).
+// Startpunkt ist immer die Frage mit der ID "start".
 const FINDER_TREE = {
     start: {
         question: 'Möchten Sie hauptsächlich Personen befördern oder etwas transportieren?',
@@ -236,6 +262,7 @@ const FINDER_TREE = {
     }
 };
 
+// Wiederverwendbare SVG-Icons für die Ergebnis-Karten (identisch zu den Icons auf preise.html).
 const FINDER_ICONS = {
     pkw: '<svg viewBox="0 110 329.638 120" fill="currentColor" aria-hidden="true"><g transform="scale(-1,1) translate(-329.638,0)"><path d="M324.873,165.878c0,0-0.823-13.567-2.485-18.543c-1.657-4.971-1.652-4.971,0.828-8.119c2.48-3.144-7.291-0.994-8.953-0.663c-1.657,0.337-0.994,1.491-0.994,1.491c-19.222,0.829-63.303-23.86-98.26-27.34c-34.958-3.475-69.097-0.161-81.69,2.817c-12.593,2.982-54.018,25.352-58.652,26.512c-4.635,1.16-2.651-1.16-2.651-1.16c-23.855,0.989-64.783,21.375-64.783,21.375c-1.657,1.16-2.983,7.953-2.983,7.953l0.829,2.32c-6.794,6.302-4.806,19.558-4.806,19.558l3.325-1.165c1.175,2.154,1.481,6.959,1.481,6.959c-5.629,2.651-1.491,4.972-1.491,4.972s2.49-2.149,12.593,0.999c3.904,1.212,12.599,1.636,21.805,1.704c-1.294-3.268-2.03-6.814-2.03-10.538c0-15.84,12.883-28.723,28.723-28.723c15.834,0,28.723,12.883,28.723,28.723c0,3.438-0.642,6.727-1.755,9.792l147.467-0.248c-1.056-2.994-1.662-6.193-1.662-9.544c0-15.84,12.884-28.723,28.724-28.723c15.834,0,28.723,12.883,28.723,28.723c0,2.946-0.45,5.794-1.279,8.472c14.675-3.392,31.769-5.769,31.769-5.769l3.147-4.143c0,0,2.485-17.729,0-20.547C326.048,170.212,324.873,165.878,324.873,165.878z"/><path d="M64.672,218.42c9.419,0,17.487-5.598,21.205-13.618c1.382-2.988,2.211-6.286,2.211-9.803c0-12.935-10.486-23.42-23.42-23.42c-12.935,0-23.421,10.48-23.421,23.42c0,3.807,0.994,7.354,2.61,10.527C47.729,213.149,55.543,218.42,64.672,218.42z"/><path d="M266.163,218.42c9.311,0,17.284-5.479,21.055-13.349c1.471-3.056,2.361-6.452,2.361-10.072c0-12.935-10.486-23.42-23.421-23.42c-12.936,0-23.421,10.48-23.421,23.42c0,3.402,0.761,6.618,2.066,9.533C248.47,212.704,256.636,218.42,266.163,218.42z"/></g></svg>',
     transporter: '<svg viewBox="1 3.5 22 16" fill="currentColor" aria-hidden="true"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>',
@@ -243,6 +270,7 @@ const FINDER_ICONS = {
     anhaenger: '<svg viewBox="-58 50 320 145" fill="currentColor" aria-hidden="true"><path d="M15.798,150.626h-3.595v-14.264h3.605L15.798,150.626L15.798,150.626z M71.791,54.077h130.949v20.85h-30.747v17.039h30.747v74.136h-17.967l0.117-2.198c0-20.4-16.502-36.873-36.863-36.873s-36.863,16.482-36.863,36.873l0.127,2.198H94.683v-15.476H71.801L71.791,54.077L71.791,54.077z M125.635,92.053h35.495v-17h-35.495C125.635,75.053,125.635,92.053,125.635,92.053z M80.643,91.663h35.505V74.633H80.643V91.663z M175.541,163.913c0,15.202-12.32,27.493-27.513,27.493c-15.212,0-27.523-12.301-27.523-27.493c0-15.222,12.32-27.542,27.523-27.542C163.211,136.371,175.541,148.711,175.541,163.913z M157.866,163.913c0-5.462-4.426-9.887-9.868-9.887c-5.422,0-9.848,4.426-9.848,9.887c0,5.413,4.426,9.848,9.848,9.848C153.44,173.761,157.866,169.326,157.866,163.913z M26.282,136.371v-4.27H0v4.27h12.203h3.605H26.282z M15.798,158.373v-7.748h-3.595v7.748H15.798z M71.01,30.716v18.612h132.532V30.716C203.542,30.716,143.582-11.09,71.01,30.716z M71.791,150.626H15.798v7.748h-3.595v-7.748H0v15.486h94.663v-0.01H71.791V150.626z"/></svg>'
 };
 
+// Jedes mögliche Endergebnis des Fragenbaums: Titel, Icon (siehe FINDER_ICONS), Erklärtext und Ziel-Link.
 const FINDER_RESULTS = {
     pkw: {
         title: 'PKW',
@@ -324,10 +352,15 @@ const FINDER_RESULTS = {
     }
 };
 
+// Baut den Fragenbaum als Kette von Karten im Container #finder-steps auf.
+// Jede beantwortete Frage bleibt sichtbar (mit der gewählten Antwort markiert);
+// klickt man eine bereits beantwortete Frage neu an, werden alle danach folgenden
+// Schritte entfernt und der Baum ab dort neu aufgebaut (truncateAfter).
 function setupFuhrparkFinder() {
     const container = document.getElementById('finder-steps');
     if (!container) return;
 
+    // Rendert eine einzelne Frage inkl. Antwort-Buttons als neue Karte.
     function renderQuestion(stepId) {
         const step = FINDER_TREE[stepId];
         const card = document.createElement('div');
@@ -355,6 +388,7 @@ function setupFuhrparkFinder() {
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    // Rendert die finale Empfehlungs-Karte (Icon, Titel, Text, Link) am Ende des Fragenbaums.
     function renderResult(resultId) {
         const rec = FINDER_RESULTS[resultId];
         if (!rec) return;
@@ -404,6 +438,8 @@ function setupFuhrparkFinder() {
         }
     }
 
+    // Reagiert auf einen Options-Klick: markiert die Antwort und rendert je nach
+    // Baum-Definition entweder die nächste Frage oder das Endergebnis.
     function handleAnswer(card, opt, clickedBtn) {
         truncateAfter(card);
 
@@ -421,7 +457,7 @@ function setupFuhrparkFinder() {
     renderQuestion('start');
 }
 
-// Automatisch beim Laden der Seite aufrufen
+// ── 5. Kundenstimmen-Karussell: zeigt 3 Testimonials gleichzeitig, mit Pfeilen/Punkten navigierbar ──
 function setupTestimonialsSlider() {
   const track = document.querySelector('.testimonials-track');
   if (!track) return;
@@ -462,6 +498,10 @@ function setupTestimonialsSlider() {
   goTo(0);
 }
 
+// ── 6. Formular aus Link-Parametern vorausfüllen ──
+// Wenn ein Link wie "index.html#kontakt?fahrzeug=transporter&modell=Sprinter" angeklickt wird
+// (z. B. von einem "Jetzt anfragen"-Button auf preise.html oder aus dem Fuhrpark-Finder),
+// werden Fahrzeugart und Modell automatisch ins Kontaktformular übernommen und kurz hervorgehoben.
 function prefillFormFromUrl() {
     const hash = window.location.hash; // z.B. "#kontakt?fahrzeug=transporter&modell=..."
     if (!hash.includes('?')) return;
@@ -516,7 +556,12 @@ function prefillFormFromUrl() {
     }
 }
 
-// Cookie-Consent-Banner: erscheint beim ersten Besuch, Ablehnen sperrt die Seite nicht
+// ── 7. Cookie-Consent-Banner ──
+// Erscheint beim ersten Besuch als Leiste unten. "Nur notwendige" sperrt die Seite NICHT,
+// es werden lediglich optionale Dienste (aktuell: Google Maps, siehe setupMapConsent) nicht
+// automatisch geladen. Die Entscheidung wird dauerhaft in localStorage gespeichert, daher
+// erscheint das Banner bei wiederkehrenden Besuchern nicht erneut (zum erneuten Testen:
+// in den Browser-DevTools unter Application → Local Storage den Eintrag "cookieConsent" löschen).
 function setupCookieConsent() {
     const CONSENT_KEY = 'cookieConsent'; // 'all' | 'essential'
 
@@ -552,7 +597,11 @@ function setupCookieConsent() {
     document.getElementById('cookie-consent-essential').addEventListener('click', () => dismiss('essential'));
 }
 
-// Google-Maps-Karten erst nach Klick laden (Datenschutz: keine Drittanbieter-Cookies ohne Nutzeraktion)
+// ── 8. Google-Maps-Karten erst nach Klick laden ──
+// Datenschutz: Google Maps setzt beim Laden Cookies/überträgt Daten an Google, das darf
+// nicht automatisch ohne Zustimmung passieren. Auf index.html steht daher statt des
+// <iframe> nur ein Platzhalter-<div class="map-consent-placeholder" data-map-src="...">
+// mit einem "Karte laden"-Button. Erst der Klick baut das echte iframe und ersetzt den Platzhalter.
 function setupMapConsent() {
     document.querySelectorAll('.map-consent-placeholder').forEach(placeholder => {
         const btn = placeholder.querySelector('.map-consent-load-btn');
@@ -581,7 +630,11 @@ window.addEventListener('DOMContentLoaded', () => {
   prefillFormFromUrl();
 });
 
-// Utility Bar nach dem Header
+// ── 9. Öffnungszeiten-Anzeige (in der Utility Bar direkt unter dem Header) ──
+// Berechnet anhand der aktuellen Uhrzeit, ob gerade geöffnet, geschlossen oder
+// Mittagspause ist, und aktualisiert Text + grünen/roten Punkt in #open-status.
+// Ist die Website gerade außerhalb der Öffnungszeiten geöffnet, wird zusätzlich
+// einmalig ein Hinweis-Banner unten eingeblendet (siehe showClosedBanner).
 document.addEventListener('DOMContentLoaded', function () {
   // Öffnungszeiten: Arrays aus Zeitintervallen pro Tag (0=So ... 6=Sa)
   const OPENING_HOURS = {
@@ -752,7 +805,10 @@ function showClosedBanner(message) {
   });
 }
 
-// Custom select display
+// ── 10. Custom-Select-Sync ──
+// Die echten <select>-Felder (#fahrzeug, #getriebe) sind unsichtbar; sichtbar ist
+// stattdessen ein gestyltes <div class="custom-select-display"> daneben. Dieser Block
+// hält den angezeigten Text synchron, sobald sich der Wert des echten <select> ändert.
 ['fahrzeug', 'getriebe'].forEach(id => {
   const sel = document.getElementById(id);
   if (!sel) return;

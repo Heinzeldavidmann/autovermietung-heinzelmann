@@ -54,6 +54,7 @@
     </nav>
 </header>
 
+<!-- Hero: erste Ansicht beim Laden der Startseite, mit Haupt-CTA -->
 <section id="home" class="hero-section">
     <div class="hero-wrapper">
         <div class="hero-content">
@@ -95,6 +96,7 @@
     </div>
 </section>
 
+<!-- Kurzübersicht der 3 Fahrzeug-Hauptkategorien, verlinkt auf pkw.html/transporter.html/busse.html -->
 <section id="fuhrpark">
     <div class="section-heading">
         <p class="eyebrow">Fuhrpark</p>
@@ -141,6 +143,12 @@
     </div>
 </section>
 
+<!--
+    Kontakt-Section: Anfrageformular (Netlify Forms, siehe setupContactForm in index.js)
+    plus alternative Kontaktwege (Anruf/E-Mail) darunter im gleichen dunklen Container.
+    Wird von "Kontakt"-Links auf allen Seiten per #kontakt angesprungen; Felder können
+    zusätzlich über URL-Parameter vorausgefüllt werden (siehe prefillFormFromUrl in index.js).
+-->
 <section id="kontakt" class="inquiry-section" aria-labelledby="inquiry-title">
     <div class="inquiry-layout">
         <div class="inquiry-copy">
@@ -247,6 +255,11 @@
     </div>
 </section>
 
+<!--
+    Standort-Section mit Google-Maps-Karte. Die Karte ist aus Datenschutzgründen NICHT
+    direkt als <iframe> eingebettet, sondern als Klick-Platzhalter (.map-consent-placeholder,
+    siehe setupMapConsent in index.js) – erst ein Klick auf "Karte laden" lädt Google Maps.
+-->
 <section id="anfahrt" class="map-section">
     <div class="section-heading">
         <p class="eyebrow">Standort</p>
@@ -294,6 +307,7 @@
     </div>
 </section>
 
+<!-- Kundenstimmen-Karussell (3 Karten sichtbar, per Pfeile/Punkte navigierbar, siehe setupTestimonialsSlider in index.js) -->
 <section id="rezensionen">
     <div class="section-heading">
         <p class="eyebrow">Erfahrungen</p>
@@ -336,6 +350,11 @@
     </div>
 </section>
 
+<!--
+    FAQ-Accordion: die ersten 3 Fragen sind immer sichtbar, weitere stecken in
+    .faq-extra (hidden) und werden über den Button unten ein-/ausgeblendet.
+    Auf-/Zuklappen einzelner Fragen übernimmt setupFaqAccordion() in index.js.
+-->
 <section id="faq">
     <div class="section-heading">
         <p class="eyebrow">Häufige Fragen</p>
@@ -446,6 +465,7 @@
     </div>
 </section>
 
+<!-- "So einfach mieten Sie bei uns": Vorteile/Voraussetzungen-Liste, 2-spaltiges Layout (Intro links, Icon-Liste rechts) -->
 <section id="anforderungen" class="anforderungen-section">
     <div class="anforderungen-layout">
         <div class="anforderungen-intro">
