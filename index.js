@@ -832,4 +832,13 @@ document.querySelectorAll('.date-input-wrap input[type="date"]').forEach(input =
   input.addEventListener('change', sync);
   input.addEventListener('input', sync);
   sync();
+  input.classList.add('is-empty');
+  input.addEventListener('change', () => input.classList.toggle('is-empty', !input.value));
+});
+
+// Uhrzeitfelder starten mit vorausgefülltem Vorschlagswert (09:00/16:00) und
+// sollen wie ein Platzhalter aussehen, bis der Nutzer die Uhrzeit selbst ändert.
+document.querySelectorAll('.inquiry-form input[type="time"]').forEach(input => {
+  input.classList.add('is-empty');
+  input.addEventListener('change', () => input.classList.remove('is-empty'));
 });

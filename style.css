@@ -1924,8 +1924,8 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
 }
 
-.inquiry-form input[type="date"],
-.inquiry-form input[type="time"] {
+.inquiry-form input[type="date"].is-empty,
+.inquiry-form input[type="time"].is-empty {
     color: #c8d0db !important;
     -webkit-text-fill-color: #c8d0db !important;
 }
@@ -2512,6 +2512,8 @@ form:not(.inquiry-form) button:hover {
 
 .date-input-wrap {
     position: relative;
+    display: flex;
+    align-items: center;
     flex: 1.4;
     min-width: 0;
 }
@@ -2519,16 +2521,28 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
 }
 .date-input-placeholder {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-    pointer-events: none;
-    font-size: inherit;
-}
-.date-input-wrap.has-value .date-input-placeholder {
     display: none;
+}
+
+/* iOS Safari zeigt bei leeren <input type="date"> keinen Platzhalter an
+   (anders als Desktop-Browser, die dort das aktuelle Datum vorschlagen).
+   Deshalb blenden wir das eigene Label nur auf schmalen/Touch-Viewports ein. */
+@media (max-width: 700px) {
+    .date-input-placeholder {
+        display: block;
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #c8d0db;
+        pointer-events: none;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.96rem;
+        font-weight: 500;
+    }
+    .date-input-wrap.has-value .date-input-placeholder {
+        display: none;
+    }
 }
 
 .split-input input[type="number"]::-webkit-outer-spin-button,
