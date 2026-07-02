@@ -909,9 +909,9 @@ footer {
 /* ── Closed Banner ── */
 #closed-banner {
     position: fixed;
-    bottom: 28px;
+    top: calc(var(--header-offset) + var(--utility-height) + 16px);
     left: 50%;
-    transform: translateX(-50%) translateY(120px);
+    transform: translateX(-50%) translateY(-120px);
     z-index: 9999;
     width: min(560px, calc(100vw - 32px));
     opacity: 0;
