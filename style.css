@@ -1364,6 +1364,10 @@ form:not(.inquiry-form) button:hover {
     gap: 20px;
 }
 
+.map-info-body > .button {
+    align-self: flex-start;
+}
+
 /* Desktop: inline map versteckt, standalone sichtbar */
 .map-inline {
     display: none !important;
