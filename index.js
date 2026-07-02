@@ -514,30 +514,26 @@ function prefillFormFromUrl() {
     const modell = params.get('modell');
 
     const fieldsToHighlight = [];
+    const sel = document.getElementById('fahrzeug');
+    const textarea = document.getElementById('nachricht');
 
-    if (fahrzeug) {
-        const sel = document.getElementById('fahrzeug');
-        if (sel) {
-            sel.value = fahrzeug;
-            const display = sel.nextElementSibling;
-            const textEl = display && display.querySelector('.custom-select-text');
-            if (textEl) {
-                const selected = sel.options[sel.selectedIndex];
-                if (selected && selected.value) {
-                    textEl.textContent = selected.text;
-                    display.classList.add('has-value');
-                }
+    if (fahrzeug && sel) {
+        sel.value = fahrzeug;
+        const display = sel.nextElementSibling;
+        const textEl = display && display.querySelector('.custom-select-text');
+        if (textEl) {
+            const selected = sel.options[sel.selectedIndex];
+            if (selected && selected.value) {
+                textEl.textContent = selected.text;
+                display.classList.add('has-value');
             }
-            fieldsToHighlight.push(sel.closest('.field'));
         }
+        fieldsToHighlight.push(sel.closest('.field'));
     }
 
-    if (modell) {
-        const textarea = document.getElementById('nachricht');
-        if (textarea) {
-            textarea.value = `Ich interessiere mich für: ${modell}`;
-            fieldsToHighlight.push(textarea.closest('.field'));
-        }
+    if (modell && textarea) {
+        textarea.value = `Ich interessiere mich für: ${modell}`;
+        fieldsToHighlight.push(textarea.closest('.field'));
     }
 
     // Scrollen, dann Felder kurz aufleuchten lassen
@@ -554,6 +550,26 @@ function prefillFormFromUrl() {
                 });
             }, 700);
         }, 100);
+    }
+
+    if (fieldsToHighlight.length) {
+        const note = document.getElementById('prefill-note');
+        if (note) {
+            note.querySelector('.prefill-note-text').textContent =
+                'Wir haben schon ein paar Angaben für Sie vorausgefüllt.';
+            note.hidden = false;
+            note.querySelector('.prefill-note-reset').addEventListener('click', () => {
+                if (sel) {
+                    sel.value = '';
+                    const display = sel.nextElementSibling;
+                    const textEl = display && display.querySelector('.custom-select-text');
+                    if (textEl) textEl.textContent = 'Bitte wählen...';
+                    if (display) display.classList.remove('has-value');
+                }
+                if (textarea) textarea.value = '';
+                note.hidden = true;
+            });
+        }
     }
 }
 

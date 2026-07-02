@@ -74,36 +74,6 @@
     <div class="finder-steps" id="finder-steps"></div>
 </section>
 
-<!-- Vertrauens-/Vorteile-Section, gleiches Layout-Pattern wie #anforderungen auf index.html -->
-<section id="vorteile" class="anforderungen-section">
-    <div class="anforderungen-layout">
-        <div class="anforderungen-intro">
-            <p class="eyebrow">Warum wir</p>
-            <h2>Warum Kunden uns vertrauen</h2>
-            <p>Seit über 60 Jahren als Familienbetrieb in Herbertingen für Sie da – persönlich, unkompliziert und zuverlässig.</p>
-        </div>
-        <ul class="anforderungen-list">
-            <li>
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.6L21 9l-5 4.4L17.4 21 12 17l-5.4 4L8 13.4 3 9l6.6-.4z"/></svg>
-                <div><strong>Über 60 Jahre Erfahrung</strong><span>Familienbetrieb mit langjähriger Erfahrung in der Region Herbertingen</span></div>
-            </li>
-            <li>
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6zm0 4a3 3 0 100 6 3 3 0 000-6z"/></svg>
-                <div><strong>Vollkasko inklusive</strong><span>Alle Fahrzeuge sind standardmäßig vollkaskoversichert vermietet</span></div>
-            </li>
-            <li>
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
-                <div><strong>Persönliche Beratung</strong><span>Direkter Ansprechpartner statt Callcenter, wir kennen unsere Fahrzeuge</span></div>
-            </li>
-            <li>
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
-                <div><strong>Kurzfristig verfügbar</strong><span>Auch spontane Anfragen sind bei uns oft noch kurzfristig möglich</span></div>
-            </li>
-        </ul>
-        <a href="index.html#kontakt" class="button anforderungen-cta">Jetzt anfragen</a>
-    </div>
-</section>
-
 <!-- Zeigt zuletzt hinzugekommene Fahrzeuge; Karten sind statisch und müssen hier manuell gepflegt werden -->
 <section id="neuzugaenge">
     <div class="section-heading">
@@ -112,18 +82,18 @@
         <p>Diese Fahrzeuge stehen ab sofort für Ihre Anfrage bereit.</p>
     </div>
     <div class="vehicle-container">
-        <div class="vehicle">
+        <a href="index.html#kontakt?fahrzeug=transporter&modell=Mercedes-Benz+Citan" class="vehicle">
             <div class="vehicle-img-wrap">
                 <img src="images/Citan_vehicle-slide.webp" alt="Mercedes-Benz Citan">
             </div>
             <div class="vehicle-body">
                 <span class="vehicle-label">Neu seit Dez. 2025</span>
                 <h3>Mercedes-Benz Citan</h3>
-                <p>Kompakter Kastenwagen mit großem Ladevolumen – ideal für Handwerksbetriebe und kleine Umzüge.</p>
+                <p>Kompakter Kastenwagen mit großem Ladevolumen. Ideal für Handwerksbetriebe und kleine Umzüge.</p>
                 <span class="vehicle-link">Jetzt anfragen →</span>
             </div>
-        </div>
-        <div class="vehicle">
+        </a>
+        <a href="index.html#kontakt?fahrzeug=bus&modell=Mercedes-Benz+V-Klasse" class="vehicle">
             <div class="vehicle-img-wrap">
                 <img src="images/Vito_vehicle-slide.jpg" alt="Mercedes-Benz V-Klasse">
             </div>
@@ -133,18 +103,18 @@
                 <p>Premium-Van für Gruppenreisen, Flughafentransfers und Familienausflüge mit komfortabler Ausstattung.</p>
                 <span class="vehicle-link">Jetzt anfragen →</span>
             </div>
-        </div>
-        <div class="vehicle">
+        </a>
+        <a href="index.html#kontakt?fahrzeug=pkw&modell=Volvo+XC60" class="vehicle">
             <div class="vehicle-img-wrap">
                 <img src="images/2025-Volvo-XC60-White-Live.webp" alt="Volvo XC60">
             </div>
             <div class="vehicle-body">
                 <span class="vehicle-label">Neu seit Juli 2024</span>
                 <h3>Volvo XC60</h3>
-                <p>Elegantes SUV mit moderner Sicherheitstechnologie – perfekt für Businessfahrten und längere Strecken.</p>
+                <p>Eleganter SUV mit moderner Sicherheitstechnologie. Perfekt für Businessfahrten und längere Strecken.</p>
                 <span class="vehicle-link">Jetzt anfragen →</span>
             </div>
-        </div>
+        </a>
     </div>
 </section>
 
@@ -189,6 +159,36 @@
                 <span class="vehicle-link">9-Sitzer ansehen →</span>
             </div>
         </a>
+    </div>
+</section>
+
+<!-- Vertrauens-/Vorteile-Section, gleiches Layout-Pattern wie #anforderungen auf index.html -->
+<section id="vorteile" class="anforderungen-section">
+    <div class="anforderungen-layout">
+        <div class="anforderungen-intro">
+            <p class="eyebrow">Warum wir</p>
+            <h2>Warum Kunden uns vertrauen</h2>
+            <p>Seit über 60 Jahren als Familienbetrieb in Herbertingen für Sie da – persönlich, unkompliziert und zuverlässig.</p>
+        </div>
+        <ul class="anforderungen-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.6L21 9l-5 4.4L17.4 21 12 17l-5.4 4L8 13.4 3 9l6.6-.4z"/></svg>
+                <div><strong>Über 60 Jahre Erfahrung</strong><span>Familienbetrieb mit langjähriger Erfahrung in der Region Herbertingen</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6zm0 4a3 3 0 100 6 3 3 0 000-6z"/></svg>
+                <div><strong>Vollkasko inklusive</strong><span>Alle Fahrzeuge sind standardmäßig vollkaskoversichert</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C12.85 21 3 11.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+                <div><strong>Persönliche Beratung</strong><span>Direkter Ansprechpartner statt Callcenter. Wir kennen unsere Fahrzeuge</span></div>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
+                <div><strong>Kurzfristig verfügbar</strong><span>Auch spontane Anfragen sind bei uns oft noch kurzfristig möglich</span></div>
+            </li>
+        </ul>
+        <a href="index.html#kontakt" class="button anforderungen-cta">Jetzt anfragen</a>
     </div>
 </section>
 
