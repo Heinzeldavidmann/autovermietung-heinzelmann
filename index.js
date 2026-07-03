@@ -602,7 +602,10 @@ function setupCookieConsent() {
     `;
     document.body.appendChild(banner);
 
-    setTimeout(() => banner.classList.add('cookie-consent-visible'), 100);
+    setTimeout(() => {
+        banner.classList.add('cookie-consent-visible');
+        stackBannersOnMobile();
+    }, 100);
 
     function dismiss(value) {
         localStorage.setItem(CONSENT_KEY, value);
@@ -813,14 +816,34 @@ function showClosedBanner(message) {
   `;
   document.body.appendChild(banner);
 
-  setTimeout(() => banner.classList.add('closed-banner-visible'), 100);
+  setTimeout(() => {
+    banner.classList.add('closed-banner-visible');
+    stackBannersOnMobile();
+  }, 100);
 
   banner.querySelector('.closed-banner-close').addEventListener('click', () => {
     banner.classList.remove('closed-banner-visible');
     sessionStorage.setItem('closedBannerDismissed', '1');
-    setTimeout(() => banner.remove(), 400);
+    setTimeout(() => {
+      banner.remove();
+      stackBannersOnMobile();
+    }, 400);
   });
 }
+
+function stackBannersOnMobile() {
+  if (window.innerWidth > 600) return;
+  const cookieBanner = document.getElementById('cookie-consent-banner');
+  const closedBanner = document.getElementById('closed-banner');
+  if (!cookieBanner) return;
+  if (closedBanner && closedBanner.classList.contains('closed-banner-visible')) {
+    const h = closedBanner.offsetHeight;
+    cookieBanner.style.bottom = h + 'px';
+  } else {
+    cookieBanner.style.bottom = '';
+  }
+}
+window.addEventListener('resize', stackBannersOnMobile);
 
 // ── 10. Custom-Select-Sync ──
 // Die echten <select>-Felder (#fahrzeug, #getriebe) sind unsichtbar; sichtbar ist

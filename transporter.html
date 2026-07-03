@@ -57,20 +57,48 @@ document.addEventListener('DOMContentLoaded', function () {
     prevBtn.addEventListener('click', () => goTo(current - 1));
     nextBtn.addEventListener('click', () => goTo(current + 1));
 
-    let touchStartX = 0;
+    let touchStartX = 0, touchStartY = 0, touchLocked = false;
     slider.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchLocked = false;
     }, { passive: true });
+    slider.addEventListener('touchmove', (e) => {
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
+        if (!touchLocked) touchLocked = dx > dy ? 'h' : 'v';
+        if (touchLocked === 'h') e.preventDefault();
+    }, { passive: false });
     slider.addEventListener('touchend', (e) => {
         const diff = touchStartX - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
-    }, { passive: true });
+    });
 
     window.addEventListener('resize', () => {
         current = Math.min(current, maxIndex());
         buildDots();
         goTo(current);
     });
+
+    function setupPriceToggles() {
+        document.querySelectorAll('.subpage-spec-card').forEach(card => {
+            if (card.querySelector('.spec-price-toggle')) return;
+            const priceRow = card.querySelector('.spec-price-row');
+            const btn = card.querySelector('.spec-card-btn');
+            if (!priceRow || !btn) return;
+            const toggle = document.createElement('button');
+            toggle.className = 'spec-price-toggle';
+            toggle.type = 'button';
+            toggle.innerHTML = 'Preise anzeigen <span class="spec-price-toggle-arrow" aria-hidden="true">▾</span>';
+            toggle.addEventListener('click', () => {
+                const open = card.classList.toggle('prices-open');
+                toggle.innerHTML = (open ? 'Preise ausblenden' : 'Preise anzeigen') +
+                    ' <span class="spec-price-toggle-arrow" aria-hidden="true">▾</span>';
+            });
+            card.insertBefore(toggle, btn);
+        });
+    }
+    setupPriceToggles();
 
     buildDots();
     goTo(0);

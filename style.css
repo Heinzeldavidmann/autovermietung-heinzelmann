@@ -1065,6 +1065,20 @@ footer {
     .cookie-consent-actions .button {
         width: 100%;
     }
+
+    #closed-banner {
+        top: auto;
+        bottom: 0;
+        transform: translateX(-50%) translateY(120px);
+        width: 100vw;
+        border-radius: 0;
+    }
+    #closed-banner.closed-banner-visible {
+        transform: translateX(-50%) translateY(0);
+    }
+    .closed-banner-inner {
+        border-radius: 0;
+    }
 }
 
 form label {
@@ -2985,20 +2999,29 @@ form:not(.inquiry-form) button:hover {
     }
 
     header .primary-nav {
-        display: none;
+        display: block;
         position: fixed;
         top: calc(var(--header-offset) + var(--utility-height));
         left: 0;
         right: 0;
         width: 100%;
-        overflow: visible;
-        padding: 12px 14px;
+        overflow: hidden;
+        padding: 0 16px;
         background-color: #e60000;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+        max-height: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.28s ease,
+                    padding 0.38s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     header.nav-open .primary-nav {
-        display: block;
+        max-height: 400px;
+        opacity: 1;
+        pointer-events: auto;
+        padding: 16px 16px 20px;
     }
 
     header .primary-nav::before,
@@ -3008,14 +3031,34 @@ form:not(.inquiry-form) button:hover {
 
     header .primary-nav ul {
         width: 100%;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 10px 12px;
         align-items: stretch;
-        gap: 10px;
     }
 
+    header .primary-nav ul li:nth-child(1) { grid-column: 1; grid-row: 1; }
+    header .primary-nav ul li:nth-child(2) { grid-column: 1; grid-row: 2; }
+    header .primary-nav ul li:nth-child(3) { grid-column: 1; grid-row: 3; }
+    header .primary-nav ul li:nth-child(4) { grid-column: 2; grid-row: 1; }
+    header .primary-nav ul li:nth-child(5) { grid-column: 2; grid-row: 2; }
+
     header .primary-nav ul li a {
-        padding: 12px 14px;
-        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        background: rgba(255, 255, 255, 0.12);
+        transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    header .primary-nav ul li a:hover {
+        background: #ffffff;
+        color: #e60000;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .timeline {
@@ -3217,10 +3260,6 @@ form:not(.inquiry-form) button:hover {
         gap: 0.75rem;
     }
 
-    nav ul li a {
-        padding: 8px 12px;
-    }
-
     .vehicle-slide {
         width: 240px;
         padding: 0.75rem;
@@ -3261,9 +3300,13 @@ form:not(.inquiry-form) button:hover {
     }
 
     section {
-        margin: 18px 12px;
-        padding: 24px 18px;
-        border-radius: 20px;
+        margin: 18px 0;
+        padding: 24px 20px;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: hidden;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
     .hero-media-card {
@@ -3402,6 +3445,13 @@ form:not(.inquiry-form) button:hover {
     gap: 0;
     align-items: start;
     margin-top: 32px;
+    min-width: 0;
+}
+
+.preise-intro-layout > * {
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .preise-col-label {
@@ -3547,6 +3597,9 @@ form:not(.inquiry-form) button:hover {
     .preise-pdf-col {
         border-left: none;
         padding-left: 0;
+    }
+    .preise-nav-headline {
+        font-size: 1.3rem;
     }
 }
 
@@ -3735,6 +3788,7 @@ mark.spec-highlight {
     overflow: visible;
     max-width: 100%;
     margin: 0 auto;
+    touch-action: pan-y;
 }
 
 .spec-slider {
@@ -3742,6 +3796,7 @@ mark.spec-highlight {
     gap: 24px;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
+    touch-action: pan-y;
 }
 
 .spec-slider .subpage-spec-card {
@@ -3820,6 +3875,68 @@ mark.spec-highlight {
     .spec-slider .subpage-spec-card {
         /* 1 card + 40px peek of the 2nd */
         flex: 0 0 calc(100% - 40px);
+    }
+}
+
+/* ── Preis-Toggle auf Mobile (bis Tablet hochkant) ── */
+@media (max-width: 768px) {
+    .spec-price-row {
+        max-height: 0;
+        overflow: hidden;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 0;
+        opacity: 0;
+        transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.25s ease,
+                    padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .subpage-spec-card.prices-open .spec-price-row {
+        max-height: 200px;
+        opacity: 1;
+        padding: 16px;
+    }
+
+    .spec-price-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        background: #f8f9fa;
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-dark);
+        cursor: pointer;
+        transition: background var(--transition), border-color var(--transition);
+    }
+
+    .spec-price-toggle:hover {
+        background: var(--color-border);
+    }
+
+    .spec-price-toggle-arrow {
+        display: inline-block;
+        transition: transform 0.3s ease;
+        font-style: normal;
+    }
+
+    .subpage-spec-card.prices-open .spec-price-toggle-arrow {
+        transform: rotate(180deg);
+    }
+}
+
+@media (min-width: 769px) {
+    .spec-price-toggle {
+        display: none;
     }
 }
 
