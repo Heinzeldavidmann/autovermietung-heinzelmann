@@ -3934,6 +3934,20 @@ mark.spec-highlight {
     }
 }
 
+@media (max-width: 768px) {
+    .button-secondary.spec-card-btn {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(230, 0, 0, 0.30);
+    }
+
+    .button-secondary.spec-card-btn:hover {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+    }
+}
+
 @media (min-width: 769px) {
     .spec-price-toggle {
         display: none;
