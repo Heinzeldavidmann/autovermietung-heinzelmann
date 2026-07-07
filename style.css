@@ -81,7 +81,6 @@ section {
     background-color: white;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-soft);
-    font-size: 1.1em;
 }
 
 section img {
@@ -2811,21 +2810,6 @@ form:not(.inquiry-form) button:hover {
 }
 
 @media (max-width: 1024px) {
-    header {
-        padding: 0 20px;
-    }
-
-    header nav {
-        padding-right: 0;
-    }
-
-
-    section {
-        padding: 28px;
-    }
-}
-
-@media (max-width: 1024px) {
     body {
         --header-offset: 72px;
         --utility-height: 42px;
@@ -2836,8 +2820,16 @@ form:not(.inquiry-form) button:hover {
         padding: 0 24px;
     }
 
+    header nav {
+        padding-right: 0;
+    }
+
     header .logo {
         margin-bottom: 0;
+    }
+
+    section {
+        padding: 28px;
     }
 }
 
