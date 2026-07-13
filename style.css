@@ -2921,7 +2921,8 @@ form:not(.inquiry-form) button:hover {
 }
 
 @media (max-width: 768px) {
-    .hero-media {
+    .hero-media,
+    .hero-logo-panel {
         display: none;
     }
 
@@ -3262,7 +3263,7 @@ form:not(.inquiry-form) button:hover {
     }
 
     .hero-section {
-        padding: 32px 16px 20px;
+        padding: 32px 16px 4px;
     }
 
     .hero-content h1,
@@ -3283,7 +3284,20 @@ form:not(.inquiry-form) button:hover {
     }
 
     .hero-trust {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .trust-item {
+        padding: 12px 10px;
+    }
+
+    .trust-item strong {
+        font-size: 1.05rem;
+    }
+
+    .trust-item span {
+        font-size: 0.78rem;
     }
 
     .rental-card-grid,
@@ -3412,9 +3426,9 @@ form:not(.inquiry-form) button:hover {
 
 @media (max-width: 480px) {
     .footer-inner {
-        grid-template-columns: 1fr 1fr 1.4fr;
-        padding: 24px 12px 20px;
-        gap: 12px;
+        grid-template-columns: 1fr;
+        padding: 24px 20px 20px;
+        gap: 20px;
     }
     .footer-brand {
         display: none;
@@ -3422,12 +3436,21 @@ form:not(.inquiry-form) button:hover {
     .footer-links strong,
     .footer-contact strong,
     .footer-hours strong {
-        font-size: 0.62rem;
+        font-size: 0.82rem;
     }
     .footer-links li a,
     .footer-contact li,
     .footer-hours li span {
-        font-size: 0.78rem;
+        font-size: 0.88rem;
+    }
+}
+
+@media (max-width: 390px) {
+    .trust-item strong {
+        font-size: 0.92rem;
+    }
+    .trust-item span {
+        font-size: 0.7rem;
     }
 }
 
@@ -3806,8 +3829,8 @@ mark.spec-highlight {
 }
 
 .spec-slider-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 2px solid var(--color-border);
     background: var(--color-surface);

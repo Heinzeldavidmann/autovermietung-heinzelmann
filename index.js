@@ -632,6 +632,7 @@ function setupMapConsent() {
             iframe.src = src;
             iframe.referrerPolicy = 'no-referrer-when-downgrade';
             iframe.setAttribute('loading', 'lazy');
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
             iframe.classList.add(...placeholder.classList);
             iframe.classList.remove('map-consent-placeholder');
             placeholder.replaceWith(iframe);
@@ -802,18 +803,33 @@ function showClosedBanner(message) {
 
   const banner = document.createElement('div');
   banner.id = 'closed-banner';
-  banner.innerHTML = `
-    <div class="closed-banner-inner">
-      <span class="closed-banner-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>
-      </span>
-      <div class="closed-banner-text">
-        <strong>Aktuell außerhalb der Öffnungszeiten</strong>
-        <span>${message}</span>
-      </div>
-      <button class="closed-banner-close" aria-label="Hinweis schließen">✕</button>
-    </div>
-  `;
+
+  const inner = document.createElement('div');
+  inner.className = 'closed-banner-inner';
+
+  const iconWrap = document.createElement('span');
+  iconWrap.className = 'closed-banner-icon';
+  iconWrap.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 11h-4a1 1 0 010-2h3V7a1 1 0 012 0z"/></svg>';
+
+  const textWrap = document.createElement('div');
+  textWrap.className = 'closed-banner-text';
+  const heading = document.createElement('strong');
+  heading.textContent = 'Aktuell außerhalb der Öffnungszeiten';
+  const msg = document.createElement('span');
+  msg.textContent = message;
+  textWrap.appendChild(heading);
+  textWrap.appendChild(msg);
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'closed-banner-close';
+  closeBtn.setAttribute('aria-label', 'Hinweis schließen');
+  closeBtn.textContent = '✕';
+
+  inner.appendChild(iconWrap);
+  inner.appendChild(textWrap);
+  inner.appendChild(closeBtn);
+  banner.appendChild(inner);
+
   document.body.appendChild(banner);
 
   setTimeout(() => {
@@ -821,7 +837,7 @@ function showClosedBanner(message) {
     stackBannersOnMobile();
   }, 100);
 
-  banner.querySelector('.closed-banner-close').addEventListener('click', () => {
+  closeBtn.addEventListener('click', () => {
     banner.classList.remove('closed-banner-visible');
     sessionStorage.setItem('closedBannerDismissed', '1');
     setTimeout(() => {
