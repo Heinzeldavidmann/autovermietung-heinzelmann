@@ -640,6 +640,134 @@ function setupMapConsent() {
     });
 }
 
+// ── 12. Scroll-Reveal: Sektionen und Cards beim Scrollen sanft einblenden ──
+// Elemente mit .reveal werden per IntersectionObserver beobachtet.
+// Elemente in derselben .reveal-group werden als Gruppe behandelt:
+// sobald eines davon sichtbar wird, löst die gesamte Gruppe gestaffelt aus
+// (Reihenfolge nach DOM-Position, nicht nach Viewport-Nähe).
+function setupScrollReveal() {
+    const targets = document.querySelectorAll('.reveal');
+    if (!targets.length) return;
+
+    function isInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+
+    // Elemente ohne Gruppe werden einzeln beobachtet
+    const singles = [];
+    // Gruppen: Map von Container-Element -> Array der Kind-Elemente
+    const groups = new Map();
+
+    targets.forEach(el => {
+        const groupEl = el.closest('.reveal-group');
+        if (groupEl) {
+            if (!groups.has(groupEl)) groups.set(groupEl, []);
+            groups.get(groupEl).push(el);
+        } else {
+            singles.push(el);
+        }
+    });
+
+    // Einzelne Elemente: wenn mehrere gleichzeitig sichtbar werden (z. B. spec-cards
+    // die alle auf einmal im Viewport auftauchen), nach DOM-Reihenfolge staffeln.
+    let singleBatchTimer = null;
+    const singleBatch = [];
+
+    const singleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                singleBatch.push(entry.target);
+                singleObserver.unobserve(entry.target);
+            }
+        });
+        // Kurz warten bis alle gleichzeitigen Einträge gesammelt sind, dann staffeln
+        clearTimeout(singleBatchTimer);
+        singleBatchTimer = setTimeout(() => {
+            // Nach DOM-Reihenfolge sortieren
+            singleBatch.sort((a, b) => {
+                const pos = a.compareDocumentPosition(b);
+                return pos & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+            });
+            singleBatch.forEach((el, i) => {
+                setTimeout(() => el.classList.add('revealed'), i * 100);
+            });
+            singleBatch.length = 0;
+        }, 30);
+    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+
+    singles.forEach(el => singleObserver.observe(el));
+
+    // Gruppen: Container beobachten, bei Sichtbarkeit alle Kids der Reihe nach auslösen
+    groups.forEach((children, container) => {
+        let fired = false;
+
+        function fireGroup() {
+            if (fired) return;
+            fired = true;
+            children.forEach((el, i) => {
+                setTimeout(() => el.classList.add('revealed'), i * 120);
+            });
+        }
+
+        const groupObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    groupObserver.unobserve(container);
+                    fireGroup();
+                }
+            });
+        }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+
+        groupObserver.observe(container);
+    });
+
+    // Nach zwei Frames: alles was bereits im Viewport liegt sofort einblenden
+    // (deckt den Fall ab dass die Seite direkt auf einem Anker wie #kontakt geladen wird)
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            targets.forEach(el => {
+                if (!el.classList.contains('revealed') && isInViewport(el)) {
+                    el.classList.add('revealed');
+                }
+            });
+        });
+    });
+}
+
+// ── 13. Counter-Animation: Zahlen zählen hoch wenn sie ins Bild kommen ──
+// Elemente mit data-count="60" zählen von 0 auf den Zielwert hoch.
+// Das Suffix (z. B. "+") wird aus dem ursprünglichen Text-Inhalt übernommen.
+function setupCounterAnimation() {
+    const counters = document.querySelectorAll('[data-count]');
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            observer.unobserve(entry.target);
+
+            const el = entry.target;
+            const target = parseInt(el.dataset.count, 10);
+            const suffix = el.dataset.countSuffix || '';
+            const duration = 1400;
+            const start = performance.now();
+
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease-out cubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(eased * target) + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(el => observer.observe(el));
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   setupFaqAccordion();
   setupMobileNavToggle();
@@ -649,6 +777,8 @@ window.addEventListener('DOMContentLoaded', () => {
   setupMapConsent();
   setupCookieConsent();
   prefillFormFromUrl();
+  setupScrollReveal();
+  setupCounterAnimation();
 });
 
 // ── 9. Öffnungszeiten-Anzeige (in der Utility Bar direkt unter dem Header) ──
@@ -897,3 +1027,32 @@ document.querySelectorAll('.inquiry-form input[type="time"]').forEach(input => {
   input.classList.add('is-empty');
   input.addEventListener('change', () => input.classList.remove('is-empty'));
 });
+
+// ── Aktiver Nav-Link ──
+// Vergleicht die aktuelle URL mit den href-Attributen der Nav-Links und
+// setzt die Klasse nav-active auf den passenden Link.
+(function markActiveNavLink() {
+  const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.primary-nav a').forEach(link => {
+    const href = link.getAttribute('href');
+    // Reine Anker-Links (#kontakt) und gemischte (index.html#kontakt) überspringen
+    if (href.startsWith('#') || href.includes('#')) return;
+    const linkFile = href.split('/').pop() || 'index.html';
+    if (linkFile === currentFile) {
+      link.classList.add('nav-active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+})();
+
+// ── Back to top ──
+(function setupBackToTop() {
+  const btn = document.querySelector('.back-to-top');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();

@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://autovermietung-heinzelmann.de/sitemap.xml
+LLMs: https://autovermietung-heinzelmann.de/llms.txt

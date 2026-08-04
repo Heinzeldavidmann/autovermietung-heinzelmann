@@ -14,6 +14,7 @@
     <meta property="og:locale" content="de_DE">
     <link rel="stylesheet" href="style.css">
     <script src="index.js" defer></script>
+    <link rel="canonical" href="https://autovermietung-heinzelmann.de/fuhrpark.html">
 </head>
 
 <body>
@@ -61,13 +62,14 @@
         </ul>
     </nav>
 </header>
+<main>
 
 <!--
     Fahrzeugtyp-Finder: der Container #finder-steps startet leer und wird komplett
     per JavaScript befüllt (siehe setupFuhrparkFinder + FINDER_TREE/FINDER_RESULTS
     in index.js). Um Fragen/Ergebnisse zu ändern, dort ansetzen, nicht hier im HTML.
 -->
-<section id="finder" class="finder-section">
+<section id="finder" class="reveal finder-section">
     <div class="section-heading">
         <p class="eyebrow">Entscheidungshilfe</p>
         <h2>Welches Fahrzeug passt zu Ihnen?</h2>
@@ -77,7 +79,7 @@
 </section>
 
 <!-- Zeigt zuletzt hinzugekommene Fahrzeuge; Karten sind statisch und müssen hier manuell gepflegt werden -->
-<section id="neuzugaenge">
+<section class="reveal" id="neuzugaenge">
     <div class="section-heading">
         <p class="eyebrow">Neu im Fuhrpark</p>
         <h2>Frisch eingetroffen</h2>
@@ -92,7 +94,7 @@
                 <span class="vehicle-label">Neu seit Dez. 2025</span>
                 <h3>Mercedes-Benz Citan</h3>
                 <p>Kompakter Kastenwagen mit großem Ladevolumen. Ideal für Handwerksbetriebe und kleine Umzüge.</p>
-                <span class="vehicle-link">Jetzt anfragen →</span>
+                <span class="vehicle-link">Jetzt anfragen</span>
             </div>
         </a>
         <a href="index.html#kontakt?fahrzeug=bus&modell=Mercedes-Benz+V-Klasse" class="vehicle">
@@ -106,7 +108,7 @@
                 <span class="vehicle-label">Neu seit März 2025</span>
                 <h3>Mercedes-Benz V-Klasse</h3>
                 <p>Premium-Van für Gruppenreisen, Flughafentransfers und Familienausflüge mit komfortabler Ausstattung.</p>
-                <span class="vehicle-link">Jetzt anfragen →</span>
+                <span class="vehicle-link">Jetzt anfragen</span>
             </div>
         </a>
         <a href="index.html#kontakt?fahrzeug=pkw&modell=Volvo+XC60" class="vehicle">
@@ -117,14 +119,14 @@
                 <span class="vehicle-label">Neu seit Juli 2024</span>
                 <h3>Volvo XC60</h3>
                 <p>Eleganter SUV mit moderner Sicherheitstechnologie. Perfekt für Businessfahrten und längere Strecken.</p>
-                <span class="vehicle-link">Jetzt anfragen →</span>
+                <span class="vehicle-link">Jetzt anfragen</span>
             </div>
         </a>
     </div>
 </section>
 
 <!-- Die 3 Fahrzeug-Hauptkategorien, verlinkt auf die jeweiligen Subpages -->
-<section id="fuhrpark">
+<section class="reveal" id="fuhrpark">
     <div class="section-heading">
         <p class="eyebrow">Fuhrpark</p>
         <h2>Mobilität für jeden Bedarf</h2>
@@ -142,7 +144,7 @@
                 <span class="vehicle-label">Mobilität &amp; Reise</span>
                 <h3>PKW</h3>
                 <p>Vom Kleinwagen bis zur geräumigen Reise-Limousine – komfortabel und flexibel. <br> Für Geschäftsreisen, Ausflüge oder als Unfallersatzwagen.</p>
-                <span class="vehicle-link">PKW ansehen →</span>
+                <span class="vehicle-link">PKW ansehen</span>
             </div>
         </a>
         <a href="transporter.html" class="vehicle">
@@ -156,7 +158,7 @@
                 <span class="vehicle-label">Umzug &amp; Transport</span>
                 <h3>Transporter</h3>
                 <p>Für kleinere Transportvorhaben, Umzüge und gewerbliche Einsätze mit viel Laderaum.</p>
-                <span class="vehicle-link">Transporter ansehen →</span>
+                <span class="vehicle-link">Transporter ansehen</span>
             </div>
         </a>
         <a href="9sitzer.html" class="vehicle">
@@ -170,14 +172,14 @@
                 <span class="vehicle-label">Gruppen &amp; Vereinsausflüge</span>
                 <h3>9-Sitzer</h3>
                 <p>Platz für bis zu 9 Personen in verschiedenen Laderaumversionen – ideal für Vereins- oder Familienausflüge und Urlaubsreisen.</p>
-                <span class="vehicle-link">9-Sitzer ansehen →</span>
+                <span class="vehicle-link">9-Sitzer ansehen</span>
             </div>
         </a>
     </div>
 </section>
 
 <!-- Vertrauens-/Vorteile-Section, gleiches Layout-Pattern wie #anforderungen auf index.html -->
-<section id="vorteile" class="anforderungen-section">
+<section id="vorteile" class="reveal anforderungen-section">
     <div class="anforderungen-layout">
         <div class="anforderungen-intro">
             <p class="eyebrow">Warum wir</p>
@@ -206,6 +208,7 @@
     </div>
 </section>
 
+</main>
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
@@ -245,5 +248,7 @@
         <p>Powered by <a href="https://cxunity.de" target="_blank" rel="noopener">CXUnity</a></p>
     </div>
 </footer>
+<button class="back-to-top" aria-label="Nach oben scrollen" title="Nach oben">↑</button>
+
 </body>
 </html>

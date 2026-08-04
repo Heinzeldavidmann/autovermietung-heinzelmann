@@ -1,8 +1,10 @@
 <!--
-    Achtung: [PLATZHALTER IN ECKIGEN KLAMMERN] noch offen (Aufsichtsbehörde,
-    ggf. Analytics-Abschnitt sobald Google Analytics eingebaut wird). Sobald ein
-    Tracking-Dienst live geht, darf er erst nach Zustimmung im Cookie-Banner laden
-    (siehe setupCookieConsent in index.js) – Text hier entsprechend ergänzen.
+    Sobald ein Tracking-Dienst (z. B. Google Analytics) live geht, muss Abschnitt 7
+    ergänzt werden: Anbieter, Zweck, Rechtsgrundlage (Art. 6 Abs. 1 lit. a DSGVO),
+    Speicherdauer, Opt-out. Der Dienst darf erst nach Cookie-Banner-Zustimmung laden
+    (siehe setupCookieConsent in index.js).
+    Sobald das Kontaktformular aktiviert wird, muss Abschnitt 4 um den konkreten
+    Versandweg (z. B. Netlify Forms, E-Mail-Anbieter, Sitz) ergänzt werden.
 -->
 <!DOCTYPE html>
 <html lang="de">
@@ -14,6 +16,7 @@
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js" defer></script>
+    <link rel="canonical" href="https://autovermietung-heinzelmann.de/datenschutz.html">
 </head>
 
 <body>
@@ -61,6 +64,7 @@
         </ul>
     </nav>
 </header>
+<main>
 
 <section class="legal-section">
     <div class="section-heading">
@@ -85,15 +89,15 @@
         <h3>3. Hosting</h3>
         <p>
             Diese Website wird über GitHub Pages gehostet, einen Dienst der GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.
-            Beim Aufruf der Website werden automatisch technische Verbindungsdaten (z. B. IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, verwendeter Browser) durch den Hosting-Anbieter verarbeitet, um die Website auszuliefern.
-            [FALLS ABWEICHEND, z. B. bei Wechsel zu Netlify: HOSTING-ANBIETER UND ADRESSE ANPASSEN]
+            Beim Aufruf der Website werden automatisch technische Verbindungsdaten (z. B. IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, verwendeter Browser) durch den Hosting-Anbieter verarbeitet, um die Website auszuliefern. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und stabilen Websitebetrieb).
+            Weitere Informationen zum Datenschutz bei GitHub finden Sie unter <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement</a>.
         </p>
 
         <h3>4. Kontaktformular</h3>
         <p>
-            Wenn Sie uns über das Kontaktformular eine Anfrage zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.
-            Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist.
-            [ANGABE ZUM VERSANDWEG DES FORMULARS ERGÄNZEN, z. B. Netlify Forms/E-Mail-Versand, INKL. ANBIETER UND SITZ]
+            Auf unserer Website steht ein Kontaktformular bereit, über das Sie uns eine Anfrage zukommen lassen können. Die im Formular eingegebenen Daten (z. B. Name, Telefonnummer, E-Mail-Adresse, Wunschfahrzeug und Reisezeitraum) werden ausschließlich zur Bearbeitung Ihrer Anfrage und für etwaige Rückfragen verwendet. Eine Weitergabe an Dritte erfolgt nicht.
+            Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Kundenanfragen).
+            Bitte beachten Sie: Das Kontaktformular befindet sich derzeit noch in der technischen Einrichtung. Bis zur Aktivierung des Versandwegs werden über das Formular übermittelte Daten nicht automatisch verarbeitet oder gespeichert. Alternativ erreichen Sie uns jederzeit direkt per E-Mail an info@autovermietung-heinzelmann.de oder telefonisch unter 07586 / 9213-0.
         </p>
 
         <h3>5. Google Maps</h3>
@@ -110,25 +114,29 @@
             Sie können Ihre Auswahl jederzeit ändern, indem Sie die gespeicherten Website-Daten Ihres Browsers für diese Seite löschen.
         </p>
 
-        <h3>7. Web-Analyse [FALLS GENUTZT, z. B. Google Analytics]</h3>
-        <p>
-            [PLATZHALTER: Sobald ein Analyse-Dienst wie Google Analytics eingebunden wird, muss hier der genaue Anbieter, Zweck der Verarbeitung, Rechtsgrundlage (i. d. R. Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO), Speicherdauer sowie ein Link zur Datenschutzerklärung und den Opt-out-Möglichkeiten des Anbieters ergänzt werden. Der Dienst darf technisch erst nach erteilter Einwilligung im Cookie-Banner geladen werden.]
-        </p>
-
-        <h3>8. Ihre Rechte</h3>
+        <h3>7. Ihre Rechte</h3>
         <p>
             Sie haben jederzeit das Recht auf Auskunft über Ihre bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger sowie den Zweck der Datenverarbeitung (Art. 15 DSGVO). Ihnen steht außerdem ein Recht auf Berichtigung (Art. 16 DSGVO), Löschung (Art. 17 DSGVO), Einschränkung der Verarbeitung (Art. 18 DSGVO), Datenübertragbarkeit (Art. 20 DSGVO) sowie ein Widerspruchsrecht gegen die Verarbeitung (Art. 21 DSGVO) zu.
             Erteilte Einwilligungen können Sie jederzeit mit Wirkung für die Zukunft widerrufen. Zudem besteht ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde.
         </p>
 
-        <h3>9. Zuständige Aufsichtsbehörde</h3>
-        <p>[NAME UND ANSCHRIFT DER ZUSTÄNDIGEN LANDESDATENSCHUTZBEHÖRDE EINTRAGEN, z. B. Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg]</p>
+        <h3>8. Zuständige Aufsichtsbehörde</h3>
+        <p>
+            Zuständige Datenschutz-Aufsichtsbehörde für Baden-Württemberg ist:<br>
+            Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg<br>
+            Lautenschlagerstraße 20<br>
+            70173 Stuttgart<br>
+            Telefon: 0711 / 615541-0<br>
+            E-Mail: poststelle@lfdi.bwl.de<br>
+            Website: <a href="https://www.baden-wuerttemberg.datenschutz.de" target="_blank" rel="noopener">www.baden-wuerttemberg.datenschutz.de</a>
+        </p>
 
-        <h3>10. Änderungen dieser Datenschutzerklärung</h3>
-        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen. Stand: [DATUM EINTRAGEN]</p>
+        <h3>9. Änderungen dieser Datenschutzerklärung</h3>
+        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslagen oder bei Änderungen des Dienstes sowie der Datenverarbeitung anzupassen. Stand: August 2026</p>
     </div>
 </section>
 
+</main>
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
@@ -168,6 +176,8 @@
         <p>Powered by <a href="https://cxunity.de" target="_blank" rel="noopener">CXUnity</a></p>
     </div>
 </footer>
+<button class="back-to-top" aria-label="Nach oben scrollen" title="Nach oben">↑</button>
+
 
 </body>
 </html>

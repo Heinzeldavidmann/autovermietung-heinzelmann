@@ -17,16 +17,17 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
+        "@type": ["AutoRental", "LocalBusiness"],
         "name": "Autovermietung Heinzelmann GbR",
-        "description": "PKW, Transporter, LKW, Busse und Anhänger zu fairen Preisen – seit über 60 Jahren Ihr Partner in Oberschwaben.",
+        "description": "Autovermietung Heinzelmann GbR in Herbertingen vermietet PKW, Transporter, LKW, 9-Sitzer Busse und Anhänger. Seit 1963 – über 60 Jahre Erfahrung in der Fahrzeugvermietung in Oberschwaben.",
         "url": "https://autovermietung-heinzelmann.de/",
         "telephone": "+49-7586-9213-0",
         "email": "info@autovermietung-heinzelmann.de",
         "image": "https://autovermietung-heinzelmann.de/images/Au%C3%9Fenwand_Autovermietung_cropped.jpg",
+        "foundingDate": "1963",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Espanstraße 2",
+            "streetAddress": "Saumstraße 2–4",
             "addressLocality": "Herbertingen",
             "postalCode": "88518",
             "addressCountry": "DE"
@@ -36,6 +37,14 @@
             "latitude": 48.0675,
             "longitude": 9.4302
         },
+        "areaServed": [
+            {"@type": "City", "name": "Herbertingen"},
+            {"@type": "City", "name": "Sigmaringen"},
+            {"@type": "City", "name": "Bad Saulgau"},
+            {"@type": "City", "name": "Mengen"},
+            {"@type": "City", "name": "Riedlingen"},
+            {"@type": "AdministrativeArea", "name": "Oberschwaben"}
+        ],
         "openingHoursSpecification": [
             {
                 "@type": "OpeningHoursSpecification",
@@ -57,12 +66,112 @@
             }
         ],
         "priceRange": "€€",
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Fahrzeugvermietung",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {"@type": "Product", "name": "PKW mieten", "description": "Kleinwagen, Mittelklasse und Oberklasse zur tagesweisen Anmietung"}
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {"@type": "Product", "name": "Transporter mieten", "description": "Kastenwagen und Pritschenwagen für Umzüge und Transporte"}
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {"@type": "Product", "name": "9-Sitzer und Bus mieten", "description": "Personentransporter für Gruppenfahrten und Ausflüge"}
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {"@type": "Product", "name": "LKW mieten", "description": "LKW für gewerbliche Transporte und größere Umzüge"}
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {"@type": "Product", "name": "Anhänger mieten", "description": "PKW-Anhänger, Kofferanhänger und Spezialanhänger"}
+                }
+            ]
+        },
         "sameAs": []
     }
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Wie früh sollte ich ein Fahrzeug reservieren?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Wir empfehlen, Ihr gewünschtes Fahrzeug so früh wie möglich zu reservieren. Für Umzüge zum Monatsende oder in der Haupturlaubszeit idealerweise ein bis drei Monate im Voraus. Für Anhänger oder kleinere Transporter reicht oft eine Anfrage wenige Tage vorher."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Wie setzt sich der Mietpreis zusammen?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Der Mietpreis richtet sich nach Fahrzeugtyp, Mietdauer und enthaltenen Freikilometern. Bei längeren Strecken fallen ggf. Zusatzkosten an. Extras wie Umzugszubehör oder zusätzliche Fahrer können den Gesamtpreis beeinflussen. Gerne erstellen wir Ihnen ein individuelles Angebot."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Wie läuft der Bezahlvorgang ab?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Die Bezahlung erfolgt in der Regel bei Fahrzeugübergabe per Kartenzahlung oder in Bar. Bei Mietbeträgen über ca. 250 Euro erheben wir eine Anzahlung von etwa 20 Prozent der Mietsumme."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Gibt es eine Selbstbeteiligung im Schadensfall?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Unsere Fahrzeuge sind standardmäßig vollkaskoversichert. Im Schadensfall fällt eine Selbstbeteiligung an, deren Höhe vom Fahrzeugtyp abhängt. Auf Wunsch können Sie eine Reduzierung der Selbstbeteiligung dazubuchen."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Was muss ich tun, wenn ich einen Unfall oder Schaden habe?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Bitte informieren Sie uns umgehend telefonisch. Sichern Sie die Unfallstelle und ziehen Sie bei Personenschäden die Polizei hinzu. Fotos und ein Unfallbericht helfen bei der reibungslosen Abwicklung über die Versicherung."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Darf ich mit dem Mietfahrzeug ins Ausland fahren?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Fahrten ins europäische Ausland sind grundsätzlich möglich, müssen jedoch vorab mit uns abgestimmt werden. Für Fahrten außerhalb der EU können zusätzliche Genehmigungen erforderlich sein."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Muss ich das Fahrzeug vollgetankt zurückbringen?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ja. Alle Fahrzeuge werden vollgetankt übergeben und müssen auch vollgetankt zurückgegeben werden. Bitte den Tankbeleg aufbewahren, er ist bei Rückgabe vorzulegen."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Kann ich meine Reservierung stornieren?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ja, Sie können Ihre Reservierung stornieren. Wir bitten um rechtzeitige Mitteilung. Bei kurzfristigen Stornierungen weniger als 24 Stunden vor Mietbeginn behalten wir uns vor, eine Ausfallgebühr zu berechnen."
+                }
+            }
+        ]
+    }
+    </script>
+    <link rel="canonical" href="https://autovermietung-heinzelmann.de/">
 </head>
 
 <body>
+<a href="#home" class="skip-link">Zum Inhalt springen</a>
 <!-- Utility Bar -->
 <div class="utility-bar" role="banner" aria-label="Schnellzugriff">
     <span class="utility-item hours" id="open-status" aria-live="polite">
@@ -107,15 +216,16 @@
         </ul>
     </nav>
 </header>
+<main>
 
 <!-- Hero: erste Ansicht beim Laden der Startseite, mit Haupt-CTA -->
 <section id="home" class="hero-section">
     <div class="hero-wrapper">
         <div class="hero-content">
-            <p class="eyebrow">Autovermietung in Herbertingen</p>
+            <p class="eyebrow">Autovermietung in Herbertingen seit 1963</p>
             <h1>Mietwagen, Transporter und 9-Sitzer – schnell, unkompliziert und auf Ihre Bedürfnisse zugeschnitten.</h1>
             <p class="hero-text">
-                Ob Alltagsmobilität, Umzug, Ausflug oder Pannenhilfe: Bei der Autovermietung Heinzelmann finden Sie passende Fahrzeuge, persönliche Beratung und eine direkte Anfrage ohne Umwege.
+                Ob Alltagsmobilität, Umzug, Ausflug oder Pannenhilfe: Bei der Autovermietung Heinzelmann GbR in Herbertingen finden Sie passende Fahrzeuge, persönliche Beratung und eine direkte Anfrage ohne Umwege. Familienbetrieb seit 1963, geführt von Elmar und Gerold Heinzelmann.
             </p>
 
             <div class="hero-actions" aria-label="Schnelleinstieg">
@@ -125,15 +235,15 @@
 
             <div class="hero-trust" aria-label="Kurzüberblick">
                 <div class="trust-item">
-                    <strong>60+</strong>
+                    <strong data-count="60" data-count-suffix="+">60+</strong>
                     <span>Jahre Erfahrung</span>
                 </div>
                 <div class="trust-item">
-                    <strong>75+</strong>
+                    <strong data-count="75" data-count-suffix="+">75+</strong>
                     <span>Fahrzeuge im Fuhrpark</span>
                 </div>
                 <div class="trust-item">
-                    <strong>Bahnhofstraße</strong>
+                    <strong>Saumstraße</strong>
                     <span>Zentral in Herbertingen</span>
                 </div>
             </div>
@@ -154,7 +264,7 @@
 </section>
 
 <!-- Kurzübersicht der 3 Fahrzeug-Hauptkategorien, verlinkt auf pkw.html/transporter.html/9sitzer.html -->
-<section id="fuhrpark">
+<section class="reveal" id="fuhrpark">
     <div class="section-heading">
         <p class="eyebrow">Fuhrpark</p>
         <h2>Mobilität für jeden Bedarf</h2>
@@ -172,7 +282,7 @@
                 <span class="vehicle-label">Mobilität &amp; Reise</span>
                 <h3>PKW</h3>
                 <p>Vom Kleinwagen bis zur geräumigen Reise-Limousine – komfortabel und flexibel. <br> Für Geschäftsreisen, Ausflüge oder als Unfallersatzwagen.</p>
-                <span class="vehicle-link">PKW ansehen →</span>
+                <span class="vehicle-link">PKW ansehen</span>
             </div>
         </a>
         <a href="transporter.html" class="vehicle">
@@ -186,7 +296,7 @@
                 <span class="vehicle-label">Umzug &amp; Transport</span>
                 <h3>Transporter</h3>
                 <p>Für kleinere Transportvorhaben, Umzüge und gewerbliche Einsätze mit viel Laderaum.</p>
-                <span class="vehicle-link">Transporter ansehen →</span>
+                <span class="vehicle-link">Transporter ansehen</span>
             </div>
         </a>
         <a href="9sitzer.html" class="vehicle">
@@ -200,7 +310,7 @@
                 <span class="vehicle-label">Gruppen &amp; Vereinsausflüge</span>
                 <h3>9-Sitzer</h3>
                 <p>Platz für bis zu 9 Personen in verschiedenen Laderaumversionen – ideal für Vereins- oder Familienausflüge und Urlaubsreisen.</p>
-                <span class="vehicle-link">9-Sitzer ansehen →</span>
+                <span class="vehicle-link">9-Sitzer ansehen</span>
             </div>
         </a>
     </div>
@@ -215,7 +325,7 @@
     Wird von "Kontakt"-Links auf allen Seiten per #kontakt angesprungen; Felder können
     zusätzlich über URL-Parameter vorausgefüllt werden (siehe prefillFormFromUrl in index.js).
 -->
-<section id="kontakt" class="inquiry-section" aria-labelledby="inquiry-title">
+<section id="kontakt" class="reveal inquiry-section" aria-labelledby="inquiry-title">
     <div class="inquiry-layout">
         <div class="inquiry-copy">
             <p class="eyebrow">Direkte Anfrage</p>
@@ -298,7 +408,7 @@
                             <input type="date" id="abholung_datum" name="abholung_datum" required>
                         </div>
                         <span class="split-divider"></span>
-                        <input type="time" id="abholung_uhrzeit" name="abholung_uhrzeit" value="09:00" required>
+                        <input type="time" id="abholung_uhrzeit" name="abholung_uhrzeit" value="09:00" required aria-label="Abholzeit">
                     </div>
                 </div>
 
@@ -310,7 +420,7 @@
                             <input type="date" id="rueckgabe_datum" name="rueckgabe_datum" required>
                         </div>
                         <span class="split-divider"></span>
-                        <input type="time" id="rueckgabe_uhrzeit" name="rueckgabe_uhrzeit" value="16:00" required>
+                        <input type="time" id="rueckgabe_uhrzeit" name="rueckgabe_uhrzeit" value="16:00" required aria-label="Rückgabezeit">
                     </div>
                 </div>
 
@@ -333,10 +443,10 @@
 
 <!--
     Standort-Section mit Google-Maps-Karte. Die Karte ist aus Datenschutzgründen NICHT
-    direkt als <iframe> eingebettet, sondern als Klick-Platzhalter (.map-consent-placeholder,
+    direkt als <iframe title="Google Maps Standortkarte"> eingebettet, sondern als Klick-Platzhalter (.map-consent-placeholder,
     siehe setupMapConsent in index.js) – erst ein Klick auf "Karte laden" lädt Google Maps.
 -->
-<section id="anfahrt" class="map-section">
+<section id="anfahrt" class="reveal map-section">
     <div class="section-heading">
         <p class="eyebrow">Standort</p>
         <h2>So finden Sie uns</h2>
@@ -384,7 +494,7 @@
 </section>
 
 <!-- Kundenstimmen-Karussell (3 Karten sichtbar, per Pfeile/Punkte navigierbar, siehe setupTestimonialsSlider in index.js) -->
-<section id="rezensionen">
+<section class="reveal" id="rezensionen">
     <div class="section-heading">
         <p class="eyebrow">Erfahrungen</p>
         <h2>Was unsere Kunden sagen</h2>
@@ -431,7 +541,7 @@
     .faq-extra (hidden) und werden über den Button unten ein-/ausgeblendet.
     Auf-/Zuklappen einzelner Fragen übernimmt setupFaqAccordion() in index.js.
 -->
-<section id="faq">
+<section class="reveal" id="faq">
     <div class="section-heading">
         <p class="eyebrow">Häufige Fragen</p>
         <h2>Was Sie vor der Buchung wissen sollten</h2>
@@ -542,7 +652,7 @@
 </section>
 
 <!-- "So einfach mieten Sie bei uns": Vorteile/Voraussetzungen-Liste, 2-spaltiges Layout (Intro links, Icon-Liste rechts) -->
-<section id="anforderungen" class="anforderungen-section">
+<section id="anforderungen" class="reveal anforderungen-section">
     <div class="anforderungen-layout">
         <div class="anforderungen-intro">
             <p class="eyebrow">Vor der Anmietung</p>
@@ -571,6 +681,7 @@
     </div>
 </section>
 
+</main>
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
@@ -619,6 +730,8 @@
         <p>Powered by <a href="https://cxunity.de" target="_blank" rel="noopener">CXUnity</a></p>
     </div>
 </footer>
+<button class="back-to-top" aria-label="Nach oben scrollen" title="Nach oben">↑</button>
+
 
 </body>
 </html>
