@@ -539,6 +539,10 @@ nav ul li a.nav-active {
     border-color: rgba(255, 255, 255, 0.16);
 }
 
+#neuzugaenge .vehicle-img-wrap {
+    background: transparent;
+}
+
 #neuzugaenge .vehicle:hover {
     border-color: #ffffff;
     box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
@@ -4122,5 +4126,51 @@ mark.spec-highlight {
         width: 40px;
         height: 40px;
         font-size: 1.2rem;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    header .logo img {
+        background-color: white;
+        padding: 6px;
+        border-radius: 8px;
+    }
+
+    body {
+        background-color: #111827;
+        color: #f1f5f9;
+    }
+
+    .site-header {
+        background-color: #1e293b;
+        border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+    .utility-bar {
+        background-color: #0f172a;
+    }
+
+    .vehicle {
+        background: #1e293b;
+        border-color: rgba(255,255,255,0.1);
+    }
+
+    .vehicle-body h3 {
+        color: #f1f5f9;
+    }
+
+    .vehicle-body p {
+        color: #94a3b8;
+    }
+
+    .card {
+        background: #1e293b;
+        border-color: rgba(255,255,255,0.1);
+    }
+
+    footer {
+        background-color: #0f172a;
+        color: #94a3b8;
     }
 }
