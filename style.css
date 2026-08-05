@@ -4131,46 +4131,445 @@ mark.spec-highlight {
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
+
+    /* ── CSS-Variablen im Dark Mode ── */
+    :root {
+        --color-dark: #f0f0f0;
+        --color-text: #e8e8e8;
+        --color-muted: #a0a0a0;
+        --color-bg: #1a1a1a;
+        --color-surface: #242424;
+        --color-surface-soft: #1a1a1a;
+        --color-border: rgba(255, 255, 255, 0.1);
+        --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.4);
+        --shadow-hover: 0 20px 48px rgba(0, 0, 0, 0.55);
+    }
+
+    /* ── Body & Hintergrund ── */
+    body {
+        background: radial-gradient(circle at top left, rgba(230, 0, 0, 0.05), transparent 34rem),
+                    #1a1a1a;
+        color: #e8e8e8;
+    }
+
+    h1, h2 {
+        color: #f0f0f0;
+    }
+
+    /* ── Logo: weißer Hintergrund bleibt, damit das Logo sichtbar ist ── */
     header .logo img {
         background-color: white;
         padding: 6px;
         border-radius: 8px;
     }
 
-    body {
-        background-color: #111827;
-        color: #f1f5f9;
+    /* Footer-Logo ebenfalls */
+    .footer-brand img {
+        background: white;
     }
 
-    .site-header {
-        background-color: #1e293b;
-        border-bottom-color: rgba(255,255,255,0.1);
-    }
-
+    /* ── Header & Navigation ── */
     .utility-bar {
-        background-color: #0f172a;
+        background: #0d0d0d;
     }
 
+    /* ── Sections (weißer Hintergrund → dunkel) ── */
+    section {
+        background-color: #242424;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ── Fahrzeug-Karten ── */
     .vehicle {
-        background: #1e293b;
-        border-color: rgba(255,255,255,0.1);
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .vehicle-img-wrap {
+        background: #1a1a1a;
     }
 
     .vehicle-body h3 {
-        color: #f1f5f9;
+        color: #f0f0f0;
     }
 
     .vehicle-body p {
+        color: #a0a0a0;
+    }
+
+    .vehicle-label {
+        background: rgba(230, 0, 0, 0.18);
+        color: #fca5a5;
+    }
+
+    /* ── Hero ── */
+    .trust-item {
+        background: rgba(36, 36, 36, 0.9);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .trust-item strong {
+        color: #f0f0f0;
+    }
+
+    .trust-item span {
+        color: #a0a0a0;
+    }
+
+    .hero-logo-panel {
+        background: #ffffff;
+    }
+
+    .hero-media-card {
+        background: rgba(36, 36, 36, 0.95);
+    }
+
+    .hero-media-card span {
+        color: #a0a0a0;
+    }
+
+    .hero-media-card strong {
+        color: #f0f0f0;
+    }
+
+    /* ── Rental-Cards (Startseite Fahrzeugkategorien) ── */
+    .rental-card {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .rental-card h3 {
+        color: #f0f0f0;
+    }
+
+    .rental-card p {
+        color: #a0a0a0;
+    }
+
+    .rental-card-label {
+        background: rgba(230, 0, 0, 0.18);
+        color: #fca5a5;
+    }
+
+    .rental-card a {
+        background: rgba(230, 0, 0, 0.15);
+        color: #fca5a5;
+    }
+
+    .rental-card:hover a {
+        background: var(--color-primary);
+        color: #ffffff;
+    }
+
+    /* ── Testimonials ── */
+    .testimonial {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .testimonial p {
+        color: #a0a0a0;
+    }
+
+    .testimonial .author {
+        color: #e8e8e8;
+        border-top-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .testimonials-btn {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #e8e8e8;
+    }
+
+    .testimonials-dot {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ── FAQ ── */
+    .faq-item {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .faq-question {
+        background: #242424;
+        color: #e8e8e8;
+    }
+
+    .faq-question:hover,
+    .faq-question.active {
+        background: rgba(230, 0, 0, 0.12);
+        color: #fca5a5;
+    }
+
+    .faq-answer {
+        background: #1a1a1a;
+        border-top-color: rgba(255, 255, 255, 0.08);
+        color: #a0a0a0;
+    }
+
+    /* ── Anforderungen-Liste ── */
+    .anforderungen-list li {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .anforderungen-list strong {
+        color: #f0f0f0;
+    }
+
+    .anforderungen-list span {
+        color: #a0a0a0;
+    }
+
+    /* ── Fuhrpark-Finder ── */
+    .finder-step {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .finder-step-question {
+        color: #f0f0f0;
+    }
+
+    .finder-option {
+        background: #1a1a1a;
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #e8e8e8;
+    }
+
+    .finder-step-answered {
+        background: #242424;
+    }
+
+    .finder-result {
+        background: rgba(230, 0, 0, 0.1);
+        border-color: rgba(230, 0, 0, 0.25);
+    }
+
+    .finder-result h3 {
+        color: #f0f0f0;
+    }
+
+    .finder-result p {
+        color: #a0a0a0;
+    }
+
+    /* ── Karte (Anfahrt) ── */
+    .map-info {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .map-info-item strong {
+        color: #e8e8e8;
+    }
+
+    .map-info-item span,
+    .map-info-item a {
+        color: #a0a0a0;
+    }
+
+    .map-inline.map-consent-placeholder,
+    .map-standalone.map-consent-placeholder {
+        background: #1a1a1a;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ── Subpage Spec-Cards ── */
+    .subpage-spec-card {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .spec-card-header h3 {
+        color: #f0f0f0;
+    }
+
+    .spec-list li {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .spec-list li span:first-child {
+        color: #a0a0a0;
+    }
+
+    .spec-list li span:last-child {
+        color: #e8e8e8;
+    }
+
+    .spec-price-row {
+        background: #1a1a1a;
+    }
+
+    .spec-disclaimer {
+        background: #1a1a1a;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .spec-slider-btn {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #e8e8e8;
+    }
+
+    .spec-slider-dot {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .button-secondary.spec-card-btn {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #e8e8e8;
+    }
+
+    .button-secondary.spec-card-btn:hover {
+        background: #1a1a1a;
+        color: #fca5a5;
+    }
+
+    /* ── Preis-Toggle (Mobile) ── */
+    .spec-price-toggle {
+        background: #242424;
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #e8e8e8;
+    }
+
+    /* ── Preise-Seite ── */
+    .preise-nav-headline {
+        color: #f1f5f9;
+    }
+
+    .preise-nav-desc {
         color: #94a3b8;
     }
 
-    .card {
-        background: #1e293b;
-        border-color: rgba(255,255,255,0.1);
+    .preise-bullets li {
+        color: #e2e8f0;
     }
 
+    .preise-pdf-col {
+        border-left-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .preise-pdf-slider .listenvorschau {
+        background: #242424;
+    }
+
+    /* ── Inquiry-Section (dunkler Verlauf → grau-schwarz) ── */
+    .inquiry-section {
+        background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+    }
+
+    /* ── Kontaktformular (heller Grauton, hebt sich von der dunklen Section ab) ── */
+    .inquiry-form {
+        background: #3a3a3a;
+        color: #f0f0f0;
+    }
+
+    .inquiry-form label {
+        color: #f0f0f0;
+    }
+
+    .inquiry-form input,
+    .inquiry-form textarea {
+        background: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #f0f0f0;
+    }
+
+    .inquiry-form input::placeholder,
+    .inquiry-form textarea::placeholder {
+        color: #555555;
+    }
+
+    .inquiry-form select {
+        background-color: #2a2a2a !important;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #f0f0f0 !important;
+    }
+
+    .inquiry-form select option {
+        background-color: #3a3a3a;
+        color: #f0f0f0;
+    }
+
+    .custom-select-display {
+        background-color: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #666666;
+    }
+
+    .custom-select-display.has-value {
+        color: #f0f0f0;
+    }
+
+    .split-input {
+        background: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .split-input:focus-within {
+        background: #3a3a3a;
+    }
+
+    .split-unit {
+        color: #a0a0a0;
+    }
+
+    .split-divider {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* ── Button-Secondary ── */
+    .button-secondary {
+        background-color: #242424;
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #e8e8e8;
+    }
+
+    .button-secondary:hover {
+        border-color: #e8e8e8;
+        color: #ffffff;
+    }
+
+    /* ── Timeline (Über uns) ── */
+    .timeline-point {
+        box-shadow: 0 0 0 3px #242424, 0 0 0 6px #e60000;
+    }
+
+    .timeline-item:hover .timeline-point {
+        box-shadow: 0 0 0 3px #242424,
+                    0 0 0 7px #e60000,
+                    0 0 0 14px rgba(230, 0, 0, 0.18);
+    }
+
+    /* ── Legal-Seiten (Impressum, Datenschutz) ── */
+    .legal-content h3 {
+        color: #f0f0f0;
+    }
+
+    .legal-content p {
+        color: #a0a0a0;
+    }
+
+    /* ── Neuzugänge (hebt sich sonst nicht mehr vom Body ab) ── */
+    #neuzugaenge {
+        background: linear-gradient(145deg, #2a2a2a, #303030);
+        box-shadow: 0 26px 70px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ── Footer ── */
     footer {
-        background-color: #0f172a;
-        color: #94a3b8;
+        background: #0d0d0d;
+    }
+
+    /* ── Scrollbar ── */
+    .slideshow-container::-webkit-scrollbar-track {
+        background: #242424;
+    }
+
+    .slideshow-container::-webkit-scrollbar-thumb {
+        background: #444444;
     }
 }
