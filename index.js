@@ -795,7 +795,7 @@ document.addEventListener('DOMContentLoaded', function () {
     3: [["07:30", "12:00"], ["13:00", "18:00"]], // Mittwoch ("-")
     4: [["07:30", "12:00"], ["13:00", "18:00"]], // Donnerstag ("-")
     5: [["07:30", "12:00"], ["13:00", "18:00"]], // Freitag ("-")
-    6: [["09:00", "13:00"]]                        // Samstag (durchgehend)
+    6: [["07:30", "13:00"]]                        // Samstag (durchgehend)
   };
 
   const statusEl = document.getElementById('open-status');
@@ -894,7 +894,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Toast-Banner anzeigen
     let bannerMsg;
     if (!intervals || intervals.length === 0) {
-      bannerMsg = 'Heute sind wir leider nicht geöffnet. Sie erreichen uns telefonisch Mo. bis Fr. von 7:30 bis 12:00 Uhr und 13:00 bis 18:00 Uhr sowie Sa. von 9:00 bis 13:00 Uhr.';
+      bannerMsg = 'Heute sind wir leider nicht geöffnet. Sie erreichen uns telefonisch Mo. bis Fr. von 7:30 bis 12:00 Uhr und 13:00 bis 18:00 Uhr sowie Sa. von 7:30 bis 13:00 Uhr.';
     } else if (middayPauseNow) {
       bannerMsg = null; // Mittagspause wird bereits in der Utility Bar angezeigt
     } else {
