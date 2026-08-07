@@ -46,6 +46,47 @@ function setupContactForm() {
         btn.textContent = 'Wird gesendet…';
         btn.disabled = true;
 
+        // ── Feldinhalte vor dem Absenden für die Netlify-Mail aufbereiten ──
+        // Alle drei Blöcke folgen demselben Muster: Originalwert sichern, Feld
+        // temporär umschreiben, FormData einlesen, im finally-Block wiederherstellen.
+        // So bleibt das sichtbare Formular für den Nutzer unverändert.
+
+        // Datumsfelder: Browser liefert immer ISO-Format (JJJJ-MM-TT), egal welche
+        // Sprache der Browser hat. Wir schreiben es vor dem Absenden auf TT.MM.JJJJ um,
+        // damit in der Netlify-Benachrichtigungsmail das deutsche Format ankommt.
+        const formatDate = iso => {
+            if (!iso) return iso;
+            const [y, m, d] = iso.split('-');
+            return `${d}.${m}.${y}`;
+        };
+        const abholungDatum = form.querySelector('#abholung_datum');
+        const rueckgabeDatum = form.querySelector('#rueckgabe_datum');
+        const abholungOrig = abholungDatum ? abholungDatum.value : null;         // ISO-Wert sichern
+        const rueckgabeOrig = rueckgabeDatum ? rueckgabeDatum.value : null;
+        if (abholungDatum) abholungDatum.value = formatDate(abholungDatum.value);
+        if (rueckgabeDatum) rueckgabeDatum.value = formatDate(rueckgabeDatum.value);
+
+        // Uhrzeitfelder: " Uhr" anhängen, damit in der Mail auf einen Blick klar
+        // ist, dass es sich um eine Uhrzeit handelt (z. B. "09:00 Uhr").
+        const abholungUhrzeit = form.querySelector('#abholung_uhrzeit');
+        const rueckgabeUhrzeit = form.querySelector('#rueckgabe_uhrzeit');
+        const abholungUhrzeitOrig = abholungUhrzeit ? abholungUhrzeit.value : null;
+        const rueckgabeUhrzeitOrig = rueckgabeUhrzeit ? rueckgabeUhrzeit.value : null;
+        if (abholungUhrzeit && abholungUhrzeit.value.trim()) {
+            abholungUhrzeit.value = `${abholungUhrzeit.value.trim()} Uhr`;
+        }
+        if (rueckgabeUhrzeit && rueckgabeUhrzeit.value.trim()) {
+            rueckgabeUhrzeit.value = `${rueckgabeUhrzeit.value.trim()} Uhr`;
+        }
+
+        // Fahrtstrecke: Nutzer gibt nur die Zahl ein; " km" wird erst beim
+        // Absenden angehängt, damit in der Mail "320 km" statt nur "320" steht.
+        const fahrtstrecke = form.querySelector('#fahrtstrecke');
+        const fahrtstreckeOrig = fahrtstrecke ? fahrtstrecke.value : null;
+        if (fahrtstrecke && fahrtstrecke.value.trim()) {
+            fahrtstrecke.value = `${fahrtstrecke.value.trim()} km`;
+        }
+
         try {
             const data = new FormData(form);
             const response = await fetch('/', {
@@ -61,6 +102,12 @@ function setupContactForm() {
         } catch (err) {
             showFormError(form);
         } finally {
+            // Originalwerte wiederherstellen falls Fehler (bei Erfolg macht form.reset() das)
+            if (abholungDatum && abholungOrig !== null) abholungDatum.value = abholungOrig;
+            if (rueckgabeDatum && rueckgabeOrig !== null) rueckgabeDatum.value = rueckgabeOrig;
+            if (abholungUhrzeit && abholungUhrzeitOrig !== null) abholungUhrzeit.value = abholungUhrzeitOrig;
+            if (rueckgabeUhrzeit && rueckgabeUhrzeitOrig !== null) rueckgabeUhrzeit.value = rueckgabeUhrzeitOrig;
+            if (fahrtstrecke && fahrtstreckeOrig !== null) fahrtstrecke.value = fahrtstreckeOrig;
             btn.textContent = originalText;
             btn.disabled = false;
         }
@@ -510,8 +557,21 @@ function prefillFormFromUrl() {
     const queryString = hash.split('?')[1];
     const params = new URLSearchParams(queryString);
 
-    const fahrzeug = params.get('fahrzeug');
+    const fahrzeugRaw = params.get('fahrzeug');
     const modell = params.get('modell');
+
+    // Die "Jetzt anfragen"-Links auf allen Unterseiten nutzen noch die alten Kurzwerte
+    // (z. B. "bus", "anhaenger"). Diese Map übersetzt sie auf die neuen <option>-Values,
+    // die zeichengenau mit dem sichtbaren Dropdown-Text übereinstimmen, damit der
+    // korrekte Eintrag vorausgewählt wird und auch so in der Netlify-Mail ankommt.
+    const FAHRZEUG_MAP = {
+        pkw: 'PKW',
+        transporter: 'Transporter',
+        lkw: 'LKW',
+        bus: 'Personentransporter / 9-Sitzer',
+        anhaenger: 'Anhänger',
+    };
+    const fahrzeug = FAHRZEUG_MAP[fahrzeugRaw] || fahrzeugRaw;
 
     const fieldsToHighlight = [];
     const sel = document.getElementById('fahrzeug');
