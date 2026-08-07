@@ -46,46 +46,40 @@ function setupContactForm() {
         btn.textContent = 'Wird gesendet…';
         btn.disabled = true;
 
-        // ── Feldinhalte vor dem Absenden für die Netlify-Mail aufbereiten ──
-        // Alle drei Blöcke folgen demselben Muster: Originalwert sichern, Feld
-        // temporär umschreiben, FormData einlesen, im finally-Block wiederherstellen.
-        // So bleibt das sichtbare Formular für den Nutzer unverändert.
+        // ── Feldinhalte für die Netlify-Mail aufbereiten ──
+        // Browser-eigene Felder (type="date", type="time", type="number") akzeptieren
+        // nur ihr jeweiliges Pflichtformat -- schreibt man einen anderen Wert rein,
+        // setzt der Browser das Feld sofort auf leer. Deshalb: echte Felder per
+        // "disabled" aus FormData ausschließen und stattdessen temporäre hidden-Felder
+        // mit demselben name und dem aufbereiteten Wert anlegen. Nach dem Absenden
+        // werden disabled aufgehoben und die hidden-Felder wieder entfernt.
 
-        // Datumsfelder: Browser liefert immer ISO-Format (JJJJ-MM-TT), egal welche
-        // Sprache der Browser hat. Wir schreiben es vor dem Absenden auf TT.MM.JJJJ um,
-        // damit in der Netlify-Benachrichtigungsmail das deutsche Format ankommt.
         const formatDate = iso => {
             if (!iso) return iso;
             const [y, m, d] = iso.split('-');
             return `${d}.${m}.${y}`;
         };
-        const abholungDatum = form.querySelector('#abholung_datum');
-        const rueckgabeDatum = form.querySelector('#rueckgabe_datum');
-        const abholungOrig = abholungDatum ? abholungDatum.value : null;         // ISO-Wert sichern
-        const rueckgabeOrig = rueckgabeDatum ? rueckgabeDatum.value : null;
-        if (abholungDatum) abholungDatum.value = formatDate(abholungDatum.value);
-        if (rueckgabeDatum) rueckgabeDatum.value = formatDate(rueckgabeDatum.value);
 
-        // Uhrzeitfelder: " Uhr" anhängen, damit in der Mail auf einen Blick klar
-        // ist, dass es sich um eine Uhrzeit handelt (z. B. "09:00 Uhr").
-        const abholungUhrzeit = form.querySelector('#abholung_uhrzeit');
-        const rueckgabeUhrzeit = form.querySelector('#rueckgabe_uhrzeit');
-        const abholungUhrzeitOrig = abholungUhrzeit ? abholungUhrzeit.value : null;
-        const rueckgabeUhrzeitOrig = rueckgabeUhrzeit ? rueckgabeUhrzeit.value : null;
-        if (abholungUhrzeit && abholungUhrzeit.value.trim()) {
-            abholungUhrzeit.value = `${abholungUhrzeit.value.trim()} Uhr`;
-        }
-        if (rueckgabeUhrzeit && rueckgabeUhrzeit.value.trim()) {
-            rueckgabeUhrzeit.value = `${rueckgabeUhrzeit.value.trim()} Uhr`;
-        }
+        const overrides = [
+            { id: 'abholung_datum',   format: v => formatDate(v) },
+            { id: 'rueckgabe_datum',  format: v => formatDate(v) },
+            { id: 'abholung_uhrzeit', format: v => v ? `${v} Uhr` : v },
+            { id: 'rueckgabe_uhrzeit',format: v => v ? `${v} Uhr` : v },
+            { id: 'fahrtstrecke',     format: v => v.trim() ? `${v.trim()} km` : v },
+        ];
 
-        // Fahrtstrecke: Nutzer gibt nur die Zahl ein; " km" wird erst beim
-        // Absenden angehängt, damit in der Mail "320 km" statt nur "320" steht.
-        const fahrtstrecke = form.querySelector('#fahrtstrecke');
-        const fahrtstreckeOrig = fahrtstrecke ? fahrtstrecke.value : null;
-        if (fahrtstrecke && fahrtstrecke.value.trim()) {
-            fahrtstrecke.value = `${fahrtstrecke.value.trim()} km`;
-        }
+        const hiddenFields = [];
+        overrides.forEach(({ id, format }) => {
+            const field = form.querySelector(`#${id}`);
+            if (!field || !field.value) return;
+            field.disabled = true;
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = field.name;
+            hidden.value = format(field.value);
+            form.appendChild(hidden);
+            hiddenFields.push({ field, hidden });
+        });
 
         try {
             const data = new FormData(form);
@@ -102,12 +96,11 @@ function setupContactForm() {
         } catch (err) {
             showFormError(form);
         } finally {
-            // Originalwerte wiederherstellen falls Fehler (bei Erfolg macht form.reset() das)
-            if (abholungDatum && abholungOrig !== null) abholungDatum.value = abholungOrig;
-            if (rueckgabeDatum && rueckgabeOrig !== null) rueckgabeDatum.value = rueckgabeOrig;
-            if (abholungUhrzeit && abholungUhrzeitOrig !== null) abholungUhrzeit.value = abholungUhrzeitOrig;
-            if (rueckgabeUhrzeit && rueckgabeUhrzeitOrig !== null) rueckgabeUhrzeit.value = rueckgabeUhrzeitOrig;
-            if (fahrtstrecke && fahrtstreckeOrig !== null) fahrtstrecke.value = fahrtstreckeOrig;
+            // Echte Felder wieder aktivieren, hidden-Felder entfernen
+            hiddenFields.forEach(({ field, hidden }) => {
+                field.disabled = false;
+                hidden.remove();
+            });
             btn.textContent = originalText;
             btn.disabled = false;
         }

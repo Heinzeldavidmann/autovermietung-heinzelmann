@@ -4640,4 +4640,10 @@ mark.spec-highlight {
     .slideshow-container::-webkit-scrollbar-thumb {
         background: #444444;
     }
+
+    /* ── "Jetzt geschlossen"-Banner: neutrales Schwarz statt bläulichem #111827 ── */
+    .closed-banner-inner {
+        background: #0d0d0d;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+    }
 }
