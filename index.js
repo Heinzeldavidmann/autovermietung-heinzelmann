@@ -109,7 +109,7 @@ function setupContactForm() {
 
 function showFormSuccess(form) {
     showFormMessage(form,
-        'Vielen Dank für Ihre Anfrage! Wir melden uns so schnell wie möglich bei Ihnen.',
+        'Vielen Dank für Ihre Anfrage! Wir melden uns zeitnah bei Ihnen.',
         '#22c55e'
     );
     form.reset();
@@ -242,7 +242,7 @@ const FINDER_TREE = {
         ]
     },
     gepaeck: {
-        question: 'Wie viel Gepäck nehmen Sie mit, z. B. für eine Urlaubsreise?',
+        question: 'Wie viel Gepäck nehmen Sie mit, z.B. für eine Urlaubsreise?',
         options: [
             { label: 'Wenig – Kurztrip oder Handgepäck', result: 'pkw' },
             { label: 'Viel – Kofferurlaub oder komplette Familie', result: 'bus' }
@@ -273,8 +273,8 @@ const FINDER_TREE = {
     ladevolumen: {
         question: 'Was möchten Sie transportieren?',
         options: [
-            { label: 'Kleinere Ladung (bis ca. 10 m³, z. B. 1-Zimmer-Umzug)', next: 'zugfahrzeug-klein' },
-            { label: 'Mittlere bis große Ladung (10–20 m³, z. B. 2–3-Zimmer-Umzug)', next: 'zugfahrzeug-mittel' },
+            { label: 'Kleinere Ladung (bis ca. 10 m³, z.B. 1-Zimmer-Umzug)', next: 'zugfahrzeug-klein' },
+            { label: 'Mittlere bis große Ladung (10–20 m³, z.B. 2–3-Zimmer-Umzug)', next: 'zugfahrzeug-mittel' },
             { label: 'Sehr große oder schwere Fracht (über 20 m³, gewerblich)', next: 'fuehrerschein-gross' },
             { label: 'Ein Fahrzeug, Motorrad oder Pferd transportieren', result: 'spezialanhaenger' }
         ]
@@ -541,7 +541,7 @@ function setupTestimonialsSlider() {
 
 // ── 6. Formular aus Link-Parametern vorausfüllen ──
 // Wenn ein Link wie "index.html#kontakt?fahrzeug=transporter&modell=Sprinter" angeklickt wird
-// (z. B. von einem "Jetzt anfragen"-Button auf preise.html oder aus dem Fuhrpark-Finder),
+// (z.B. von einem "Jetzt anfragen"-Button auf preise.html oder aus dem Fuhrpark-Finder),
 // werden Fahrzeugart und Modell automatisch ins Kontaktformular übernommen und kurz hervorgehoben.
 function prefillFormFromUrl() {
     const hash = window.location.hash; // z.B. "#kontakt?fahrzeug=transporter&modell=..."
@@ -551,16 +551,14 @@ function prefillFormFromUrl() {
     const params = new URLSearchParams(queryString);
 
     const fahrzeugRaw = params.get('fahrzeug');
-    const modell = params.get('modell');
+    const gruppeRaw   = params.get('gruppe');
+    const modell      = params.get('modell');
 
-    // Die "Jetzt anfragen"-Links auf allen Unterseiten nutzen noch die alten Kurzwerte
-    // (z. B. "bus", "anhaenger"). Diese Map übersetzt sie auf die neuen <option>-Values,
-    // die zeichengenau mit dem sichtbaren Dropdown-Text übereinstimmen, damit der
-    // korrekte Eintrag vorausgewählt wird und auch so in der Netlify-Mail ankommt.
+    // Kurzwerte aus den "Jetzt anfragen"-Links auf die exakten <option>-Values übersetzen
     const FAHRZEUG_MAP = {
         pkw: 'PKW',
-        transporter: 'Transporter',
-        lkw: 'LKW',
+        transporter: 'Transporter & LKW',
+        lkw: 'Transporter & LKW',
         bus: 'Personentransporter / 9-Sitzer',
         anhaenger: 'Anhänger',
     };
@@ -581,9 +579,32 @@ function prefillFormFromUrl() {
                 display.classList.add('has-value');
             }
         }
+        // change-Event feuern damit setupFahrzeugkategorie() die Optionen befüllt
+        sel.dispatchEvent(new Event('change'));
         fieldsToHighlight.push(sel.closest('.field'));
     }
 
+    // Fahrzeuggruppe direkt ins Dropdown setzen wenn mitgegeben
+    if (gruppeRaw) {
+        const gruppe = decodeURIComponent(gruppeRaw.replace(/\+/g, ' '));
+        const gruppeSel = document.getElementById('fahrzeugkategorie');
+        if (gruppeSel) {
+            gruppeSel.value = gruppe;
+            const gruppeDisplay = gruppeSel.nextElementSibling;
+            const gruppeTextEl = gruppeDisplay && gruppeDisplay.querySelector('.custom-select-text');
+            if (gruppeTextEl) {
+                const selected = gruppeSel.options[gruppeSel.selectedIndex];
+                if (selected && selected.value) {
+                    gruppeTextEl.textContent = selected.text;
+                    gruppeDisplay.classList.add('has-value');
+                }
+            }
+            const gruppeField = document.getElementById('field-fahrzeugkategorie');
+            if (gruppeField) fieldsToHighlight.push(gruppeField);
+        }
+    }
+
+    // Nachricht nur bei konkretem Modell (nicht bei reiner Gruppenauswahl)
     if (modell && textarea) {
         textarea.value = `Ich interessiere mich für: ${modell}`;
         fieldsToHighlight.push(textarea.closest('.field'));
@@ -722,7 +743,7 @@ function setupScrollReveal() {
         }
     });
 
-    // Einzelne Elemente: wenn mehrere gleichzeitig sichtbar werden (z. B. spec-cards
+    // Einzelne Elemente: wenn mehrere gleichzeitig sichtbar werden (z.B. spec-cards
     // die alle auf einmal im Viewport auftauchen), nach DOM-Reihenfolge staffeln.
     let singleBatchTimer = null;
     const singleBatch = [];
@@ -790,7 +811,7 @@ function setupScrollReveal() {
 
 // ── 13. Counter-Animation: Zahlen zählen hoch wenn sie ins Bild kommen ──
 // Elemente mit data-count="60" zählen von 0 auf den Zielwert hoch.
-// Das Suffix (z. B. "+") wird aus dem ursprünglichen Text-Inhalt übernommen.
+// Das Suffix (z.B. "+") wird aus dem ursprünglichen Text-Inhalt übernommen.
 function setupCounterAnimation() {
     const counters = document.querySelectorAll('[data-count]');
     if (!counters.length) return;
@@ -829,6 +850,7 @@ window.addEventListener('DOMContentLoaded', () => {
   setupFuhrparkFinder();
   setupMapConsent();
   setupCookieConsent();
+  setupFahrzeugkategorie();
   prefillFormFromUrl();
   setupScrollReveal();
   setupCounterAnimation();
@@ -874,10 +896,10 @@ document.addEventListener('DOMContentLoaded', function () {
   function rangeSegment(start, end) {
     const s = prettyTime(start).replace(/\s*Uhr$/, '');
     const e = prettyTime(end); // enthält "Uhr"
-    return `${s} - ${e}`; // z. B. "8 - 12 Uhr"
+    return `${s} - ${e}`; // z.B. "8 - 12 Uhr"
   }
   function intervalsToText(ints) {
-    // z. B. [["08:00","12:00"],["13:00","18:00"]] -> "8 - 12 Uhr und 13 - 18 Uhr"
+    // z.B. [["08:00","12:00"],["13:00","18:00"]] -> "8 - 12 Uhr und 13 - 18 Uhr"
     const parts = ints.map(([s, e]) => rangeSegment(s, e));
     return parts.join(' und ');
   }
@@ -1044,11 +1066,252 @@ function stackBannersOnMobile() {
 }
 window.addEventListener('resize', stackBannersOnMobile);
 
+// ── Fahrzeugkategorie-Dropdown ──
+// Kategorien und zugehörige Anker-Links auf preise.html pro Fahrzeugart.
+const FAHRZEUG_KATEGORIEN = {
+    'PKW': {
+        anchor: 'preise-pkw',
+        optionen: [
+            'Kategorie egal',
+            'Gruppe 1 · Kleinwagen',
+            'Gruppe 2 · Kleinwagen',
+            'Gruppe 3 · Untere Mittelklasse',
+            'Gruppe 4 · Mittelklasse',
+            'Gruppe 5 · Obere Mittelklasse',
+            'Gruppe 6 · Oberklasse',
+        ],
+        tooltip: [
+            { gruppe: 'Gruppe 1 · Kleinwagen',        fahrzeug: 'z.B. Dacia Spring / Renault Twingo / Toyota Aygo',  einsatz: 'Ideal für die Stadt und kurze Strecken' },
+            { gruppe: 'Gruppe 2 · Kleinwagen',        fahrzeug: 'z.B. Dacia Sandero / Renault Clio / Toyota Yaris',  einsatz: 'Sparsam und wendig für Alltag und Ausflüge' },
+            { gruppe: 'Gruppe 3 · Untere Mittelkl.',  fahrzeug: 'z.B. VW Golf / VW Caddy / Renault Kangoo',          einsatz: 'Geräumig und vielseitig für jeden Bedarf' },
+            { gruppe: 'Gruppe 4 · Mittelklasse',      fahrzeug: 'z.B. MB A 180 d / MB B 200 d / Seat Arona',         einsatz: 'Komfortabel für Geschäfts- und Privatreisen' },
+            { gruppe: 'Gruppe 5 · Obere Mittelkl.',   fahrzeug: 'z.B. MB C 220 d / MB Citan / Volvo V60',            einsatz: 'Für komfortable Reisen und größere Gruppen' },
+            { gruppe: 'Gruppe 6 · Oberklasse',        fahrzeug: 'z.B. MB E 220 d / MB GLC 300 / Volvo XC60',         einsatz: 'Maximaler Komfort, Allrad, große Kofferräume' },
+        ],
+    },
+    'Transporter & LKW': {
+        anchor: 'preise-transporter',
+        optionen: [
+            'Kategorie egal',
+            'Gruppe 1 · Führerschein B (MB Vito)',
+            'Gruppe 2 · Führerschein B (MB Sprinter)',
+            'Gruppe 3 · Führerschein B (MB Sprinter XL)',
+            'Gruppe 4 · Führerschein B (MB Sprinter Koffer)',
+            'Gruppe 5 · Führerschein C1 (MB Atego LKW)',
+            'Gruppe 6 · Führerschein C (MB Atego LKW)',
+        ],
+        tooltip: [
+            { gruppe: 'Gruppe 1 · FS B',  fahrzeug: 'z.B. MB Vito Kasten / Kombi',           einsatz: 'Ideal für kleine Transporte und Lieferungen' },
+            { gruppe: 'Gruppe 2 · FS B',  fahrzeug: 'z.B. MB Sprinter Kasten / Kombi',       einsatz: 'Für die meisten Umzüge und Transporte' },
+            { gruppe: 'Gruppe 3 · FS B',  fahrzeug: 'z.B. MB Sprinter Kasten / Kombi XL',    einsatz: 'Für größere Wohnungen und viel Volumen' },
+            { gruppe: 'Gruppe 4 · FS B',  fahrzeug: 'z.B. MB Sprinter Koffer + Ladebordwand',einsatz: 'Für schwere Güter mit Ladebordwand' },
+            { gruppe: 'Gruppe 5 · FS C1', fahrzeug: 'z.B. MB Atego Koffer / Plane (LKW)',    einsatz: 'Für große Umzüge und Gewerbetransporte' },
+            { gruppe: 'Gruppe 6 · FS C',  fahrzeug: 'z.B. MB Atego Koffer / Plane (LKW)',    einsatz: 'Für sehr große Mengen und schwere Fracht' },
+        ],
+    },
+    'Personentransporter / 9-Sitzer': {
+        anchor: 'preise-9sitzer',
+        optionen: [
+            'Kategorie egal',
+            'Gruppe 1 · Führerschein B (7-9 Sitzer)',
+            'Gruppe 2 · Führerschein B (MB Sprinter 9-Sitzer)',
+            'Gruppe 3 · Führerschein B (MB Sprinter 9-Sitzer XL)',
+        ],
+        tooltip: [
+            { gruppe: 'Gruppe 1 · FS B', fahrzeug: 'z.B. MB Vito / Renault Trafic Bus',  einsatz: 'Ideal für kleinere Gruppen und Tagesausflüge' },
+            { gruppe: 'Gruppe 2 · FS B', fahrzeug: 'z.B. MB Sprinter 9-Sitzer',          einsatz: 'Für Gruppen bis 9 Personen mit viel Gepäck' },
+            { gruppe: 'Gruppe 3 · FS B', fahrzeug: 'z.B. MB Sprinter 9-Sitzer XL',       einsatz: 'Optimal für Radsportler, Skifahrer und Bands' },
+        ],
+    },
+    'Anhänger': {
+        anchor: 'preise-anhaenger',
+        optionen: [
+            'Kategorie egal',
+            'Planenanhänger EA',
+            'Planen- & Kofferanhänger EA',
+            'Kofferanhänger EA',
+            'Planenanhänger TD',
+            'LKW-Koffer- & Planenanhänger TD',
+            'Dreiseitenkipper TD',
+            'Pferdeanhänger TD',
+            'Fahrzeugtransportanhänger',
+        ],
+        tooltip: [
+            { gruppe: 'Planenanhänger EA',               fahrzeug: 'z.B. Einachser, klein',           einsatz: 'Ideal für kleine Transporte und Einkäufe' },
+            { gruppe: 'Planen- & Kofferanhänger EA',     fahrzeug: 'z.B. Einachser, mittel',          einsatz: 'Für Umzüge und mittlere Transporte' },
+            { gruppe: 'Kofferanhänger EA',               fahrzeug: 'z.B. Einachser, geschlossen',     einsatz: 'Witterungsgeschützt transportieren' },
+            { gruppe: 'Planenanhänger TD',               fahrzeug: 'z.B. Tandemachser, groß',         einsatz: 'Für große Mengen und Umzüge' },
+            { gruppe: 'LKW-Koffer- & Planenanhänger TD', fahrzeug: 'z.B. Tandemachser, XL',          einsatz: 'Für gewerbliche Großtransporte' },
+            { gruppe: 'Dreiseitenkipper TD',             fahrzeug: 'z.B. Tandemachser, Kipper',       einsatz: 'Für Schüttgut, Erde und Bauschutt' },
+            { gruppe: 'Pferdeanhänger TD',               fahrzeug: 'z.B. Tandemachser, Pferdeanhänger',einsatz: 'Sicherer Transport für 2 Pferde' },
+            { gruppe: 'Fahrzeugtransportanhänger',       fahrzeug: 'z.B. Tandemachser, offen',        einsatz: 'Für PKW, Motorräder und Quads' },
+        ],
+    },
+};
+
+function setupFahrzeugkategorie() {
+    const fahrzeugSel = document.getElementById('fahrzeug');
+    const kategorieField = document.getElementById('field-fahrzeugkategorie');
+    const kategorieSel = document.getElementById('fahrzeugkategorie');
+    const infoLink = document.getElementById('fahrzeugkategorie-info');
+    if (!fahrzeugSel || !kategorieField || !kategorieSel) return;
+
+    // ── Tooltip aufbauen ──
+    // Am body anhängen damit overflow:hidden des Formulars nicht abschneidet.
+    // Position wird per JS relativ zum Info-Icon berechnet.
+    const tooltip = document.createElement('div');
+    tooltip.className = 'gruppe-tooltip';
+    tooltip.setAttribute('role', 'tooltip');
+    tooltip.hidden = true;
+    document.body.appendChild(tooltip);
+
+    function positioniereTooltip() {
+        const rect = infoLink.getBoundingClientRect();
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        tooltip.style.top = `${rect.bottom + scrollY + 8}px`;
+        // Links ausrichten, aber nicht über den Viewport-Rand hinaus
+        let left = rect.left;
+        const tooltipWidth = Math.min(520, window.innerWidth * 0.9);
+        if (left + tooltipWidth > window.innerWidth - 12) {
+            left = window.innerWidth - tooltipWidth - 12;
+        }
+        tooltip.style.left = `${left}px`;
+    }
+
+    function zeigeTooltip(config) {
+        if (!config || !config.tooltip) return;
+        tooltip.innerHTML = config.tooltip.map(row => `
+            <div class="gruppe-tooltip-row">
+                <span class="gruppe-tooltip-gruppe">${row.gruppe}</span>
+                <span class="gruppe-tooltip-fahrzeug">${row.fahrzeug}</span>
+                <span class="gruppe-tooltip-einsatz">${row.einsatz}</span>
+            </div>
+        `).join('');
+        tooltip.hidden = false;
+        positioniereTooltip();
+        requestAnimationFrame(() => tooltip.classList.add('tooltip-visible'));
+    }
+
+    function versteckeTooltip() {
+        tooltip.classList.remove('tooltip-visible');
+        // hidden erst nach der Transition setzen damit Fade-out sichtbar ist
+        tooltip.addEventListener('transitionend', () => {
+            if (!tooltip.classList.contains('tooltip-visible')) tooltip.hidden = true;
+        }, { once: true });
+    }
+
+    // Hover (Desktop)
+    infoLink.addEventListener('mouseenter', () => {
+        const config = FAHRZEUG_KATEGORIEN[fahrzeugSel.value];
+        if (config) zeigeTooltip(config);
+    });
+    infoLink.addEventListener('mouseleave', (e) => {
+        if (!tooltip.contains(e.relatedTarget)) versteckeTooltip();
+    });
+    tooltip.addEventListener('mouseleave', (e) => {
+        if (!infoLink.contains(e.relatedTarget)) versteckeTooltip();
+    });
+
+    // Klick (Mobile)
+    infoLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (tooltip.hidden) {
+            const config = FAHRZEUG_KATEGORIEN[fahrzeugSel.value];
+            if (config) zeigeTooltip(config);
+        } else {
+            versteckeTooltip();
+        }
+    });
+    document.addEventListener('click', (e) => {
+        if (!infoLink.contains(e.target) && !tooltip.contains(e.target)) {
+            versteckeTooltip();
+        }
+    });
+    window.addEventListener('scroll', () => {
+        if (!tooltip.hidden) positioniereTooltip();
+    }, { passive: true });
+
+    // ── Initialer deaktivierter Zustand ──
+    const display = kategorieSel.nextElementSibling;
+    const textEl = display && display.querySelector('.custom-select-text');
+    kategorieSel.required = false;
+    kategorieField.classList.add('kategorie-disabled');
+    if (textEl) textEl.textContent = 'Bitte wählen...';
+    if (infoLink) infoLink.hidden = true;
+
+    // Klick auf den Wrapper: wenn noch keine Fahrzeugart gewählt, Select blockieren und Fehler zeigen
+    const wrapper = kategorieSel.closest('.custom-select-wrapper') || kategorieSel.parentElement;
+
+    function blockiereOhneAuswahl(e) {
+        if (!fahrzeugSel.value) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }
+    if (wrapper) {
+        wrapper.addEventListener('mousedown', blockiereOhneAuswahl);
+        wrapper.addEventListener('click', (e) => {
+            if (!fahrzeugSel.value) {
+                e.preventDefault();
+                e.stopPropagation();
+                kategorieField.classList.remove('kategorie-error');
+                void kategorieField.offsetWidth;
+                kategorieField.classList.add('kategorie-error');
+                let hint = kategorieField.querySelector('.kategorie-hint');
+                if (!hint) {
+                    hint = document.createElement('p');
+                    hint.className = 'kategorie-hint';
+                    hint.textContent = 'Bitte zuerst eine Fahrzeugart auswählen.';
+                    kategorieField.appendChild(hint);
+                }
+                hint.classList.add('hint-visible');
+                clearTimeout(kategorieField._hintTimer);
+                kategorieField._hintTimer = setTimeout(() => {
+                    kategorieField.classList.remove('kategorie-error');
+                    hint.classList.remove('hint-visible');
+                }, 2500);
+            }
+        });
+    }
+
+    fahrzeugSel.addEventListener('change', () => {
+        const wert = fahrzeugSel.value;
+        const config = FAHRZEUG_KATEGORIEN[wert];
+        versteckeTooltip();
+
+        // Dropdown-Optionen neu befüllen
+        kategorieSel.innerHTML = '<option value="">Bitte wählen...</option>';
+
+        if (config) {
+            config.optionen.forEach(opt => {
+                const o = document.createElement('option');
+                o.value = opt;
+                o.textContent = opt;
+                kategorieSel.appendChild(o);
+            });
+            kategorieSel.required = true;
+            kategorieField.classList.remove('kategorie-disabled', 'kategorie-error');
+            const hint = kategorieField.querySelector('.kategorie-hint');
+            if (hint) hint.classList.remove('hint-visible');
+            if (textEl) textEl.textContent = 'Bitte wählen...';
+            if (infoLink) infoLink.hidden = false;
+        } else {
+            kategorieSel.required = false;
+            kategorieField.classList.add('kategorie-disabled');
+            if (textEl) textEl.textContent = 'Bitte wählen...';
+            if (infoLink) infoLink.hidden = true;
+        }
+
+        if (display) display.classList.remove('has-value');
+        kategorieSel.value = '';
+    });
+}
+
 // ── 10. Custom-Select-Sync ──
-// Die echten <select>-Felder (#fahrzeug, #getriebe) sind unsichtbar; sichtbar ist
-// stattdessen ein gestyltes <div class="custom-select-display"> daneben. Dieser Block
-// hält den angezeigten Text synchron, sobald sich der Wert des echten <select> ändert.
-['fahrzeug', 'getriebe'].forEach(id => {
+// Die echten <select>-Felder (#fahrzeug, #getriebe, #fahrzeugkategorie) sind unsichtbar;
+// sichtbar ist stattdessen ein gestyltes <div class="custom-select-display"> daneben.
+// Dieser Block hält den angezeigten Text synchron, sobald sich der Wert ändert.
+['fahrzeug', 'getriebe', 'fahrzeugkategorie', 'anhaengkupplung'].forEach(id => {
   const sel = document.getElementById(id);
   if (!sel) return;
   const display = sel.nextElementSibling;

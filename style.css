@@ -2810,6 +2810,146 @@ form:not(.inquiry-form) button:hover {
     box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.1);
 }
 
+/* ── Fahrzeugkategorie-Feld: Ein-/Ausblenden ── */
+#field-fahrzeugkategorie.kategorie-disabled .custom-select-display {
+    opacity: 0.5;
+}
+#field-fahrzeugkategorie.kategorie-disabled .custom-select-hidden {
+    pointer-events: none;
+}
+
+@keyframes kategorie-blink {
+    0%, 100% { border-color: var(--color-border); }
+    30%       { border-color: #e60000; box-shadow: 0 0 0 3px rgba(230,0,0,0.18); }
+    60%       { border-color: var(--color-border); }
+    80%       { border-color: #e60000; box-shadow: 0 0 0 3px rgba(230,0,0,0.12); }
+}
+#field-fahrzeugkategorie.kategorie-error .custom-select-display {
+    animation: kategorie-blink 0.6s ease forwards;
+}
+
+.kategorie-hint {
+    font-size: 0.78rem;
+    color: #e60000;
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.2s ease, opacity 0.2s ease, margin-top 0.2s ease;
+    pointer-events: none;
+}
+.kategorie-hint.hint-visible {
+    max-height: 2em;
+    opacity: 1;
+    margin-top: 4px;
+}
+
+/* "Mehr erfahren"-Link rechtsbündig im Label */
+#field-fahrzeugkategorie label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.kategorie-info-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    margin-left: 8px;
+}
+.kategorie-info-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Gruppen-Tooltip -- am body angehängt, Position per JS gesetzt */
+.gruppe-tooltip {
+    position: absolute;
+    z-index: 9999;
+    background: #111827;
+    color: #f0f0f0;
+    border-radius: 14px;
+    padding: 16px 18px;
+    width: min(520px, 90vw);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+}
+.gruppe-tooltip.tooltip-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.gruppe-tooltip[hidden] {
+    display: none;
+}
+
+@media (prefers-color-scheme: light) {
+    .gruppe-tooltip {
+        background: #111827;
+        color: #f0f0f0;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+    }
+}
+.gruppe-tooltip-row {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: 4px 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    align-items: start;
+}
+.gruppe-tooltip-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.gruppe-tooltip-row:first-child {
+    padding-top: 0;
+}
+.gruppe-tooltip-gruppe {
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+}
+.gruppe-tooltip-fahrzeug {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.78rem;
+    grid-column: 2;
+    grid-row: 1;
+}
+.gruppe-tooltip-einsatz {
+    grid-column: 2;
+    grid-row: 2;
+    color: rgba(255,255,255,0.85);
+}
+
+/* Auf sehr kleinen Screens einspaltiger Stack */
+@media (max-width: 500px) {
+    .gruppe-tooltip {
+        min-width: 0;
+        left: -60px;
+    }
+    .gruppe-tooltip-row {
+        grid-template-columns: 1fr;
+    }
+    .gruppe-tooltip-fahrzeug,
+    .gruppe-tooltip-einsatz {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
 /* Custom select styling */
 .inquiry-form select {
     appearance: none !important;
@@ -2979,14 +3119,16 @@ form:not(.inquiry-form) button:hover {
 
     /* Mobile Feldreihenfolge: Fahrzeug & Zeitraum geschlossen, dann Kontaktdaten */
     #field-fahrzeug { order: 1; }
-    #field-getriebe { order: 2; }
-    #field-fahrtstrecke { order: 3; }
-    #field-abholung { order: 4; }
-    #field-rueckgabe { order: 5; }
-    #field-name { order: 6; }
-    #field-telefon { order: 7; }
-    #field-email { order: 8; }
-    #field-nachricht { order: 9; }
+    #field-fahrzeugkategorie { order: 2; }
+    #field-getriebe { order: 3; }
+    #field-anhaengkupplung { order: 4; }
+    #field-abholung { order: 5; }
+    #field-rueckgabe { order: 6; }
+    #field-fahrtstrecke { order: 7; }
+    #field-name { order: 8; }
+    #field-telefon { order: 9; }
+    #field-email { order: 10; }
+    #field-nachricht { order: 11; }
 
     .field-group-start {
         margin-top: 8px;
