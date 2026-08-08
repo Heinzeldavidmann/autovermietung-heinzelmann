@@ -60,41 +60,26 @@ function setupContactForm() {
             return `${d}.${m}.${y}`;
         };
 
-        const hiddenFields = [];
-
-        // Datum + Uhrzeit zu je einem kombinierten Feld zusammenführen
-        const datumUhrzeitPaare = [
-            { datumId: 'abholung_datum',  uhrzeitId: 'abholung_uhrzeit',  name: 'Wunschtermin zur Abholung' },
-            { datumId: 'rueckgabe_datum', uhrzeitId: 'rueckgabe_uhrzeit', name: 'Geplanter Rückgabetermin' },
+        const overrides = [
+            { id: 'abholung_datum',    format: v => formatDate(v) },
+            { id: 'rueckgabe_datum',   format: v => formatDate(v) },
+            { id: 'abholung_uhrzeit',  format: v => v ? `${v} Uhr` : v },
+            { id: 'rueckgabe_uhrzeit', format: v => v ? `${v} Uhr` : v },
+            { id: 'fahrtstrecke',      format: v => v.trim() ? `${v.trim()} km` : v },
         ];
-        datumUhrzeitPaare.forEach(({ datumId, uhrzeitId, name }) => {
-            const datumField   = form.querySelector(`#${datumId}`);
-            const uhrzeitField = form.querySelector(`#${uhrzeitId}`);
-            if (!datumField || !uhrzeitField) return;
-            datumField.disabled   = true;
-            uhrzeitField.disabled = true;
-            if (datumField.value) {
-                const hidden = document.createElement('input');
-                hidden.type  = 'hidden';
-                hidden.name  = name;
-                hidden.value = `${formatDate(datumField.value)}${uhrzeitField.value ? ', ' + uhrzeitField.value + ' Uhr' : ''}`;
-                form.appendChild(hidden);
-                hiddenFields.push({ field: datumField,   hidden });
-                hiddenFields.push({ field: uhrzeitField, hidden: null });
-            }
-        });
 
-        // Fahrtstrecke mit Einheit
-        const strecke = form.querySelector('#fahrtstrecke');
-        if (strecke && strecke.value.trim()) {
-            strecke.disabled = true;
+        const hiddenFields = [];
+        overrides.forEach(({ id, format }) => {
+            const field = form.querySelector(`#${id}`);
+            if (!field || !field.value) return;
+            field.disabled = true;
             const hidden = document.createElement('input');
             hidden.type  = 'hidden';
-            hidden.name  = strecke.name;
-            hidden.value = `${strecke.value.trim()} km`;
+            hidden.name  = field.name;
+            hidden.value = format(field.value);
             form.appendChild(hidden);
-            hiddenFields.push({ field: strecke, hidden });
-        }
+            hiddenFields.push({ field, hidden });
+        });
 
         try {
             const data = new FormData(form);
