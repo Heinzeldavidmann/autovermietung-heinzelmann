@@ -979,7 +979,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if (nowBeforeOpen) {
         bannerMsg = `Heute öffnen wir um ${firstStart}. Für dringende Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
       } else {
-        bannerMsg = `Wir hatten heute bis ${lastEnd} geöffnet. Ab morgen sind wir wieder für Sie da. Bei dringenden Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
+        const naechsterTag = now.getDay() === 6 ? 'Montag' : 'morgen';
+        bannerMsg = `Wir hatten heute bis ${lastEnd} geöffnet. Ab ${naechsterTag} sind wir wieder für Sie da. Bei dringenden Anfragen erreichen Sie uns unter 07586 / 9213-0.`;
       }
     }
     if (bannerMsg) showClosedBanner(bannerMsg);

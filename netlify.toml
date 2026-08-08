@@ -1,0 +1,11 @@
+[[redirects]]
+  from = "http://autovermietung-heinzelmann.de/*"
+  to = "https://autovermietung-heinzelmann.de/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.autovermietung-heinzelmann.de/*"
+  to = "https://autovermietung-heinzelmann.de/:splat"
+  status = 301
+  force = true
