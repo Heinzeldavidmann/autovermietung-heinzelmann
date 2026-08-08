@@ -2845,7 +2845,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 /* "Mehr erfahren"-Link rechtsbündig im Label */
-#field-fahrzeugkategorie label {
+.field-label-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
