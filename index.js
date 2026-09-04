@@ -109,39 +109,54 @@ function setupContactForm() {
 
 function showFormSuccess(form) {
     showFormMessage(form,
-        'Vielen Dank für Ihre Anfrage! Wir melden uns zeitnah bei Ihnen.',
-        '#22c55e'
+        'Vielen Dank für Ihre Anfrage!',
+        'Wir prüfen die Verfügbarkeit und melden uns zeitnah persönlich bei Ihnen. Sie haben dabei noch nichts gebucht. Reserviert ist Ihr Fahrzeug erst, sobald wir uns bei Ihnen gemeldet haben.',
+        '#22c55e',
+        true
     );
     form.reset();
 }
 
 function showFormError(form) {
-    showFormMessage(form,
-        'Ihre Anfrage konnte leider nicht gesendet werden. Bitte rufen Sie uns an: 07586 / 9213-0 oder schreiben Sie uns direkt an info@autovermietung-heinzelmann.de',
+    showFormMessage(form, null,
+        'Ihre Anfrage konnte leider nicht gesendet werden. Bitte rufen Sie uns an: 07586 / 9213-0 oder schreiben Sie uns direkt an info@autovermietung-heinzelmann.de',
         '#e60000'
     );
 }
 
 function showFormFallback(form) {
-    showFormMessage(form,
-        'Das Formular ist in Kürze vollständig verfügbar. Bis dahin erreichen Sie uns telefonisch unter 07586 / 9213-0 oder per E-Mail an info@autovermietung-heinzelmann.de',
+    showFormMessage(form, null,
+        'Das Formular ist in Kürze vollständig verfügbar. Bis dahin erreichen Sie uns telefonisch unter 07586 / 9213-0 oder per E-Mail an info@autovermietung-heinzelmann.de',
         '#f0b429'
     );
 }
 
 // Zeigt die Erfolgs-/Fehler-/Fallback-Meldung unterhalb des Formulars an (erstellt sie beim ersten Mal).
-function showFormMessage(form, text, color) {
+// emphasize=true (nur Erfolg) hebt die Meldung mit Titelzeile und gruenem Akzentstreifen hervor,
+// bleibt aber hell wie das umgebende Formular statt eines dunklen Fremdkoerpers.
+function showFormMessage(form, title, text, color, emphasize) {
     let msg = form.querySelector('.form-status-msg');
     if (!msg) {
-        msg = document.createElement('p');
+        msg = document.createElement('div');
         msg.className = 'form-status-msg';
-        msg.style.cssText = 'margin-top:16px;padding:12px 16px;border-radius:8px;font-size:0.9em;line-height:1.5;font-weight:500;';
         form.appendChild(msg);
     }
-    msg.textContent = text;
-    msg.style.background = color + '18';
-    msg.style.color = color === '#f0b429' ? '#856404' : color;
-    msg.style.border = `1px solid ${color}55`;
+    msg.style.cssText = emphasize
+        ? 'margin-top:16px;padding:16px 20px;border-radius:8px;font-size:0.92em;line-height:1.5;'
+        : 'margin-top:16px;padding:12px 16px;border-radius:8px;font-size:0.9em;line-height:1.5;font-weight:500;';
+    msg.innerHTML = title
+        ? `<strong style="display:block;margin-bottom:4px;color:${color};">${title}</strong>${text}`
+        : text;
+    if (emphasize) {
+        msg.style.background = '#f7fdf9';
+        msg.style.color = '#1f2937';
+        msg.style.border = '1px solid #e5e7eb';
+        msg.style.borderLeft = `4px solid ${color}`;
+    } else {
+        msg.style.background = color + '18';
+        msg.style.color = color === '#f0b429' ? '#856404' : color;
+        msg.style.border = `1px solid ${color}55`;
+    }
 }
 
 // ── 2. FAQ-Accordion: Klick auf eine Frage klappt die zugehörige Antwort auf/zu ──
