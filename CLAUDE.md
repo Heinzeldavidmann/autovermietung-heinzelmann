@@ -109,14 +109,14 @@ Ten responsibilities, called in order from the central `DOMContentLoaded` listen
 6. **Form prefill** — `prefillFormFromUrl()` pre-fills form fields from link query params
 7. **Cookie consent** — `setupCookieConsent()` shows a cookie banner on first visit
 8. **Map consent** — `setupMapConsent()` loads the Google Maps embed only after a click on `.map-consent-load-btn`
-9. **Opening hours** — updates `#open-status` with current status based on `OPENING_HOURS` object (Mo–Fr 8–12 & 13–18, Sa 9–13)
+9. **Opening hours** — updates `#open-status` with current status based on `OPENING_HOURS` object (Mo–Fr 7:30–12 & 13–18, Sa 7:30–13)
 10. **Custom select** — syncs `#fahrzeug` select value to `.custom-select-display` span
 
 New `setup*()` functions must be added to the `DOMContentLoaded` listener, otherwise they never run. Script must use `defer` attribute: `<script src="index.js" defer></script>`
 
 ## Opening Hours Data
 
-Defined in `index.js` — update here when hours change:
+Defined at the top of `index.js` (global, also used by the contact form hint) — update here when hours change, plus the footer texts in all HTML files and `openingHoursSpecification` in `index.html`:
 ```js
 const OPENING_HOURS = {
     0: null,                                          // Sonntag: geschlossen
@@ -125,6 +125,6 @@ const OPENING_HOURS = {
     3: [["07:30", "12:00"], ["13:00", "18:00"]],    // Mi
     4: [["07:30", "12:00"], ["13:00", "18:00"]],    // Do
     5: [["07:30", "12:00"], ["13:00", "18:00"]],    // Fr
-    6: [["09:00", "13:00"]]                          // Sa
+    6: [["07:30", "13:00"]]                          // Sa
 };
 ```
