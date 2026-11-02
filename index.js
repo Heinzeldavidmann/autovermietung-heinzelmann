@@ -17,26 +17,184 @@
 // unten aufgerufen. Neue Funktionen dort mit ergänzen, sonst laufen sie nie.
 // ============================================================
 
+// ── Öffnungszeiten (zentral, werden von Statusanzeige und Formular genutzt) ──
+// Arrays aus Zeitintervallen pro Tag (0=So ... 6=Sa). Bei Änderung auch die Texte in den HTML-Fußbereichen
+// und den strukturierten Daten (openingHoursSpecification in index.html) anpassen.
+const OPENING_HOURS = {
+    0: null,                                        // Sonntag: geschlossen
+    1: [["07:30", "12:00"], ["13:00", "18:00"]],  // Montag (Mittagspause 12–13)
+    2: [["07:30", "12:00"], ["13:00", "18:00"]],  // Dienstag
+    3: [["07:30", "12:00"], ["13:00", "18:00"]],  // Mittwoch
+    4: [["07:30", "12:00"], ["13:00", "18:00"]],  // Donnerstag
+    5: [["07:30", "12:00"], ["13:00", "18:00"]],  // Freitag
+    6: [["07:30", "13:00"]]                         // Samstag (durchgehend)
+};
+
+// Liegt der Zeitpunkt innerhalb der Öffnungszeiten?
+function isOpenAt(date) {
+    const intervals = OPENING_HOURS[date.getDay()];
+    if (!intervals) return false;
+    const minutes = date.getHours() * 60 + date.getMinutes();
+    const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+    return intervals.some(([start, end]) => minutes >= toMin(start) && minutes <= toMin(end));
+}
+
+// ── Inline-Validierung & Datumslogik fürs Anfrageformular ──
+// Zeigt Fehlermeldungen direkt unter dem jeweiligen Feld (beim Verlassen des Felds bzw. beim
+// Absenden) und räumt sie live wieder ab, sobald der Wert passt. Das Formular hat "novalidate",
+// damit die Browser-eigenen Sprechblasen nicht dazwischenfunken.
+function setupFormValidation(form) {
+    const pad = n => String(n).padStart(2, '0');
+    const todayIso = () => {
+        const d = new Date();
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    };
+    const el = id => form.querySelector('#' + id);
+
+    const REQUIRED_MESSAGES = {
+        fahrzeug: 'Bitte wählen Sie eine Fahrzeugart aus.',
+        getriebe: 'Bitte wählen Sie einen Getriebetyp aus.',
+        anhaengkupplung: 'Bitte geben Sie an, ob Sie eine Anhängkupplung brauchen.',
+        anrede: 'Bitte wählen Sie eine Anrede aus.',
+        vorname: 'Bitte geben Sie Ihren Vornamen ein.',
+        nachname: 'Bitte geben Sie Ihren Nachnamen ein.',
+        telefon: 'Bitte geben Sie Ihre Telefonnummer ein.',
+        email: 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
+        abholung_datum: 'Bitte wählen Sie ein Abholdatum.',
+        abholung_uhrzeit: 'Bitte geben Sie eine Abholzeit an.',
+        rueckgabe_datum: 'Bitte wählen Sie ein Rückgabedatum.',
+        rueckgabe_uhrzeit: 'Bitte geben Sie eine Rückgabezeit an.',
+    };
+
+    function getError(field) {
+        const wrapper = field.closest('.field');
+        if (!wrapper || wrapper.offsetParent === null) return ''; // ausgeblendete Felder überspringen
+        const value = field.value.trim();
+        if (field.required && !value) return REQUIRED_MESSAGES[field.id] || 'Bitte füllen Sie dieses Feld aus.';
+        if (!value) return '';
+        if (field.id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+            return 'Bitte prüfen Sie die E-Mail-Adresse, z.B. name@beispiel.de.';
+        }
+        if (field.id === 'telefon' && !field.checkValidity()) {
+            return 'Bitte geben Sie eine gültige Telefonnummer ein, z.B. 0151 23456789.';
+        }
+        if (field.id === 'abholung_datum' && value < todayIso()) {
+            return 'Das Abholdatum liegt in der Vergangenheit.';
+        }
+        if (field.id === 'rueckgabe_datum' && el('abholung_datum').value && value < el('abholung_datum').value) {
+            return 'Die Rückgabe muss nach der Abholung liegen.';
+        }
+        if (field.id === 'rueckgabe_uhrzeit'
+            && el('abholung_datum').value && el('abholung_datum').value === el('rueckgabe_datum').value
+            && el('abholung_uhrzeit').value && value <= el('abholung_uhrzeit').value) {
+            return 'Die Rückgabezeit muss nach der Abholzeit liegen.';
+        }
+        return '';
+    }
+
+    function showError(field, message) {
+        const wrapper = field.closest('.field');
+        let err = wrapper.querySelector('.field-error');
+        if (!err) {
+            err = document.createElement('p');
+            err.className = 'field-error';
+            err.id = 'error-' + field.id;
+            err.setAttribute('role', 'alert');
+            wrapper.appendChild(err);
+        }
+        err.textContent = message;
+        err.hidden = !message;
+        wrapper.classList.toggle('field-invalid', !!message);
+        if (message) {
+            field.setAttribute('aria-invalid', 'true');
+            field.setAttribute('aria-describedby', err.id);
+        } else {
+            field.removeAttribute('aria-invalid');
+            field.removeAttribute('aria-describedby');
+        }
+    }
+
+    function validateField(field) {
+        const message = getError(field);
+        showError(field, message);
+        return !message;
+    }
+
+    const fields = Array.from(form.querySelectorAll('input[id], select[id], textarea[id]'));
+    const isShown = field => field.closest('.field') && field.closest('.field').classList.contains('field-invalid');
+
+    fields.forEach(field => {
+        const isSelectLike = field.tagName === 'SELECT' || field.type === 'date' || field.type === 'time';
+        field.addEventListener(isSelectLike ? 'change' : 'blur', () => validateField(field));
+        field.addEventListener('input', () => { if (isShown(field)) validateField(field); });
+    });
+
+    // Datumslogik: kein Datum in der Vergangenheit, Rückgabe nie vor der Abholung
+    const abholung = el('abholung_datum');
+    const rueckgabe = el('rueckgabe_datum');
+    if (abholung && rueckgabe) {
+        abholung.min = todayIso();
+        rueckgabe.min = todayIso();
+
+        abholung.addEventListener('change', () => {
+            if (!abholung.value) { rueckgabe.min = todayIso(); return; }
+            rueckgabe.min = abholung.value;
+            // Rückgabe leer oder davor: auf das Abholdatum vorbelegen (Nutzer kann es ändern)
+            if (!rueckgabe.value || rueckgabe.value < abholung.value) {
+                rueckgabe.value = abholung.value;
+                rueckgabe.dispatchEvent(new Event('input', { bubbles: true }));
+                rueckgabe.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+
+        // Datum und Uhrzeit: bereits angezeigte Rückgabe-Fehler neu bewerten, wenn sich die Abholung ändert
+        ['abholung_datum', 'abholung_uhrzeit', 'rueckgabe_datum'].forEach(id => {
+            el(id).addEventListener('change', () => {
+                ['rueckgabe_datum', 'rueckgabe_uhrzeit'].forEach(rid => {
+                    if (isShown(el(rid))) validateField(el(rid));
+                });
+            });
+        });
+
+        // Klick öffnet direkt den Kalender (statt erst ein einzelnes Datumssegment zu fokussieren)
+        [abholung, rueckgabe].forEach(input => {
+            input.addEventListener('click', () => {
+                try { if (input.showPicker) input.showPicker(); } catch (e) { /* nicht unterstützt */ }
+            });
+        });
+    }
+
+    // Prüft alle Felder und liefert das erste fehlerhafte Feld (oder null)
+    function validateAll() {
+        let first = null;
+        fields.forEach(field => {
+            if (!validateField(field)) {
+                const wrapper = field.closest('.field');
+                wrapper.classList.add('field-bounce');
+                setTimeout(() => wrapper.classList.remove('field-bounce'), 600);
+                if (!first) first = field;
+            }
+        });
+        return first;
+    }
+
+    return { validateAll };
+}
+
 // ── 1. Kontaktformular Submit-Handler (Netlify Forms) ──
 function setupContactForm() {
     const form = document.querySelector('.inquiry-form');
     if (!form) return;
 
+    const validation = setupFormValidation(form);
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Pflichtfelder prüfen (außer Nachricht)
-        const required = form.querySelectorAll('input[required], select[required]');
-        let firstInvalid = null;
-        required.forEach(field => {
-            if (!field.value.trim()) {
-                field.closest('.field').classList.add('field-bounce');
-                setTimeout(() => field.closest('.field').classList.remove('field-bounce'), 600);
-                if (!firstInvalid) firstInvalid = field;
-            }
-        });
+        // Alle Felder prüfen; Fehler erscheinen direkt am jeweiligen Feld
+        const firstInvalid = validation.validateAll();
         if (firstInvalid) {
-            showValidationToast('Bitte füllen Sie alle markierten Felder aus.');
+            showValidationToast('Bitte prüfen Sie die markierten Felder.');
             firstInvalid.focus();
             return;
         }
@@ -81,6 +239,8 @@ function setupContactForm() {
             hiddenFields.push({ field, hidden });
         });
 
+        const vehicleType = (form.querySelector('#fahrzeug') || {}).value || '';
+
         try {
             const data = new FormData(form);
             const response = await fetch('/', {
@@ -89,7 +249,11 @@ function setupContactForm() {
                 body: new URLSearchParams(data).toString(),
             });
             if (response.ok) {
-                showFormSuccess(form);
+                // Messung nur, wenn Google Analytics per Einwilligung geladen wurde (dann existiert window.gtag)
+                if (typeof window.gtag === 'function') {
+                    window.gtag('event', 'generate_lead', { form_name: 'anfrage', vehicle_type: vehicleType });
+                }
+                showFormSuccess(form, isShortNotice());
             } else {
                 showFormError(form);
             }
@@ -107,10 +271,54 @@ function setupContactForm() {
     });
 }
 
-function showFormSuccess(form) {
+// Liegt der Wunsch-Abholtermin in den nächsten 48 Stunden (oder in der Vergangenheit)?
+function isShortNotice() {
+    const date = document.getElementById('abholung_datum');
+    if (!date || !date.value) return false;
+    const time = document.getElementById('abholung_uhrzeit');
+    const pickup = new Date(date.value + 'T' + ((time && time.value) || '00:00'));
+    return pickup.getTime() - Date.now() < 48 * 60 * 60 * 1000;
+}
+
+// Zeigt schon beim Ausfüllen den Telefon-Hinweis, sobald der Abholtermin kurzfristig ist.
+function setupShortNoticeHint() {
+    const hint = document.getElementById('short-notice-hint');
+    const date = document.getElementById('abholung_datum');
+    const time = document.getElementById('abholung_uhrzeit');
+    if (!hint || !date) return;
+    const closedHint = document.getElementById('closed-hours-hint');
+    const closedText = closedHint && closedHint.querySelector('.closed-hours-text');
+    const pickupAt = (d, t) => (d && d.value && t && t.value) ? new Date(d.value + 'T' + t.value) : null;
+    const update = () => {
+        hint.hidden = !isShortNotice();
+        if (!closedHint) return;
+        const pickup = pickupAt(date, time);
+        const returnAt = pickupAt(document.getElementById('rueckgabe_datum'), document.getElementById('rueckgabe_uhrzeit'));
+        const outside = [];
+        if (pickup && !isNaN(pickup) && !isOpenAt(pickup)) outside.push('Abholung');
+        if (returnAt && !isNaN(returnAt) && !isOpenAt(returnAt)) outside.push('Rückgabe');
+        closedHint.hidden = outside.length === 0;
+        if (outside.length) closedText.textContent = outside.join(' und ');
+    };
+    ['abholung_datum', 'abholung_uhrzeit', 'rueckgabe_datum', 'rueckgabe_uhrzeit'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) ['change', 'input'].forEach(ev => el.addEventListener(ev, update));
+    });
+    const form = date.closest('form');
+    if (form) form.addEventListener('reset', () => setTimeout(update, 0));
+    update();
+}
+
+function showFormSuccess(form, shortNotice) {
+    const rushText = shortNotice
+        ? ' Bei einer Abholung innerhalb der nächsten 48 Stunden empfehlen wir Ihnen zusätzlich einen kurzen Anruf: 07586 / 9213-0.'
+        : '';
+    const closedNowText = isOpenAt(new Date())
+        ? ''
+        : ' Wir sind gerade geschlossen und antworten zu unseren Öffnungszeiten.';
     showFormMessage(form,
         'Vielen Dank für Ihre Anfrage!',
-        'Wir prüfen die Verfügbarkeit und melden uns zeitnah persönlich bei Ihnen. Sie haben dabei noch nichts gebucht. Reserviert ist Ihr Fahrzeug erst, sobald wir uns bei Ihnen gemeldet haben.',
+        'Wir prüfen die Verfügbarkeit und melden uns persönlich bei Ihnen. Sie haben noch nichts gebucht. Reserviert ist Ihr Fahrzeug erst, sobald wir uns gemeldet haben.' + rushText + closedNowText,
         '#22c55e',
         true
     );
@@ -142,14 +350,14 @@ function showFormMessage(form, title, text, color, emphasize) {
         form.appendChild(msg);
     }
     msg.style.cssText = emphasize
-        ? 'margin-top:16px;padding:16px 20px;border-radius:8px;font-size:0.92em;line-height:1.5;'
-        : 'margin-top:16px;padding:12px 16px;border-radius:8px;font-size:0.9em;line-height:1.5;font-weight:500;';
+        ? 'margin-top:16px;padding:16px 20px;border-radius:4px;font-size:0.92em;line-height:1.5;'
+        : 'margin-top:16px;padding:12px 16px;border-radius:4px;font-size:0.9em;line-height:1.5;font-weight:500;';
     msg.innerHTML = title
         ? `<strong style="display:block;margin-bottom:4px;color:${color};">${title}</strong>${text}`
         : text;
     if (emphasize) {
         msg.style.background = '#f7fdf9';
-        msg.style.color = '#1f2937';
+        msg.style.color = '#1a1a1a';
         msg.style.border = '1px solid #e5e7eb';
         msg.style.borderLeft = `4px solid ${color}`;
     } else {
@@ -652,7 +860,7 @@ function prefillFormFromUrl() {
                     sel.value = '';
                     const display = sel.nextElementSibling;
                     const textEl = display && display.querySelector('.custom-select-text');
-                    if (textEl) textEl.textContent = 'Bitte wählen...';
+                    if (textEl) textEl.textContent = 'Auswählen';
                     if (display) display.classList.remove('has-value');
                 }
                 if (textarea) textarea.value = '';
@@ -930,6 +1138,7 @@ window.addEventListener('DOMContentLoaded', () => {
   setupFaqAccordion();
   setupMobileNavToggle();
   setupContactForm();
+  setupShortNoticeHint();
   setupTestimonialsSlider();
   setupFuhrparkFinder();
   setupMapConsent();
@@ -946,16 +1155,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // Ist die Website gerade außerhalb der Öffnungszeiten geöffnet, wird zusätzlich
 // einmalig ein Hinweis-Banner unten eingeblendet (siehe showClosedBanner).
 document.addEventListener('DOMContentLoaded', function () {
-  // Öffnungszeiten: Arrays aus Zeitintervallen pro Tag (0=So ... 6=Sa)
-  const OPENING_HOURS = {
-    0: null, // Sonntag: geschlossen
-    1: [["07:30", "12:00"], ["13:00", "18:00"]], // Montag (Mittagspause 12–13)
-    2: [["07:30", "12:00"], ["13:00", "18:00"]], // Dienstag ("-")
-    3: [["07:30", "12:00"], ["13:00", "18:00"]], // Mittwoch ("-")
-    4: [["07:30", "12:00"], ["13:00", "18:00"]], // Donnerstag ("-")
-    5: [["07:30", "12:00"], ["13:00", "18:00"]], // Freitag ("-")
-    6: [["07:30", "13:00"]]                        // Samstag (durchgehend)
-  };
+  // Öffnungszeiten: siehe OPENING_HOURS ganz oben in dieser Datei.
 
   const statusEl = document.getElementById('open-status');
   if (!statusEl) return;
@@ -1321,7 +1521,7 @@ function setupFahrzeugkategorie() {
     const textEl = display && display.querySelector('.custom-select-text');
     kategorieSel.required = false;
     kategorieField.classList.add('kategorie-disabled');
-    if (textEl) textEl.textContent = 'Bitte wählen...';
+    if (textEl) textEl.textContent = 'Auswählen';
     if (infoLink) infoLink.hidden = true;
 
     // Klick auf den Wrapper: wenn noch keine Fahrzeugart gewählt, Select blockieren und Fehler zeigen
@@ -1365,7 +1565,7 @@ function setupFahrzeugkategorie() {
         versteckeTooltip();
 
         // Dropdown-Optionen neu befüllen
-        kategorieSel.innerHTML = '<option value="">Bitte wählen...</option>';
+        kategorieSel.innerHTML = '<option value="">Auswählen</option>';
 
         if (config) {
             config.optionen.forEach(opt => {
@@ -1378,12 +1578,12 @@ function setupFahrzeugkategorie() {
             kategorieField.classList.remove('kategorie-disabled', 'kategorie-error');
             const hint = kategorieField.querySelector('.kategorie-hint');
             if (hint) hint.classList.remove('hint-visible');
-            if (textEl) textEl.textContent = 'Bitte wählen...';
+            if (textEl) textEl.textContent = 'Auswählen';
             if (infoLink) infoLink.hidden = false;
         } else {
             kategorieSel.required = false;
             kategorieField.classList.add('kategorie-disabled');
-            if (textEl) textEl.textContent = 'Bitte wählen...';
+            if (textEl) textEl.textContent = 'Auswählen';
             if (infoLink) infoLink.hidden = true;
         }
 
@@ -1396,14 +1596,14 @@ function setupFahrzeugkategorie() {
 // Die echten <select>-Felder (#fahrzeug, #getriebe, #fahrzeugkategorie) sind unsichtbar;
 // sichtbar ist stattdessen ein gestyltes <div class="custom-select-display"> daneben.
 // Dieser Block hält den angezeigten Text synchron, sobald sich der Wert ändert.
-['fahrzeug', 'getriebe', 'fahrzeugkategorie', 'anhaengkupplung'].forEach(id => {
+['fahrzeug', 'getriebe', 'fahrzeugkategorie', 'anhaengkupplung', 'anrede'].forEach(id => {
   const sel = document.getElementById(id);
   if (!sel) return;
   const display = sel.nextElementSibling;
   const textEl = display && display.querySelector('.custom-select-text');
   sel.addEventListener('change', () => {
     const selected = sel.options[sel.selectedIndex];
-    if (textEl) textEl.textContent = selected.value ? selected.text : 'Bitte wählen...';
+    if (textEl) textEl.textContent = selected.value ? selected.text : 'Auswählen';
     if (display) display.classList.toggle('has-value', !!selected.value);
   });
 });
@@ -1420,13 +1620,6 @@ document.querySelectorAll('.date-input-wrap input[type="date"]').forEach(input =
   sync();
   input.classList.add('is-empty');
   input.addEventListener('change', () => input.classList.toggle('is-empty', !input.value));
-});
-
-// Uhrzeitfelder starten mit vorausgefülltem Vorschlagswert (09:00/16:00) und
-// sollen wie ein Platzhalter aussehen, bis der Nutzer die Uhrzeit selbst ändert.
-document.querySelectorAll('.inquiry-form input[type="time"]').forEach(input => {
-  input.classList.add('is-empty');
-  input.addEventListener('change', () => input.classList.remove('is-empty'));
 });
 
 // ── Aktiver Nav-Link ──

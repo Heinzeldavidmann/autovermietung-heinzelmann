@@ -1,4 +1,29 @@
 /* =========================
+   Mona Sans – Hauptschrift der Seite (Open Font License, GitHub), lokal eingebettet
+   Variabel (Gewicht 200-900), mit echtem Kursivschnitt. Quelle: Google Fonts / fonts.gstatic.com, in /fonts/.
+   Inter (unten) bleibt als Ausweichschrift eingebunden.
+   ========================= */
+@font-face {
+    font-family: 'Mona Sans';
+    font-style: normal;
+    font-weight: 200 900;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('fonts/mona-sans.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Mona Sans';
+    font-style: italic;
+    font-weight: 200 900;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('fonts/mona-sans-italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* =========================
    0. Inter – Lokal eingebettete Webfonts (Open Font License)
    Quelle: Google Fonts / fonts.gstatic.com, heruntergeladen in /fonts/
    ========================= */
@@ -83,7 +108,9 @@
 :root {
     --color-primary: #e60000;
     --color-primary-dark: #8a0000;
-    --color-dark: #111827;
+    --color-dark: #111111;
+    --font-body: 'Mona Sans', 'Inter', sans-serif;
+    --font-heading: var(--font-body);
     --color-text: #333333;
     --color-muted: #666666;
     --color-bg: #f5f6f8;
@@ -91,11 +118,13 @@
     --color-surface-soft: #f9fafb;
     --color-border: #e5e7eb;
 
-    --radius-md: 16px;
-    --radius-lg: 28px;
+    /* Ecken bewusst nur leicht abgerundet, passend zum Logo. Alle Radien laufen über diese drei Werte. */
+    --radius-sm: 4px;   /* Buttons, Eingabefelder, Labels, Hinweise */
+    --radius-md: 6px;   /* Karten, Listen, Bilder */
+    --radius-lg: 8px;   /* große Abschnitte, Hero, Banner */
 
-    --shadow-soft: 0 14px 36px rgba(15, 23, 42, 0.08);
-    --shadow-hover: 0 20px 48px rgba(15, 23, 42, 0.12);
+    --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 20px 48px rgba(0, 0, 0, 0.12);
 
     --container: 1180px;
 
@@ -120,7 +149,7 @@ body {
     --header-offset: 48px;
     --utility-height: 48px;
     --logo-height: 96px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     background: radial-gradient(circle at top left, rgba(230, 0, 0, 0.08), transparent 34rem),
                 linear-gradient(180deg, #ffffff 0%, var(--color-bg) 38%, #ffffff 100%);
     color: var(--color-text);
@@ -130,15 +159,20 @@ body {
 
 
 /* 3. Layout & Grundstruktur */
+h1, h2, h3 {
+    font-family: var(--font-heading);
+}
+
 h1, h2 {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 12px;
     font-size: 2em;
+    font-weight: 800;
     color: var(--color-dark);
     font-style: normal;
     text-transform: none;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.015em;
     line-height: 1.12;
 }
 
@@ -156,7 +190,7 @@ section img {
     height: auto;
     display: block;
     margin: 0;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     object-fit: contain;
 }
 
@@ -214,7 +248,7 @@ header .logo img {
     max-width: 260px;
     background-color: white;
     padding: 6px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     display: block;
 }
 
@@ -242,7 +276,7 @@ header .logo img {
     background: #ffffff;
     border: 0;
     color: #e60000;
-    border-radius: 16px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     line-height: 1;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.10);
@@ -293,14 +327,14 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     color: white;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-weight: 900;
     font-style: italic;
     font-size: clamp(0.62em, 1.4vw, 0.92em);
     letter-spacing: 0.02em;
     text-transform: uppercase;
     padding: 5px 14px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     transition: background var(--transition), color var(--transition), box-shadow var(--transition);
     white-space: nowrap;
 }
@@ -333,10 +367,10 @@ nav ul li a.nav-active {
     gap: 28px;
     padding: 0 32px;
     overflow: hidden;
-    background: #0f172a;
+    background: #0d0d0d;
     color: rgba(255, 255, 255, 0.75);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.68rem;
     font-weight: 600;
     font-style: italic;
@@ -363,8 +397,8 @@ nav ul li a.nav-active {
 }
 
 .utility-item svg {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     display: inline-block;
     flex-shrink: 0;
 }
@@ -453,8 +487,8 @@ nav ul li a.nav-active {
     flex-direction: column;
     background: #ffffff;
     border: 1px solid var(--color-border);
-    border-radius: 24px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     text-decoration: none;
     color: inherit;
@@ -463,7 +497,7 @@ nav ul li a.nav-active {
 
 .vehicle:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.12);
     border-color: var(--color-primary);
 }
 
@@ -521,7 +555,7 @@ nav ul li a.nav-active {
     padding: 5px 10px;
     background: #fff1f2;
     color: var(--color-primary);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.07em;
@@ -550,7 +584,7 @@ nav ul li a.nav-active {
     align-items: center;
     gap: 6px;
     margin-top: 18px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.82rem;
     font-weight: 800;
     font-style: italic;
@@ -586,8 +620,8 @@ nav ul li a.nav-active {
 
 /* Neuzugänge: dunkles Highlight-Farbschema wie das Kontaktformular */
 #neuzugaenge {
-    background: linear-gradient(145deg, #111827, #242b38);
-    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.22);
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.22);
 }
 
 #neuzugaenge .eyebrow {
@@ -643,7 +677,7 @@ nav ul li a.nav-active {
     padding: 22px 24px;
     background: #f9fafb;
     border: 1px solid var(--color-border);
-    border-radius: 18px;
+    border-radius: var(--radius-md);
     text-align: center;
 }
 
@@ -665,8 +699,8 @@ nav ul li a.nav-active {
     padding: 12px 18px;
     background: #ffffff;
     border: 1px solid var(--color-border);
-    border-radius: 16px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.88rem;
     font-weight: 700;
     color: var(--color-dark);
@@ -697,7 +731,7 @@ nav ul li a.nav-active {
     padding: 26px 28px;
     background: #fff1f2;
     border: 1px solid rgba(230, 0, 0, 0.18);
-    border-radius: 18px;
+    border-radius: var(--radius-md);
     text-align: center;
 }
 
@@ -772,7 +806,7 @@ nav ul li a.nav-active {
 }
 
 footer {
-    background: #080f1d;
+    background: #0d0d0d;
     color: rgba(255, 255, 255, 0.75);
     margin-top: 40px;
     border-top: 3px solid var(--color-primary);
@@ -792,7 +826,7 @@ footer {
     width: auto;
     background: white;
     padding: 6px 10px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     margin-bottom: 20px;
     display: block;
 }
@@ -811,7 +845,7 @@ footer {
     margin-bottom: 18px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.72rem;
     font-weight: 800;
     font-style: italic;
@@ -949,7 +983,7 @@ footer {
     padding: 10px 14px;
     background: rgba(230, 0, 0, 0.12);
     border: 1px solid rgba(230, 0, 0, 0.35);
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     color: #ffffff;
     font-size: 0.86rem;
     font-weight: 500;
@@ -978,10 +1012,10 @@ footer {
     left: 50%;
     transform: translateX(-50%) translateY(-80px);
     z-index: 9999;
-    background: #111827;
+    background: #0d0d0d;
     color: #fff;
     padding: 14px 24px;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     font-size: 0.9rem;
     font-weight: 500;
     border-left: 4px solid #e60000;
@@ -1019,9 +1053,9 @@ footer {
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    background: #111827;
+    background: #0d0d0d;
     color: #f9fafb;
-    border-radius: 16px;
+    border-radius: var(--radius-sm);
     padding: 18px 20px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.28);
     border-left: 4px solid #e60000;
@@ -1107,9 +1141,11 @@ footer {
     max-width: var(--container);
     margin: 0 auto;
     padding: 20px 24px;
-    background: linear-gradient(145deg, #111827, #242b38);
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
     color: #ffffff;
-    border-radius: 20px 20px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
 }
 
@@ -1186,7 +1222,7 @@ form:not(.inquiry-form) select {
     padding: 10px;
     font-size: 1em;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 15px;
@@ -1203,7 +1239,7 @@ form:not(.inquiry-form) button {
     padding: 12px 20px;
     font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background 0.3s ease;
 }
@@ -1218,11 +1254,11 @@ form:not(.inquiry-form) button:hover {
     max-width: 360px;
     padding: 8px 12px;
     font-size: 1em;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     color: white;
     background-color: #e60000;
     border: 1px solid #e60000;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     font-weight: 500;
     transition: background-color var(--transition);
     appearance: none;
@@ -1304,7 +1340,7 @@ form:not(.inquiry-form) button:hover {
     padding: 16px 18px;
     background: #f9fafb;
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     transition: border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -1496,8 +1532,8 @@ form:not(.inquiry-form) button:hover {
     padding: 28px;
     background: #ffffff;
     border: 1px solid var(--color-border);
-    border-radius: 24px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
     overflow: hidden;
 }
 
@@ -1520,7 +1556,7 @@ form:not(.inquiry-form) button:hover {
     display: block;
     width: 100%;
     height: 100%;
-    border-radius: 24px;
+    border-radius: var(--radius-md);
 }
 
 .map-inline.map-consent-placeholder,
@@ -1604,8 +1640,8 @@ form:not(.inquiry-form) button:hover {
     padding: 11px 18px;
     background-color: var(--color-primary);
     color: #ffffff;
-    border-radius: 999px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.82rem;
     font-weight: 800;
     font-style: italic;
@@ -1627,15 +1663,15 @@ form:not(.inquiry-form) button:hover {
     height: 100%;
     min-height: 320px;
     border: none;
-    border-radius: 24px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
     display: block;
     transition: transform var(--transition), box-shadow var(--transition);
 }
 
 #anfahrt iframe:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 44px rgba(15, 23, 42, 0.14);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.14);
 }
 
 
@@ -1649,8 +1685,8 @@ form:not(.inquiry-form) button:hover {
     background-color: var(--color-primary);
     color: white;
     border: 1px solid transparent;
-    border-radius: 16px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.92em;
     font-weight: 900;
     font-style: italic;
@@ -1685,7 +1721,7 @@ form:not(.inquiry-form) button:hover {
 .preisliste-card p {
     margin-top: 8px;
     margin-bottom: 6px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.86rem;
     font-weight: 800;
     color: var(--color-dark);
@@ -1700,8 +1736,8 @@ form:not(.inquiry-form) button:hover {
 .listenvorschau {
     width: 180px;
     height: 250px;
-    border-radius: 10px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.10);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
     display: block;
     transition: transform var(--transition), box-shadow var(--transition);
     pointer-events: none;
@@ -1709,7 +1745,7 @@ form:not(.inquiry-form) button:hover {
 
 .preisliste-card a:hover .listenvorschau {
     transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
 }
 
 .overlay {
@@ -1717,7 +1753,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 .overlay span {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.78rem;
     font-weight: 800;
     font-style: italic;
@@ -1815,7 +1851,7 @@ form:not(.inquiry-form) button:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .spec-card-header {
@@ -1889,7 +1925,7 @@ form:not(.inquiry-form) button:hover {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     background: #f8f9fa;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     padding: 16px;
 }
 
@@ -1927,7 +1963,7 @@ form:not(.inquiry-form) button:hover {
 
 .faq-item {
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     margin-bottom: 10px;
     overflow: hidden;
     max-width: 780px;
@@ -1942,7 +1978,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 .faq-question {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.96rem;
     font-weight: 700;
     color: var(--color-dark);
@@ -2010,7 +2046,7 @@ form:not(.inquiry-form) button:hover {
     border-left: 5px solid #e60000;
     padding: 20px;
     margin: 20px 0;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     font-style: italic;
     position: relative;
     min-width: 300px;
@@ -2030,7 +2066,7 @@ form:not(.inquiry-form) button:hover {
 .vehicle-slide img {
     width: 100%;
     height: auto;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     max-height: 200px;
     object-fit: cover;
     aspect-ratio: 4 / 3;
@@ -2067,10 +2103,12 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
 }
 
-.inquiry-form input[type="date"].is-empty,
-.inquiry-form input[type="time"].is-empty {
-    color: #c8d0db !important;
-    -webkit-text-fill-color: #c8d0db !important;
+/* Leeres Datumsfeld: den nativen Platzhalter (z.B. heutiges Datum in Grau, wirkt vorausgefüllt)
+   ausblenden; stattdessen zeigt .date-input-placeholder "Datum wählen". Beim Fokus (Tastatureingabe)
+   wird die native Anzeige wieder sichtbar. */
+.inquiry-form input[type="date"].is-empty:not(:focus) {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
 }
 
 /* Timeline „Firmengeschichte" */
@@ -2114,10 +2152,10 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
     height: 300px;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: var(--radius-md);
     display: block;
     margin: 0;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 .about-figure figcaption {
@@ -2274,7 +2312,7 @@ form:not(.inquiry-form) button:hover {
 .hero-content h1 {
     margin: 0;
     text-align: left;
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
 }
 
 .hero-text {
@@ -2291,7 +2329,7 @@ form:not(.inquiry-form) button:hover {
     gap: 8px;
     margin-bottom: 14px;
     color: var(--color-primary);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.76rem;
     font-weight: 900;
     font-style: italic;
@@ -2307,11 +2345,25 @@ form:not(.inquiry-form) button:hover {
     background: currentColor;
 }
 
+/* Zwei gleich breite Buttons; zusammen so breit wie die drei Kacheln darunter (.hero-trust) */
 .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
     margin-top: 32px;
+}
+
+.hero-actions .button {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+    .hero-actions {
+        grid-template-columns: 1fr;
+    }
 }
 
 .hero-trust {
@@ -2325,8 +2377,8 @@ form:not(.inquiry-form) button:hover {
     padding: 18px 16px;
     background: rgba(255, 255, 255, 0.78);
     border: 1px solid var(--color-border);
-    border-radius: 18px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
 }
 
 .trust-item strong {
@@ -2351,10 +2403,10 @@ form:not(.inquiry-form) button:hover {
 }
 
 .hero-media {
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
     height: 380px;
     flex-shrink: 0;
-    border-radius: 36px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     position: relative;
 }
@@ -2372,9 +2424,9 @@ form:not(.inquiry-form) button:hover {
 }
 
 .hero-logo-panel {
-    border-radius: 36px;
+    border-radius: var(--radius-lg);
     background: #ffffff;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2396,8 +2448,8 @@ form:not(.inquiry-form) button:hover {
     padding: 16px 18px;
     min-width: 220px;
     background: rgba(255, 255, 255, 0.92);
-    border-radius: 22px;
-    box-shadow: 0 16px 44px rgba(15, 23, 42, 0.2);
+    border-radius: var(--radius-md);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(12px);
 }
 
@@ -2472,8 +2524,8 @@ form:not(.inquiry-form) button:hover {
     padding: 28px;
     background: #ffffff;
     border: 1px solid var(--color-border);
-    border-radius: 28px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     cursor: pointer;
     transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
@@ -2482,7 +2534,7 @@ form:not(.inquiry-form) button:hover {
 
 .rental-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.12);
     border-color: var(--color-primary);
 }
 
@@ -2493,7 +2545,7 @@ form:not(.inquiry-form) button:hover {
     padding: 7px 12px;
     color: var(--color-primary);
     background: #fff1f2;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.08em;
@@ -2520,8 +2572,8 @@ form:not(.inquiry-form) button:hover {
     padding: 10px 18px;
     background-color: #fff1f2;
     color: var(--color-primary);
-    border-radius: 999px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.82rem;
     font-weight: 800;
     font-style: italic;
@@ -2543,18 +2595,21 @@ form:not(.inquiry-form) button:hover {
 }
 
 .inquiry-section {
-    background: linear-gradient(145deg, #111827, #242b38);
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
     color: #ffffff;
-    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.22);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.22);
 }
 
 .inquiry-layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
     grid-template-areas:
         "copy form"
-        "options form";
-    gap: 44px;
+        "options form"
+        "privacy form";
+    grid-template-rows: auto 1fr auto;
+    column-gap: 36px;
+    row-gap: 28px;
     align-items: stretch;
 }
 
@@ -2568,7 +2623,7 @@ form:not(.inquiry-form) button:hover {
     margin: 0;
     color: #ffffff;
     text-align: left;
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
 }
 
 .inquiry-copy p {
@@ -2582,7 +2637,9 @@ form:not(.inquiry-form) button:hover {
     grid-area: options;
     display: grid;
     gap: 12px;
-    align-self: end;
+    align-self: start;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .inquiry-contact-note {
@@ -2592,21 +2649,34 @@ form:not(.inquiry-form) button:hover {
     line-height: 1.6;
 }
 
-.inquiry-contact-options a {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px 16px;
-    color: #ffffff;
-    text-decoration: none;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.06);
-    transition: transform var(--transition);
+.inquiry-contact-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 
-.inquiry-contact-options a::after {
-    content: "→";
-    font-weight: 800;
+.contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 14px;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 0.94rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.06);
+    transition: transform var(--transition), background-color var(--transition);
+}
+
+.contact-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 .inquiry-form {
@@ -2614,25 +2684,34 @@ form:not(.inquiry-form) button:hover {
     padding: 26px;
     background: #ffffff;
     color: var(--color-text);
-    border-radius: 28px;
+    border-radius: var(--radius-md);
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
+/* 6 Spalten: normale Felder belegen 3 (halbe Breite), .field-third 2 (ein Drittel),
+   so lassen sich Zeilen mit 2 oder 3 Feldern mischen, ohne dass Lücken entstehen. */
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 16px;
 }
 
 .field {
     display: flex;
     flex-direction: column;
+    grid-column: span 3;
+    min-width: 0;
 }
 
-.field-full {
+.field-third {
+    grid-column: span 2;
+}
+
+.field-full,
+.form-group-title {
     grid-column: 1 / -1;
 }
 
@@ -2641,7 +2720,7 @@ form:not(.inquiry-form) button:hover {
     align-items: center;
     background: #f9fafb;
     border: 1px solid var(--color-border);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     transition: border-color var(--transition), box-shadow var(--transition);
 }
@@ -2676,28 +2755,19 @@ form:not(.inquiry-form) button:hover {
     width: 100%;
 }
 .date-input-placeholder {
-    display: none;
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8a93a2;
+    pointer-events: none;
+    font-family: var(--font-body);
+    font-size: 0.96rem;
+    font-weight: 500;
 }
-
-/* iOS Safari zeigt bei leeren <input type="date"> keinen Platzhalter an
-   (anders als Desktop-Browser, die dort das aktuelle Datum vorschlagen).
-   Deshalb blenden wir das eigene Label nur auf schmalen/Touch-Viewports ein. */
-@media (max-width: 700px) {
-    .date-input-placeholder {
-        display: block;
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #c8d0db;
-        pointer-events: none;
-        font-family: 'Inter', sans-serif;
-        font-size: 0.96rem;
-        font-weight: 500;
-    }
-    .date-input-wrap.has-value .date-input-placeholder {
-        display: none;
-    }
+.date-input-wrap.has-value .date-input-placeholder,
+.date-input-wrap:focus-within .date-input-placeholder {
+    display: none;
 }
 
 .split-input input[type="number"]::-webkit-outer-spin-button,
@@ -2742,8 +2812,8 @@ form:not(.inquiry-form) button:hover {
     color: var(--color-dark);
     background: #f9fafb;
     border: 1px solid var(--color-border);
-    border-radius: 14px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.96rem;
     font-weight: 500;
     appearance: none;
@@ -2761,8 +2831,8 @@ form:not(.inquiry-form) button:hover {
 
 .inquiry-form input::placeholder,
 .inquiry-form textarea::placeholder {
-    color: #c8d0db;
-    font-weight: 300;
+    color: #8a93a2;
+    font-weight: 400;
 }
 
 
@@ -2791,8 +2861,8 @@ form:not(.inquiry-form) button:hover {
     padding: 13px 14px;
     background-color: #f9fafb;
     border: 1px solid var(--color-border);
-    border-radius: 14px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.96rem;
     font-weight: 500;
     color: #c8d0db;
@@ -2803,6 +2873,13 @@ form:not(.inquiry-form) button:hover {
 
 .custom-select-display.has-value {
     color: var(--color-dark);
+}
+
+.custom-select-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .custom-select-hidden:focus + .custom-select-display {
@@ -2871,9 +2948,9 @@ form:not(.inquiry-form) button:hover {
 .gruppe-tooltip {
     position: absolute;
     z-index: 9999;
-    background: #111827;
+    background: #0d0d0d;
     color: #f0f0f0;
-    border-radius: 14px;
+    border-radius: var(--radius-sm);
     padding: 16px 18px;
     width: min(520px, 90vw);
     box-shadow: 0 12px 40px rgba(0,0,0,0.45);
@@ -2896,7 +2973,7 @@ form:not(.inquiry-form) button:hover {
 
 @media (prefers-color-scheme: light) {
     .gruppe-tooltip {
-        background: #111827;
+        background: #0d0d0d;
         color: #f0f0f0;
         border: 1px solid rgba(255,255,255,0.08);
         box-shadow: 0 12px 40px rgba(0,0,0,0.22);
@@ -2962,10 +3039,10 @@ form:not(.inquiry-form) button:hover {
     background-repeat: no-repeat;
     background-position: right 14px center;
     border: 1px solid var(--color-border);
-    border-radius: 14px !important;
-    -webkit-border-radius: 14px !important;
+    border-radius: var(--radius-sm) !important;
+    -webkit-border-radius: var(--radius-sm) !important;
     color: var(--color-dark) !important;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.96rem !important;
     font-weight: 500;
     font-style: normal;
@@ -3001,13 +3078,13 @@ form:not(.inquiry-form) button:hover {
     color: var(--color-dark);
     background-color: #ffffff;
     border-color: var(--color-border);
-    border-radius: 16px;
-    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
 }
 
 .button-secondary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
     border-color: var(--color-dark);
 }
 
@@ -3018,8 +3095,8 @@ form:not(.inquiry-form) button:hover {
     background-color: var(--color-primary);
     color: white;
     border: 1px solid transparent;
-    border-radius: 16px;
-    font-family: 'Inter', sans-serif;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
     font-size: 0.92em;
     font-weight: 900;
     font-style: italic;
@@ -3101,7 +3178,10 @@ form:not(.inquiry-form) button:hover {
         grid-template-areas:
             "copy"
             "form"
+            "privacy"
             "options";
+        grid-template-rows: auto;
+        row-gap: 28px;
     }
 
     .inquiry-contact-options {
@@ -3117,42 +3197,8 @@ form:not(.inquiry-form) button:hover {
         min-height: 320px;
     }
 
-    /* Mobile Feldreihenfolge: Fahrzeug & Zeitraum geschlossen, dann Kontaktdaten */
-    #field-fahrzeug { order: 1; }
-    #field-fahrzeugkategorie { order: 2; }
-    #field-getriebe { order: 3; }
-    #field-anhaengkupplung { order: 4; }
-    #field-abholung { order: 5; }
-    #field-rueckgabe { order: 6; }
-    #field-fahrtstrecke { order: 7; }
-    #field-name { order: 8; }
-    #field-telefon { order: 9; }
-    #field-email { order: 10; }
-    #field-nachricht { order: 11; }
-
-    .field-group-start {
-        margin-top: 8px;
-        padding-top: 16px;
-        border-top: 1px solid var(--color-border);
-    }
-
-    .field-group-start:first-child {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-    }
-
-    .field-group-start::before {
-        content: attr(data-group-label);
-        display: block;
-        margin-bottom: 14px;
-        color: var(--color-primary);
-        font-family: 'Inter', sans-serif;
-        font-size: 0.74rem;
-        font-weight: 800;
-        font-style: italic;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
+    .form-grid > * {
+        grid-column: 1 / -1;
     }
 }
 
@@ -3213,7 +3259,7 @@ form:not(.inquiry-form) button:hover {
         display: block !important;
         flex: 0 0 130px;
         height: 180px;
-        border-radius: 14px;
+        border-radius: var(--radius-sm);
         border: none;
         box-shadow: none;
     }
@@ -3235,7 +3281,7 @@ form:not(.inquiry-form) button:hover {
         display: inline-flex;
         width: 58px;
         height: 58px;
-        border-radius: 14px;
+        border-radius: var(--radius-sm);
         align-self: center;
     }
 
@@ -3289,7 +3335,7 @@ form:not(.inquiry-form) button:hover {
         display: flex;
         align-items: center;
         padding: 14px 16px;
-        border-radius: 14px;
+        border-radius: var(--radius-sm);
         font-size: 0.95rem;
         background: rgba(255, 255, 255, 0.12);
         transition: background var(--transition), color var(--transition), transform var(--transition);
@@ -3583,7 +3629,7 @@ form:not(.inquiry-form) button:hover {
 
     .inquiry-form {
         padding: 20px;
-        border-radius: 22px;
+        border-radius: var(--radius-md);
     }
 }
 
@@ -3629,8 +3675,9 @@ form:not(.inquiry-form) button:hover {
         transform: translateY(-3px);
     }
 
-    .inquiry-contact-options a:hover {
+    .contact-btn:hover {
         transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.12);
     }
 
     .button:hover {
@@ -3729,7 +3776,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 .preise-col-label {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 0.72rem;
     font-weight: 700;
     font-style: italic;
@@ -3796,7 +3843,7 @@ form:not(.inquiry-form) button:hover {
 }
 
 .preise-nav-headline {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 1.6rem;
     font-weight: 800;
     color: var(--color-dark);
@@ -3963,14 +4010,14 @@ form:not(.inquiry-form) button:hover {
     text-align: center;
     font-size: 0.85rem;
     padding: 10px 16px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 .button-secondary.spec-card-btn {
     color: var(--color-dark);
     background-color: #ffffff;
     border-color: var(--color-border);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 mark.spec-highlight {
@@ -4051,7 +4098,7 @@ mark.spec-highlight {
     border-color: var(--color-dark);
     background-color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Spec Slider */
@@ -4180,9 +4227,9 @@ mark.spec-highlight {
         width: 100%;
         background: #f8f9fa;
         border: 1px solid var(--color-border);
-        border-radius: 10px;
+        border-radius: var(--radius-sm);
         padding: 10px 16px;
-        font-family: 'Inter', sans-serif;
+        font-family: var(--font-body);
         font-size: 0.82rem;
         font-weight: 700;
         font-style: italic;
@@ -4238,7 +4285,7 @@ mark.spec-highlight {
 }
 
 .transporter-hero-img {
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     height: 360px;
 }
@@ -4262,7 +4309,7 @@ mark.spec-highlight {
     background: var(--color-primary);
     color: #fff;
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-weight: 600;
     font-size: 0.9rem;
     text-decoration: none;
@@ -4370,7 +4417,7 @@ mark.spec-highlight {
     header .logo img {
         background-color: white;
         padding: 6px;
-        border-radius: 8px;
+        border-radius: var(--radius-sm);
     }
 
     /* Footer-Logo ebenfalls */
@@ -4690,7 +4737,7 @@ mark.spec-highlight {
 
     .inquiry-form input::placeholder,
     .inquiry-form textarea::placeholder {
-        color: #555555;
+        color: #8a8a8a;
     }
 
     .inquiry-form select {
@@ -4707,7 +4754,7 @@ mark.spec-highlight {
     .custom-select-display {
         background-color: #2a2a2a;
         border-color: rgba(255, 255, 255, 0.15);
-        color: #666666;
+        color: #8a8a8a;
     }
 
     .custom-select-display.has-value {
@@ -4788,4 +4835,123 @@ mark.spec-highlight {
         background: #0d0d0d;
         box-shadow: 0 8px 32px rgba(0,0,0,0.55);
     }
+}
+
+
+/* Hinweis bei kurzfristiger Abholung (< 48 h) unter dem Abholtermin */
+.short-notice-hint {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 10px 14px;
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background: rgba(230, 0, 0, 0.06);
+    color: var(--color-text, #111111);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+.short-notice-hint[hidden] { display: none; }
+.short-notice-hint a {
+    display: inline-block;
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+
+/* ── Formular: Abschnittstitel, optional-Label, Fehler, Datenschutz, Vertrauenspunkte ── */
+.form-group-title {
+    margin: 0;
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: 0.74rem;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.form-group-title:not(:first-child) {
+    margin-top: 10px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-border);
+}
+
+.label-optional {
+    color: var(--color-muted);
+    font-weight: 500;
+}
+
+.field-error {
+    margin: 6px 0 0;
+    color: #c40000;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.field-error[hidden] { display: none; }
+
+.field-invalid input,
+.field-invalid .custom-select-display,
+.field-invalid .split-input {
+    border-color: #e60000;
+    box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.12);
+}
+
+/* Datenschutz-Hinweis: links unten auf Höhe des Absende-Buttons, immer sichtbar */
+.privacy-note {
+    grid-area: privacy;
+    align-self: end;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+.privacy-note a {
+    color: #ffffff;
+    font-weight: 700;
+    text-underline-offset: 2px;
+}
+
+.inquiry-trust {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+.inquiry-trust li {
+    position: relative;
+    padding-left: 28px;
+    color: #ffffff;
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.inquiry-trust li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 18px;
+    text-align: center;
+}
+.inquiry-trust a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+@media (max-width: 1000px) and (min-width: 901px) {
+    .field-third { grid-column: span 3; }
+}
+
+@media (prefers-color-scheme: dark) {
+    .field-error { color: #ff6b6b; }
 }
