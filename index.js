@@ -662,16 +662,53 @@ function prefillFormFromUrl() {
     }
 }
 
-// ── 7. Cookie-Consent-Banner ──
-// Erscheint beim ersten Besuch als Leiste unten. "Nur notwendige" sperrt die Seite NICHT,
-// es werden lediglich optionale Dienste (aktuell: Google Maps, siehe setupMapConsent) nicht
-// automatisch geladen. Die Entscheidung wird dauerhaft in localStorage gespeichert, daher
-// erscheint das Banner bei wiederkehrenden Besuchern nicht erneut (zum erneuten Testen:
-// in den Browser-DevTools unter Application → Local Storage den Eintrag "cookieConsent" löschen).
-function setupCookieConsent() {
-    const CONSENT_KEY = 'cookieConsent'; // 'all' | 'essential'
+const GA_MEASUREMENT_ID = 'G-TWHLSRDJS9';
+const CONSENT_KEY = 'cookieConsent'; // 'all' | 'essential'
 
-    if (localStorage.getItem(CONSENT_KEY)) return;
+// Google Analytics (GA4) wird ausschließlich nach Zustimmung ("Alle akzeptieren") geladen.
+// Consent Mode v2: Alle Speicherzwecke starten auf "denied"; nur Statistik wird bei Zustimmung freigegeben.
+// Werbe-Zwecke bleiben immer verweigert, es werden keine Werbe-Signale oder Personalisierung genutzt.
+function loadGoogleAnalytics() {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    window['ga-disable-' + GA_MEASUREMENT_ID] = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied'
+    });
+    window.gtag('consent', 'update', { analytics_storage: 'granted' });
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID, {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        cookie_flags: 'SameSite=Lax;Secure'
+    });
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+    document.head.appendChild(script);
+}
+
+// Entfernt GA-Cookies, wenn die Einwilligung widerrufen wird.
+function removeGoogleAnalyticsCookies() {
+    const host = location.hostname;
+    const domains = ['', host, '.' + host, '.' + host.replace(/^www\./, '')];
+    document.cookie.split(';').forEach(c => {
+        const name = c.split('=')[0].trim();
+        if (name.startsWith('_ga')) {
+            domains.forEach(d => {
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+            });
+        }
+    });
+}
+
+function showCookieBanner() {
+    if (document.getElementById('cookie-consent-banner')) return;
 
     const banner = document.createElement('div');
     banner.id = 'cookie-consent-banner';
@@ -681,7 +718,7 @@ function setupCookieConsent() {
         <div class="cookie-consent-inner">
             <div class="cookie-consent-text">
                 <strong>Diese Website nutzt Cookies</strong>
-                <span>Technisch notwendige Cookies sorgen für die Grundfunktionen der Website. Optionale Dienste wie eingebettete Karten laden wir nur nach Ihrer Zustimmung. Details finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
+                <span>Technisch notwendige Cookies sorgen für die Grundfunktionen der Website. Optionale Dienste wie eingebettete Karten und die Besucherstatistik mit Google Analytics laden wir nur nach Ihrer Zustimmung. Details finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
             </div>
             <div class="cookie-consent-actions">
                 <button type="button" class="button button-secondary" id="cookie-consent-essential">Nur notwendige</button>
@@ -697,13 +734,45 @@ function setupCookieConsent() {
     }, 100);
 
     function dismiss(value) {
+        const previous = localStorage.getItem(CONSENT_KEY);
         localStorage.setItem(CONSENT_KEY, value);
         banner.classList.remove('cookie-consent-visible');
         setTimeout(() => banner.remove(), 400);
+        if (value === 'all') {
+            loadGoogleAnalytics();
+        } else if (previous === 'all') {
+            // Widerruf: Tracking sofort stoppen, Cookies löschen und neu laden, damit GA nicht weiterläuft
+            window['ga-disable-' + GA_MEASUREMENT_ID] = true;
+            if (window.gtag) window.gtag('consent', 'update', { analytics_storage: 'denied' });
+            removeGoogleAnalyticsCookies();
+            setTimeout(() => location.reload(), 450);
+        }
     }
 
     document.getElementById('cookie-consent-all').addEventListener('click', () => dismiss('all'));
     document.getElementById('cookie-consent-essential').addEventListener('click', () => dismiss('essential'));
+}
+
+// ── 7. Cookie-Consent-Banner ──
+// Erscheint beim ersten Besuch. Bei "Alle akzeptieren" wird zusätzlich Google Analytics geladen.
+// Über den Footer-Link "Cookie-Einstellungen" (wird hier per JS ergänzt) lässt sich die
+// Auswahl jederzeit ändern bzw. widerrufen.
+function setupCookieConsent() {
+    const consent = localStorage.getItem(CONSENT_KEY);
+    if (consent === 'all') loadGoogleAnalytics();
+    if (!consent) showCookieBanner();
+
+    // Footer-Link zum Ändern der Auswahl ergänzen (neben Impressum/Datenschutz)
+    const legalLink = document.querySelector('.footer-bottom a[href="datenschutz.html"]');
+    if (legalLink && !document.getElementById('cookie-settings-link')) {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.id = 'cookie-settings-link';
+        link.textContent = 'Cookie-Einstellungen';
+        link.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
+        legalLink.insertAdjacentText('afterend', ' · ');
+        legalLink.parentNode.insertBefore(link, legalLink.nextSibling.nextSibling);
+    }
 }
 
 // ── 8. Google-Maps-Karten erst nach Klick laden ──
