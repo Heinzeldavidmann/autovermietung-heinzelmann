@@ -222,48 +222,33 @@
 <main>
 
 <!-- Hero: erste Ansicht beim Laden der Startseite, mit Haupt-CTA -->
-<section id="home" class="hero-section">
-    <div class="hero-wrapper">
-        <div class="hero-content">
-            <p class="eyebrow">Autovermietung in Herbertingen seit 1963</p>
-            <h1>Mietwagen, Transporter und 9-Sitzer – schnell, unkompliziert und auf Ihre Bedürfnisse zugeschnitten.</h1>
-            <p class="hero-text">
-                Ob Alltagsmobilität, Umzug, Ausflug oder Pannenhilfe: Bei der Autovermietung Heinzelmann GbR in Herbertingen finden Sie passende Fahrzeuge inklusive LKW und Anhänger, persönliche Beratung und eine direkte Anfrage ohne Umwege. Familienbetrieb seit 1963, geführt von Elmar und Gerold Heinzelmann.
-            </p>
-
+<!-- Hero: Firmengebäude als Bühne. Der vorherige Hero ist im Git-Tag "hero-original" gesichert (siehe CLAUDE.md). -->
+<section id="home" class="hero-stage-section">
+    <div class="hero-stage">
+        <picture>
+            <source srcset="images/Saumstrasse_Heute.webp" type="image/webp">
+            <img class="hero-stage-photo" width="1402" height="1052" fetchpriority="high" src="images/Saumstrasse_Heute.jpg" alt="Firmengebäude der Autovermietung Heinzelmann in der Saumstraße, Herbertingen">
+        </picture>
+        <div class="hero-stage-copy">
+            <h1>Mietwagen, Transporter und 9&#8209;Sitzer in Herbertingen.</h1>
             <div class="hero-actions" aria-label="Schnelleinstieg">
                 <a href="#kontakt" class="button button-primary">Fahrzeug anfragen</a>
                 <a href="fuhrpark.html" class="button button-secondary">Fuhrpark ansehen</a>
             </div>
-
-            <div class="hero-trust" aria-label="Kurzüberblick">
-                <div class="trust-item">
-                    <strong data-count="60" data-count-suffix="+">60+</strong>
-                    <span>Jahre Erfahrung</span>
-                </div>
-                <div class="trust-item">
-                    <strong data-count="75" data-count-suffix="+">75+</strong>
-                    <span>Fahrzeuge im Fuhrpark</span>
-                </div>
-                <div class="trust-item">
-                    <strong>Saumstraße</strong>
-                    <span>Zentral in Herbertingen</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="hero-right">
-            <div class="hero-media">
-                <picture>
-                    <source srcset="images/Au%C3%9Fenwand_Autovermietung%20Heinzelmann.webp" type="image/webp">
-                    <img width="1360" height="763" fetchpriority="high" src="images/Außenwand_Autovermietung Heinzelmann.jpg" alt="Autovermietung Heinzelmann in Herbertingen">
-                </picture>
-            </div>
-            <div class="hero-logo-panel">
-                <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann">
-            </div>
         </div>
     </div>
+    <ul class="hero-facts" aria-label="Kurzüberblick">
+        <li><strong><small>seit</small> 1963</strong><span>Familienbetrieb in 2.&nbsp;Generation</span></li>
+        <li><strong data-count="75" data-count-suffix="+">75+</strong><span>Fahrzeuge im Fuhrpark</span></li>
+        <li><strong data-count="10" data-count-suffix="+">10+</strong><span>Marken, von Dacia bis Mercedes</span></li>
+        <li class="hero-facts-place">
+            <a href="#anfahrt">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                <strong>Saumstraße 2–4</strong>
+                <span>Herbertingen · Anfahrt ansehen →</span>
+            </a>
+        </li>
+    </ul>
 </section>
 
 <!-- Kurzübersicht der 3 Fahrzeug-Hauptkategorien, verlinkt auf pkw.html/transporter.html/9sitzer.html -->
@@ -271,7 +256,7 @@
     <div class="section-heading">
         <p class="eyebrow">Fuhrpark</p>
         <h2>Mobilität für jeden Bedarf</h2>
-        <p>Vom Tagesausflug über die Urlaubsreise bis zum Umzug. Wählen Sie das passende Fahrzeug in Schalt- oder Automatikversion direkt aus unserem Fuhrpark.</p>
+        <p>Ob Alltagsmobilität, Umzug, Ausflug oder Pannenhilfe: Bei der Autovermietung Heinzelmann GbR in Herbertingen finden Sie passende Fahrzeuge inklusive LKW und Anhänger, persönliche Beratung und eine direkte Anfrage ohne Umwege. Familienbetrieb seit 1963, geführt von Elmar und Gerold Heinzelmann.</p>
     </div>
     <div class="vehicle-container">
         <a href="pkw.html" class="vehicle">

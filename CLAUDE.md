@@ -85,6 +85,12 @@ Body has `padding-top: calc(var(--header-offset) + var(--utility-height))` to cl
 
 **Anforderungen (requirements) layout** — 2-column: intro left, icon list right. Used on both `index.html` and `preise.html`.
 
+## Hero der Startseite
+
+Der Hero (`#home` in `index.html`) zeigt das Firmengebäude (`images/Saumstrasse_Heute.*`) als große Bühne mit dunklem Verlauf, darunter die drei Kennzahlen (`.hero-facts`). Styles: Abschnitt „Hero Firmengebäude als Bühne" am Ende von `style.css`.
+
+Der vorherige Hero (Text links, Foto + Logo-Kasten rechts, drei Kacheln) ist im Git-Tag `hero-original` gesichert. Zum Zurückwechseln den `<section id="home" …>`-Block aus `git show hero-original:index.html` übernehmen. Die alten Klassen (`.hero-section`, `.hero-wrapper`, `.hero-right`, `.hero-logo-panel`, `.trust-item` …) sind in `style.css` weiterhin vorhanden. Der Absatz `.hero-text` stand damals im Hero und steht jetzt unter „Mobilität für jeden Bedarf".
+
 ## Navigation
 
 All pages share the same header/utility bar HTML. Nav links use plain text (no `<em>` or `CAPS`):

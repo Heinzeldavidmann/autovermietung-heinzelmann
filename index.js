@@ -1188,8 +1188,44 @@ document.addEventListener('DOMContentLoaded', function () {
     return parts.join(' und ');
   }
 
+  // Nächste Öffnung ab jetzt suchen (heute später, morgen oder an einem der Folgetage)
+  function nextOpening() {
+    const WOCHENTAGE = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
+    for (let offset = 0; offset <= 7; offset++) {
+      const dayIdx = (day + offset) % 7;
+      const ints = OPENING_HOURS[dayIdx];
+      if (!ints || ints.length === 0) continue;
+      const list = Array.isArray(ints[0]) ? ints : [ints];
+      for (const [start] of list) {
+        if (offset === 0 && parseTimeToDate(start) <= now) continue;
+        const label = offset === 0 ? 'heute' : offset === 1 ? 'morgen' : WOCHENTAGE[dayIdx];
+        return { label, time: prettyTime(start) };
+      }
+    }
+    return null;
+  }
+  function closedTexts() {
+    const next = nextOpening();
+    if (!next) return { full: 'Jetzt geschlossen', short: 'Geschlossen' };
+    return {
+      full: `Jetzt geschlossen – öffnet ${next.label} um ${next.time}`,
+      short: `Geschlossen – ${next.label} ${next.time}`
+    };
+  }
+  function applyResponsiveText(full, short) {
+    if (!textEl) return;
+    textEl.dataset.full = full;
+    textEl.dataset.short = short;
+    const apply = () => {
+      textEl.textContent = window.innerWidth <= 900 ? textEl.dataset.short : textEl.dataset.full;
+    };
+    apply();
+    window.addEventListener('resize', apply);
+  }
+
   if (!intervals || intervals.length === 0) {
-    if (textEl) textEl.textContent = 'Heute: geschlossen';
+    const t = closedTexts();
+    applyResponsiveText(t.full, t.short);
     statusEl.classList.add('closed');
     dotEl && dotEl.style.setProperty('background', '#e60000');
     return;
@@ -1228,19 +1264,13 @@ document.addEventListener('DOMContentLoaded', function () {
           break;
         }
       }
-      textEl.dataset.full = `Jetzt Mittagspause – wieder geöffnet ab ${nextStart}`;
-      textEl.dataset.short = `Pause – ab ${nextStart}`;
+      applyResponsiveText(`Jetzt Mittagspause – wieder geöffnet ab ${nextStart}`, `Pause – ab ${nextStart}`);
+    } else if (openNow) {
+      applyResponsiveText(`Heute: geöffnet von ${dayText}`, `Geöffnet ${dayText}`);
     } else {
-      textEl.dataset.full = `Heute: geöffnet von ${dayText}`;
-      textEl.dataset.short = `Geöffnet ${dayText}`;
+      const t = closedTexts();
+      applyResponsiveText(t.full, t.short);
     }
-    function applyHoursText() {
-      textEl.textContent = window.innerWidth <= 680
-        ? textEl.dataset.short
-        : textEl.dataset.full;
-    }
-    applyHoursText();
-    window.addEventListener('resize', applyHoursText);
   }
 
   if (openNow) {
