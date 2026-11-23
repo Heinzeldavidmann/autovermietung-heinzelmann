@@ -327,11 +327,30 @@
         <form class="inquiry-form" name="anfrage" method="POST" novalidate data-netlify="true" netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="anfrage">
             <input type="hidden" name="bot-field" style="display:none">
-            <div class="form-grid">
-                <h3 class="form-group-title">Fahrzeug &amp; Zeitraum</h3>
+            <!--
+                Mehrstufiges Formular (setupFormSteps in index.js): Ohne JavaScript sind alle
+                drei .form-step-Blöcke untereinander sichtbar und das Formular funktioniert wie
+                ein normales Formular. Mit JavaScript wird immer nur ein Schritt gezeigt.
+                Alle Felder bleiben im selben <form>, damit Netlify Forms unverändert funktioniert.
+                Alter einstufiger Stand: git show formular-original:index.html
+            -->
+            <ol class="form-progress" aria-label="Fortschritt" hidden>
+                <li><button type="button" class="form-progress-step" data-goto="1"><span class="form-progress-num">1</span><span class="form-progress-label">Fahrzeug</span></button></li>
+                <li><button type="button" class="form-progress-step" data-goto="2"><span class="form-progress-num">2</span><span class="form-progress-label">Zeitraum</span></button></li>
+                <li><button type="button" class="form-progress-step" data-goto="3"><span class="form-progress-num">3</span><span class="form-progress-label">Kontakt</span></button></li>
+            </ol>
 
-                <div class="field" id="field-fahrzeug">
+            <div class="form-grid form-step" data-step="1">
+                <h3 class="form-group-title" tabindex="-1">Welches Fahrzeug brauchen Sie?</h3>
+
+                <div class="field field-full" id="field-fahrzeug">
                     <label for="fahrzeug">Fahrzeugart</label>
+                    <div class="choice-tiles" data-choice-for="fahrzeug" role="group" aria-label="Fahrzeugart" hidden>
+                        <button type="button" class="choice-tile" data-value="PKW" aria-pressed="false"><strong>PKW</strong><span>Vom Kleinwagen bis zur Oberklasse</span></button>
+                        <button type="button" class="choice-tile" data-value="Transporter & LKW" aria-pressed="false"><strong>Transporter &amp; LKW</strong><span>Für Umzug und Transport</span></button>
+                        <button type="button" class="choice-tile" data-value="Personentransporter / 9-Sitzer" aria-pressed="false"><strong>9-Sitzer</strong><span>Für Gruppen bis 9 Personen</span></button>
+                        <button type="button" class="choice-tile" data-value="Anhänger" aria-pressed="false"><strong>Anhänger</strong><span>Auf Wunsch mit Zugfahrzeug</span></button>
+                    </div>
                     <div class="custom-select-wrapper">
                         <select id="fahrzeug" name="fahrzeug" required class="custom-select-hidden">
                             <option value="">Auswählen</option>
@@ -347,7 +366,12 @@
                     </div>
                 </div>
 
-                <div class="field" id="field-fahrzeugkategorie">
+                <!-- Platzhalter für die freie Fläche (nur Desktop, nur solange keine Fahrzeugart gewählt ist) -->
+                <div class="step-placeholder field-full" aria-hidden="true">
+                    <p><strong>Bitte wählen Sie zuerst die Fahrzeugart aus.</strong><br>Danach fragen wir hier nur noch die passenden Details ab.</p>
+                </div>
+
+                <div class="field" id="field-fahrzeugkategorie" data-step-detail>
                     <div class="field-label-row">
                         <label for="fahrzeugkategorie">Fahrzeuggruppe</label>
                         <a id="fahrzeugkategorie-info" href="preise.html" target="_blank" rel="noopener" class="kategorie-info-link">Mehr erfahren</a>
@@ -363,7 +387,28 @@
                     </div>
                 </div>
 
-                <div class="field field-third" id="field-getriebe">
+                <div class="field field-full" id="field-zugfahrzeug" data-step-detail data-only-for="Anhänger">
+                    <label for="zugfahrzeug">Brauchen Sie auch ein Zugfahrzeug?</label>
+                    <div class="choice-pills" data-choice-for="zugfahrzeug" role="group" aria-label="Zugfahrzeug" hidden>
+                        <button type="button" class="choice-pill" data-value="Nein, eigenes Fahrzeug" aria-pressed="false">Nein, habe ich</button>
+                        <button type="button" class="choice-pill" data-value="Ja, PKW" aria-pressed="false">Ja, einen PKW</button>
+                        <button type="button" class="choice-pill" data-value="Ja, Transporter / LKW" aria-pressed="false">Ja, einen Transporter</button>
+                    </div>
+                    <div class="custom-select-wrapper">
+                        <select id="zugfahrzeug" name="zugfahrzeug" required class="custom-select-hidden">
+                            <option value="">Auswählen</option>
+                            <option value="Nein, eigenes Fahrzeug">Nein, eigenes Fahrzeug</option>
+                            <option value="Ja, PKW">Ja, PKW</option>
+                            <option value="Ja, Transporter / LKW">Ja, Transporter / LKW</option>
+                        </select>
+                        <div class="custom-select-display" aria-hidden="true">
+                            <span class="custom-select-text">Auswählen</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e60000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field field-third" id="field-getriebe" data-step-detail data-not-for="Anhänger" data-with-zug>
                     <label for="getriebe">Getriebetyp</label>
                     <div class="custom-select-wrapper">
                         <select id="getriebe" name="getriebe" required class="custom-select-hidden">
@@ -379,7 +424,7 @@
                     </div>
                 </div>
 
-                <div class="field field-third" id="field-anhaengkupplung">
+                <div class="field field-third" id="field-anhaengkupplung" data-step-detail data-not-for="Anhänger">
                     <label for="anhaengkupplung">Anhängkupplung?</label>
                     <div class="custom-select-wrapper">
                         <select id="anhaengkupplung" name="anhaengkupplung" required class="custom-select-hidden">
@@ -394,7 +439,7 @@
                     </div>
                 </div>
 
-                <div class="field field-third" id="field-fahrtstrecke">
+                <div class="field field-third" id="field-fahrtstrecke" data-step-detail>
                     <label for="fahrtstrecke">Fahrtstrecke <span class="label-optional">(optional)</span></label>
                     <div class="split-input">
                         <input type="number" id="fahrtstrecke" name="fahrtstrecke" placeholder="500" min="0" inputmode="numeric">
@@ -402,6 +447,10 @@
                         <span class="split-unit">km</span>
                     </div>
                 </div>
+            </div>
+
+            <div class="form-grid form-step" data-step="2">
+                <h3 class="form-group-title" tabindex="-1">Abholung und Rückgabe</h3>
 
                 <div class="field" id="field-abholung">
                     <label for="abholung_datum">Abholung</label>
@@ -429,20 +478,48 @@
                     </div>
                 </div>
 
+                <!-- Kalender mit hervorgehobenem Mietzeitraum (setupRangeCalendar in index.js).
+                     Ergänzt nur die Datumsfelder oben; Screenreader und Tastatur nutzen die Felder. -->
+                <div class="range-calendar field-full" aria-hidden="true" hidden>
+                    <!-- Kurze Anleitung: welcher Tag als Nächstes angetippt wird (Text kommt aus index.js) -->
+                    <p class="range-calendar-hint"></p>
+                    <div class="range-calendar-body">
+                        <button type="button" class="range-calendar-nav range-calendar-prev" data-dir="-1" tabindex="-1">‹</button>
+                        <button type="button" class="range-calendar-nav range-calendar-next" data-dir="1" tabindex="-1">›</button>
+                        <div class="range-calendar-months"></div>
+                    </div>
+                </div>
+
                 <p class="short-notice-hint" id="short-notice-hint" role="status" hidden>
                     <strong>Abholung innerhalb der nächsten 48&nbsp;Stunden?</strong> Wir empfehlen Ihnen einen kurzen Anruf:
                     <a href="tel:+49758692130">07586&nbsp;/&nbsp;9213-0</a>
                 </p>
 
                 <p class="short-notice-hint" id="closed-hours-hint" role="status" hidden>
-                    <strong>Ihre <span class="closed-hours-text">Abholung</span> liegt außerhalb unserer Öffnungszeiten.</strong>
-                    Mo–Fr 7:30–12 und 13–18 Uhr, Sa 7:30–13 Uhr. Wir melden uns bei Ihnen und klären den Termin.
+                    <strong>Ihre Abholung liegt außerhalb unserer Öffnungszeiten.</strong>
+                    Mo–Fr 7:30–12 und 13–18 Uhr, Sa 7:30–13 Uhr. Wir melden uns bei Ihnen und klären den Abholtermin.
                 </p>
 
-                <h3 class="form-group-title">Ihre Kontaktdaten</h3>
+            </div>
+
+            <div class="form-grid form-step" data-step="3">
+                <h3 class="form-group-title form-summary-title" tabindex="-1" hidden>Ihre Anfrage</h3>
+
+                <div class="form-summary field-full" hidden>
+                    <button type="button" class="form-summary-item form-summary-fahrzeug" data-goto="1" title="Fahrzeug ändern"></button>
+                    <button type="button" class="form-summary-item form-summary-zeitraum" data-goto="2" title="Zeitraum ändern"></button>
+                    <button type="button" class="form-summary-edit" data-goto="1">Ändern</button>
+                </div>
+
+                <h3 class="form-group-title form-group-title-next">Wie erreichen wir Sie?</h3>
 
                 <div class="field field-third" id="field-anrede">
                     <label for="anrede">Anrede</label>
+                    <div class="choice-pills" data-choice-for="anrede" role="group" aria-label="Anrede" hidden>
+                        <button type="button" class="choice-pill" data-value="Frau" aria-pressed="false">Frau</button>
+                        <button type="button" class="choice-pill" data-value="Herr" aria-pressed="false">Herr</button>
+                        <button type="button" class="choice-pill" data-value="Divers / keine Angabe" aria-pressed="false">Keine Angabe</button>
+                    </div>
                     <div class="custom-select-wrapper">
                         <select id="anrede" name="anrede" required class="custom-select-hidden" autocomplete="honorific-prefix">
                             <option value="">Auswählen</option>
@@ -469,7 +546,7 @@
 
                 <div class="field" id="field-telefon">
                     <label for="telefon">Telefonnummer</label>
-                    <input type="tel" id="telefon" name="telefon" placeholder="0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 ()/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
+                    <input type="tel" id="telefon" name="telefon" placeholder="0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 \(\)\/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
                 </div>
 
                 <div class="field" id="field-email">
@@ -479,11 +556,15 @@
 
                 <div class="field field-full" id="field-nachricht">
                     <label for="nachricht">Nachricht <span class="label-optional">(optional)</span></label>
-                    <textarea id="nachricht" name="nachricht" placeholder="z.B. Umzug, Ersatzfahrzeug oder Gruppenfahrt"></textarea>
+                    <textarea id="nachricht" name="nachricht" rows="2" placeholder="z.B. Umzug, Ersatzfahrzeug oder Gruppenfahrt"></textarea>
                 </div>
             </div>
 
-            <button type="submit" class="button button-primary">Anfrage senden</button>
+            <div class="form-nav">
+                <button type="button" class="form-back" hidden>← Zurück</button>
+                <button type="button" class="button button-primary form-next" hidden>Weiter</button>
+                <button type="submit" class="button button-primary form-submit">Anfrage senden</button>
+            </div>
         </form>
 
         <p class="privacy-note">Ihre Angaben verwenden wir ausschließlich zur Bearbeitung Ihrer Anfrage. Mehr dazu in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>

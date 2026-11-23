@@ -2862,7 +2862,7 @@ form:not(.inquiry-form) button:hover {
     color: #f0f0f0;
     border-radius: var(--radius-sm);
     padding: 16px 18px;
-    width: min(520px, 90vw);
+    box-sizing: border-box;
     box-shadow: 0 12px 40px rgba(0,0,0,0.45);
     border: 1px solid rgba(255,255,255,0.1);
     font-size: 0.82rem;
@@ -2891,8 +2891,8 @@ form:not(.inquiry-form) button:hover {
 }
 .gruppe-tooltip-row {
     display: grid;
-    grid-template-columns: 10rem 1fr;
-    gap: 4px 12px;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 4px 16px;
     padding: 7px 0;
     border-bottom: 1px solid rgba(255,255,255,0.07);
     align-items: start;
@@ -2905,9 +2905,10 @@ form:not(.inquiry-form) button:hover {
     padding-top: 0;
 }
 .gruppe-tooltip-gruppe {
+    grid-row: 1 / span 2;
     font-weight: 600;
     color: #ffffff;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
 }
 .gruppe-tooltip-fahrzeug {
     color: rgba(255,255,255,0.55);
@@ -2921,12 +2922,23 @@ form:not(.inquiry-form) button:hover {
     color: rgba(255,255,255,0.85);
 }
 
+/* Kleiner Pfeil oben, zeigt auf "Mehr erfahren" (Position per JS über --arrow-x) */
+.gruppe-tooltip::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: var(--arrow-x, 24px);
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    background: inherit;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    transform: rotate(45deg);
+}
+
 /* Auf sehr kleinen Screens einspaltiger Stack */
 @media (max-width: 500px) {
-    .gruppe-tooltip {
-        min-width: 0;
-        left: -60px;
-    }
     .gruppe-tooltip-row {
         grid-template-columns: 1fr;
     }
@@ -5141,4 +5153,754 @@ mark.spec-highlight {
     .hero-facts .hero-facts-place strong {
         font-size: 1.05rem;
     }
+}
+
+
+/* ============================================================
+   Anfrageformular in drei Schritten (setupFormSteps in index.js)
+   Ohne JavaScript fehlt .is-stepped: Dann sind alle Schritte sichtbar,
+   Kacheln/Knöpfe bleiben versteckt und die normalen Selects werden genutzt.
+   ============================================================ */
+.inquiry-form [hidden] {
+    display: none !important;
+}
+
+/* Ohne JS: Schritte untereinander, mit Trennlinie */
+.inquiry-form:not(.is-stepped) .form-step + .form-step {
+    margin-top: 16px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-border);
+}
+
+/* Mit JS: der sichtbare Schritt füllt die Höhe, Inhalt bleibt oben, Buttons unten */
+.is-stepped .form-step {
+    flex: 1 0 auto;
+    align-content: start;
+}
+
+.form-step-enter {
+    animation: form-step-in 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes form-step-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.inquiry-form .form-group-title:focus {
+    outline: none;
+}
+
+/* Kacheln/Knöpfe ersetzen die Selects; Fahrzeugart-Label nur für Screenreader */
+.is-stepped .has-choices .custom-select-wrapper {
+    display: none;
+}
+.is-stepped #field-fahrzeug > label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ── Fortschrittsanzeige ── */
+.form-progress {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+}
+.form-progress-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 0 0;
+    background: none;
+    border: 0;
+    border-top: 3px solid var(--color-border);
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition);
+}
+.form-progress-step:disabled {
+    cursor: default;
+}
+.is-current .form-progress-step,
+.is-done .form-progress-step {
+    border-top-color: var(--color-primary);
+    color: var(--color-dark);
+}
+.is-done .form-progress-step:hover .form-progress-label {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.form-progress-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-sm);
+    background: var(--color-border);
+    color: var(--color-dark);
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+.is-current .form-progress-num {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+.is-done .form-progress-num {
+    background: #15803d;
+    color: #ffffff;
+    font-size: 0;
+}
+.is-done .form-progress-num::after {
+    content: "✓";
+    font-size: 0.75rem;
+}
+
+/* ── Fahrzeugart-Kacheln ── */
+.choice-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.choice-tile,
+.choice-pill {
+    position: relative;
+    background: #f9fafb;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-dark);
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: border-color var(--transition), background-color var(--transition), box-shadow var(--transition);
+}
+.choice-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 14px 40px 14px 16px;
+    text-align: left;
+}
+.choice-tile strong {
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+.choice-tile span {
+    color: var(--color-muted);
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+.choice-tile:hover,
+.choice-pill:hover {
+    border-color: #b8bec8;
+}
+.choice-tile[aria-pressed="true"],
+.choice-pill[aria-pressed="true"] {
+    background: #fff5f5;
+    border-color: var(--color-primary);
+    box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+.choice-tile[aria-pressed="true"]::after {
+    content: "✓";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 18px;
+    text-align: center;
+}
+.choice-tile:focus-visible,
+.choice-pill:focus-visible,
+.form-progress-step:focus-visible,
+.form-back:focus-visible,
+.form-summary-edit:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+.field-invalid .choice-tile,
+.field-invalid .choice-pill {
+    border-color: #e60000;
+}
+
+/* ── Anrede-Knöpfe ── */
+.choice-pills {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    gap: 8px;
+}
+.choice-pill {
+    padding: 12px 16px;
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+/* ── Zusammenfassung in Schritt 3: [Fahrzeug] | [Abholung → Rückgabe]   Ändern ── */
+.form-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 6px 14px;
+    padding: 11px 14px;
+    background: #f9fafb;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+.form-summary-item {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 6px;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-dark);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    text-align: left;
+    cursor: pointer;
+}
+.form-summary-item strong {
+    font-weight: 700;
+}
+.form-summary-item span {
+    color: var(--color-muted);
+    font-weight: 500;
+}
+.form-summary-item:hover strong {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+/* Zeitraum bleibt in einer Zeile, mit Trennstrich zum Fahrzeug */
+.form-summary-zeitraum {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+.form-summary-item + .form-summary-item:not([hidden]) {
+    padding-left: 14px;
+    border-left: 1px solid #d4d8de;
+}
+.form-summary .form-summary-arrow {
+    margin: 0 4px;
+    color: var(--color-primary-text);
+    font-weight: 700;
+}
+.form-summary-edit {
+    flex-shrink: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-primary-text);
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+.form-summary-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ── Zurück / Weiter / Absenden ── */
+.form-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 20px;
+}
+.inquiry-form:not(.is-stepped) .form-nav {
+    justify-content: flex-start;
+}
+.inquiry-form .form-nav .button {
+    margin-top: 0;
+}
+.form-back {
+    margin-right: auto;
+    padding: 10px 0;
+    background: none;
+    border: 0;
+    color: var(--color-dark);
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color var(--transition);
+}
+.form-back:hover {
+    color: var(--color-primary-text);
+}
+
+/* Buttons im Raster von Schritt 1 (nur Anhänger mit Zugfahrzeug, siehe placeNav in index.js) */
+.is-stepped .form-step > .form-nav {
+    grid-column: 1 / -1;
+    order: 10;
+    margin-top: 4px;
+}
+
+/* Anhänger: erst Gruppe + Fahrtstrecke, dann Zugfahrzeug-Frage, dann ggf. Getriebe */
+.is-stepped[data-fahrzeug="Anh\00e4nger"] #field-zugfahrzeug {
+    order: 1;
+}
+.is-stepped[data-fahrzeug="Anh\00e4nger"] #field-getriebe {
+    order: 2;
+}
+
+/* ── Raster mit Schritten (nur Desktop; mobil ist ohnehin alles einspaltig) ── */
+@media (min-width: 901px) {
+    .is-stepped #field-fahrzeugkategorie,
+    .is-stepped #field-anrede {
+        grid-column: 1 / -1;
+    }
+    .is-stepped[data-fahrzeug="Anh\00e4nger"] #field-fahrzeugkategorie,
+    .is-stepped[data-fahrzeug="Anh\00e4nger"] #field-fahrtstrecke,
+    .is-stepped[data-fahrzeug="Anh\00e4nger"] #field-getriebe,
+    .is-stepped #field-vorname,
+    .is-stepped #field-nachname {
+        grid-column: span 3;
+    }
+    /* Anhänger mit Zugfahrzeug: "Weiter" rechts neben dem Getriebetyp */
+    .is-stepped[data-fahrzeug="Anh\00e4nger"][data-zug="ja"] .form-step[data-step="1"] > .form-nav {
+        grid-column: span 3;
+        align-self: end;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Handy: Fahrzeug + "Ändern" oben, Zeitraum darunter */
+    .form-summary {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+    .form-summary-fahrzeug { grid-area: 1 / 1; }
+    .form-summary-edit { grid-area: 1 / 2; align-self: start; }
+    .form-summary-zeitraum {
+        grid-area: 2 / 1 / 3 / -1;
+    }
+    .form-summary-item .form-summary-unit {
+        display: none;
+    }
+
+    .form-summary-item + .form-summary-item:not([hidden]) {
+        padding-left: 0;
+        border-left: 0;
+    }
+    .form-progress-step {
+        font-size: 0.78rem;
+        gap: 6px;
+    }
+    .form-nav .button {
+        flex: 1;
+    }
+    .choice-pill {
+        padding: 12px 8px;
+    }
+    #field-zugfahrzeug .choice-pills {
+        grid-auto-flow: row;
+    }
+    #field-zugfahrzeug .choice-pill {
+        padding: 12px 14px;
+        text-align: left;
+    }
+}
+
+@media (max-width: 600px) {
+    .choice-tiles {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .choice-tile {
+        padding: 11px 40px 11px 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .form-step-enter {
+        animation: none;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .inquiry-form:not(.is-stepped) .form-step + .form-step {
+        border-top-color: rgba(255, 255, 255, 0.15);
+    }
+    .form-progress-step {
+        border-top-color: rgba(255, 255, 255, 0.15);
+        color: #b5b5b5;
+    }
+    .is-current .form-progress-step,
+    .is-done .form-progress-step {
+        border-top-color: var(--color-primary);
+        color: #f0f0f0;
+    }
+    .form-progress-num {
+        background: rgba(255, 255, 255, 0.14);
+        color: #f0f0f0;
+    }
+    .is-done .form-progress-num {
+        background: #16a34a;
+        color: #ffffff;
+    }
+    .choice-tile,
+    .choice-pill,
+    .form-summary {
+        background: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #f0f0f0;
+    }
+    .choice-tile span {
+        color: #b5b5b5;
+    }
+    .choice-tile:hover,
+    .choice-pill:hover {
+        border-color: rgba(255, 255, 255, 0.35);
+    }
+    .choice-tile[aria-pressed="true"],
+    .choice-pill[aria-pressed="true"] {
+        background: #3d2626;
+        border-color: var(--color-primary);
+    }
+    .form-summary-item,
+    .form-back {
+        color: #f0f0f0;
+    }
+    .form-summary-item span {
+        color: #b5b5b5;
+    }
+    .form-summary-item + .form-summary-item:not([hidden]) {
+        border-left-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+
+/* ============================================================
+   Kalender im Schritt "Zeitraum" (setupRangeCalendar in index.js)
+   ============================================================ */
+.range-calendar {
+    position: relative;
+    margin-top: 4px;
+    padding: 14px 16px 12px;
+    background: #f9fafb;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    user-select: none;
+}
+.range-calendar-months {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+.range-calendar-title {
+    margin: 0 0 8px;
+    color: var(--color-dark);
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 28px;
+    text-align: center;
+}
+.range-calendar-nav {
+    position: absolute;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-dark);
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition);
+}
+.range-calendar-prev { left: 0; }
+.range-calendar-next { right: 0; }
+.range-calendar-nav:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary-text);
+}
+.range-calendar-nav:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+.range-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 2px;
+}
+.range-calendar-wd {
+    padding-bottom: 4px;
+    color: var(--color-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+}
+.range-calendar-day,
+.range-calendar-empty {
+    height: 30px;
+}
+.range-calendar-day {
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    color: var(--color-dark);
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.range-calendar-day:hover:not(:disabled) {
+    box-shadow: inset 0 0 0 1px var(--color-primary);
+    border-radius: var(--radius-sm);
+}
+.range-calendar-day.is-sunday {
+    color: #9aa1ac;
+}
+.range-calendar-day.is-past {
+    color: #c3c8d0;
+    cursor: default;
+}
+.range-calendar-day.is-today {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
+.range-calendar-day.in-range {
+    background: #fde4e4;
+    color: var(--color-dark);
+}
+.range-calendar-day.is-start,
+.range-calendar-day.is-end {
+    background: var(--color-primary);
+    color: #ffffff;
+    border-radius: var(--radius-sm);
+}
+.range-calendar-day.is-preview {
+    background: #f08a8a;
+}
+/* Anleitung über dem Kalender + rote Umrandung am Datumsfeld, das der nächste Tipp setzt */
+.range-calendar-hint {
+    margin: 0 0 12px;
+    color: var(--color-muted);
+    font-size: 0.86rem;
+    font-weight: 500;
+    text-align: center;
+}
+.range-calendar-hint strong {
+    color: var(--color-primary-text);
+    font-weight: 700;
+}
+.inquiry-form .split-input.is-calendar-target {
+    border-color: var(--color-primary);
+}
+.range-calendar-body {
+    position: relative;
+}
+
+@media (max-width: 600px) {
+    .range-calendar {
+        padding: 12px 10px 10px;
+    }
+    .range-calendar-months {
+        grid-template-columns: 1fr;
+    }
+    .range-calendar-month + .range-calendar-month {
+        display: none;
+    }
+
+    .range-calendar-day,
+    .range-calendar-empty {
+        height: 36px;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .range-calendar {
+        background: #2a2a2a;
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    .range-calendar-title,
+    .range-calendar-day,
+    .range-calendar-nav {
+        color: #f0f0f0;
+    }
+    .range-calendar-nav {
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    .range-calendar-wd,
+    .range-calendar-day.is-sunday {
+        color: #9a9a9a;
+    }
+    .range-calendar-hint {
+        color: #b5b5b5;
+    }
+    .range-calendar-day.is-past {
+        color: #5c5c5c;
+    }
+    .range-calendar-day.in-range {
+        background: #4a2828;
+        color: #f0f0f0;
+    }
+    .range-calendar-day.is-preview {
+        background: #a33c3c;
+    }
+}
+
+
+/* Platzhalter in Schritt 1, solange keine Fahrzeugart gewählt ist (nur Desktop).
+   Die letzte Rasterzeile (1fr) lässt ihn die freie Fläche bis zu den Buttons füllen. */
+.step-placeholder {
+    display: none;
+}
+@media (min-width: 901px) {
+    .is-stepped[data-fahrzeug=""] .form-step[data-step="1"] {
+        grid-template-rows: auto auto 1fr;
+        align-content: stretch;
+    }
+    .is-stepped[data-fahrzeug=""] .step-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+        padding: 20px;
+        border: 1.5px dashed #d4d8de;
+        border-radius: var(--radius-sm);
+        text-align: center;
+    }
+}
+.step-placeholder p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+.step-placeholder strong {
+    color: var(--color-dark);
+}
+@media (prefers-color-scheme: dark) {
+    .is-stepped[data-fahrzeug=""] .step-placeholder {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    .step-placeholder p {
+        color: #b5b5b5;
+    }
+    .step-placeholder strong {
+        color: #f0f0f0;
+    }
+}
+
+
+/* ============================================================
+   Uhrzeit-Auswahlliste (setupTimeSelects in index.js)
+   ============================================================ */
+.inquiry-form .split-input .time-select {
+    flex: 1.15;
+    min-width: 118px;
+    height: 48px;
+    padding: 0 34px 0 14px;
+    background-color: transparent !important;
+    background-position: right 12px center;
+    border: 0;
+    box-shadow: none;
+}
+.inquiry-form .split-input .time-select:focus {
+    box-shadow: none;
+}
+.time-custom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+.time-custom[hidden] {
+    display: none;
+}
+.time-custom span {
+    color: var(--color-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.inquiry-form .time-custom input[type="time"] {
+    width: auto;
+    min-width: 130px;
+    padding: 10px 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .inquiry-form .split-input .time-select {
+        background-color: transparent !important;
+    }
+    .time-custom span {
+        color: #b5b5b5;
+    }
+}
+
+
+/* Hamburger-Button auf Handy/Tablet kleiner (Logo bleibt unverändert).
+   Sichtbar 40 px, die unsichtbare Tippfläche (::after) bleibt 48 px groß. */
+@media (max-width: 768px) {
+    .nav-toggle {
+        position: relative;
+        width: 40px;
+        height: 40px;
+    }
+    .nav-toggle::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+    }
+    .nav-toggle-icon {
+        font-size: 21px;
+    }
+}
+
+/* Kein blauer Tipp-Schimmer auf dem Handy bei Kacheln, Knöpfen und Kalender */
+.choice-tile,
+.choice-pill,
+.range-calendar-day,
+.range-calendar-nav,
+.form-progress-step,
+.form-summary-item {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* Schritt 3: zweite Überschrift "Wie erreichen wir Sie?" ohne Trennlinie, dicht unter der Zusammenfassung */
+.inquiry-form .form-group-title-next {
+    margin-top: 6px;
+    padding-top: 0;
+    border-top: 0;
+}
+/* Nachricht: zweizeilig, wächst beim Tippen mit (setupAutoGrow in index.js) */
+.inquiry-form #nachricht {
+    min-height: 0;
+    max-height: 260px;
+    resize: none;
+    overflow-y: auto;
+    line-height: 1.5;
 }

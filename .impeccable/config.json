@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "mona sans",
+        "createdAt": "2026-11-23T09:36:39.188Z",
+        "reason": "User chose Mona Sans for the whole site (memory contact-form-ux-decisions, 2026-11-02)"
+      },
+      {
+        "rule": "kicker-above-heading",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-23T09:36:39.210Z",
+        "reason": "CLAUDE.md prescribes the .eyebrow label before section headings as project pattern"
+      }
+    ]
+  }
+}

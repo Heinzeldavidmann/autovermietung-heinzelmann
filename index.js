@@ -2,7 +2,8 @@
 // index.js – gemeinsames JavaScript für alle Seiten der Website
 // ============================================================
 // Inhaltsverzeichnis (Funktionen in Aufruf-Reihenfolge):
-//   1. setupContactForm()      – Kontaktformular absenden (Netlify Forms)
+//   1. setupContactForm()      – Kontaktformular absenden (Netlify Forms), inkl.
+//      setupFormSteps()          – Formular in drei Schritten mit Fortschrittsanzeige
 //   2. setupFaqAccordion()     – FAQ-Fragen auf-/zuklappen
 //   3. setupMobileNavToggle()  – Hamburger-Menü auf kleinen Screens
 //   4. setupFuhrparkFinder()   – Fahrzeugtyp-Finder (Fragenbaum auf fuhrpark.html)
@@ -53,8 +54,12 @@ function setupFormValidation(form) {
 
     const REQUIRED_MESSAGES = {
         fahrzeug: 'Bitte wählen Sie eine Fahrzeugart aus.',
+        fahrzeugkategorie: () => el('fahrzeug').value === 'Anhänger'
+            ? 'Bitte wählen Sie eine Anhängergruppe aus.'
+            : 'Bitte wählen Sie eine Fahrzeuggruppe aus.',
         getriebe: 'Bitte wählen Sie einen Getriebetyp aus.',
         anhaengkupplung: 'Bitte geben Sie an, ob Sie eine Anhängkupplung brauchen.',
+        zugfahrzeug: 'Bitte geben Sie an, ob Sie ein Zugfahrzeug brauchen.',
         anrede: 'Bitte wählen Sie eine Anrede aus.',
         vorname: 'Bitte geben Sie Ihren Vornamen ein.',
         nachname: 'Bitte geben Sie Ihren Nachnamen ein.',
@@ -66,11 +71,25 @@ function setupFormValidation(form) {
         rueckgabe_uhrzeit: 'Bitte geben Sie eine Rückgabezeit an.',
     };
 
+    // Ein Feld zählt nicht, wenn es deaktiviert ist oder sein .field (bzw. ein Elternelement)
+    // per hidden ausgeblendet wurde. Ausnahme: ein gerade nicht angezeigter Formularschritt
+    // (.form-step) – dessen Felder werden trotzdem geprüft, damit beim Absenden nichts fehlt.
+    function isInactive(field) {
+        if (field.disabled) return true;
+        for (let n = field.closest('.field'); n && n !== form; n = n.parentElement) {
+            if (n.hidden && !n.classList.contains('form-step')) return true;
+        }
+        return false;
+    }
+
     function getError(field) {
         const wrapper = field.closest('.field');
-        if (!wrapper || wrapper.offsetParent === null) return ''; // ausgeblendete Felder überspringen
+        if (!wrapper || isInactive(field)) return ''; // ausgeblendete/deaktivierte Felder überspringen
         const value = field.value.trim();
-        if (field.required && !value) return REQUIRED_MESSAGES[field.id] || 'Bitte füllen Sie dieses Feld aus.';
+        if (field.required && !value) {
+            const msg = REQUIRED_MESSAGES[field.id];
+            return (typeof msg === 'function' ? msg() : msg) || 'Bitte füllen Sie dieses Feld aus.';
+        }
         if (!value) return '';
         if (field.id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
             return 'Bitte prüfen Sie die E-Mail-Adresse, z.B. name@beispiel.de.';
@@ -94,7 +113,9 @@ function setupFormValidation(form) {
 
     function showError(field, message) {
         const wrapper = field.closest('.field');
-        let err = wrapper.querySelector('.field-error');
+        // Fehlertext pro Eingabe (nicht pro .field): Datum und Uhrzeit teilen sich ein .field,
+        // sonst würde die gültige Uhrzeit den Fehler des Datums wieder löschen
+        let err = wrapper.querySelector('#error-' + field.id);
         if (!err) {
             err = document.createElement('p');
             err.className = 'field-error';
@@ -104,7 +125,7 @@ function setupFormValidation(form) {
         }
         err.textContent = message;
         err.hidden = !message;
-        wrapper.classList.toggle('field-invalid', !!message);
+        wrapper.classList.toggle('field-invalid', !!wrapper.querySelector('.field-error:not([hidden])'));
         if (message) {
             field.setAttribute('aria-invalid', 'true');
             field.setAttribute('aria-describedby', err.id);
@@ -164,10 +185,11 @@ function setupFormValidation(form) {
         });
     }
 
-    // Prüft alle Felder und liefert das erste fehlerhafte Feld (oder null)
-    function validateAll() {
+    // Prüft alle Felder (optional nur innerhalb von scope, z.B. eines Formularschritts)
+    // und liefert das erste fehlerhafte Feld (oder null)
+    function validateAll(scope) {
         let first = null;
-        fields.forEach(field => {
+        fields.filter(field => !scope || scope.contains(field)).forEach(field => {
             if (!validateField(field)) {
                 const wrapper = field.closest('.field');
                 wrapper.classList.add('field-bounce');
@@ -187,15 +209,24 @@ function setupContactForm() {
     if (!form) return;
 
     const validation = setupFormValidation(form);
+    const steps = setupFormSteps(form, validation);
+    setupAutoGrow(form.querySelector('#nachricht'));
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Alle Felder prüfen; Fehler erscheinen direkt am jeweiligen Feld
-        const firstInvalid = validation.validateAll();
+        // Enter in Schritt 1 oder 2 schickt nicht ab, sondern geht einen Schritt weiter
+        if (steps && !steps.isLast()) {
+            steps.next();
+            return;
+        }
+
+        // Alle Felder prüfen; Fehler erscheinen direkt am jeweiligen Feld.
+        // Mit Schritten: zum ersten Schritt mit Fehler springen.
+        const firstInvalid = steps ? steps.validateAllSteps() : validation.validateAll();
         if (firstInvalid) {
             showValidationToast('Bitte prüfen Sie die markierten Felder.');
-            firstInvalid.focus();
+            if (steps) steps.focusField(firstInvalid); else firstInvalid.focus();
             return;
         }
 
@@ -271,6 +302,498 @@ function setupContactForm() {
     });
 }
 
+// Gemeinsame Formatierung für Kalender-Fußzeile und Zusammenfassung:
+// "2026-11-27" → "Fr, 27.11."  und  "09:00" → "9:00 Uhr"
+const WOCHENTAGE_KURZ = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+function formatTag(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return `${WOCHENTAGE_KURZ[new Date(y, m - 1, d).getDay()]}, ${String(d).padStart(2, '0')}.${String(m).padStart(2, '0')}.`;
+}
+function formatUhrzeit(t) {
+    return t ? `${t.replace(/^0(?=\d:)/, '')} Uhr` : '';
+}
+// Kleines Hilfsmittel, um Text sicher in HTML einzusetzen
+function escapeHtml(text) {
+    return String(text).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+// Nachrichtenfeld startet zweizeilig und wächst beim Tippen mit (bis max. ca. 10 Zeilen)
+function setupAutoGrow(textarea) {
+    if (!textarea) return;
+    const grow = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight + 2, 260) + 'px';
+    };
+    textarea.addEventListener('input', grow);
+    const form = textarea.closest('form');
+    if (form) form.addEventListener('reset', () => setTimeout(grow, 0));
+}
+
+// ── 1b. Anfrageformular in drei Schritten (Fahrzeug → Zeitraum → Kontakt) ──
+// Blendet immer nur einen .form-step ein, prüft beim "Weiter" nur die Felder des aktuellen
+// Schritts und zeigt oben eine Fortschrittsanzeige. Ohne JavaScript bleiben alle Schritte
+// sichtbar (normales einstufiges Formular). Die Fahrzeugart-Kacheln und Anrede-Knöpfe
+// ([data-choice-for]) steuern die weiterhin vorhandenen, aber versteckten <select>-Felder,
+// damit Validierung, Vorausfüllen per Link und Netlify unverändert funktionieren.
+function setupFormSteps(form, validation) {
+    const stepEls = Array.from(form.querySelectorAll('.form-step'));
+    if (stepEls.length < 2) return null;
+
+    const progress = form.querySelector('.form-progress');
+    const progressBtns = Array.from(form.querySelectorAll('.form-progress-step'));
+    const backBtn = form.querySelector('.form-back');
+    const nextBtn = form.querySelector('.form-next');
+    const submitBtn = form.querySelector('.form-submit');
+    const summary = form.querySelector('.form-summary');
+    const fahrzeugSel = form.querySelector('#fahrzeug');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let current = 1;
+    let maxReached = 1;
+    const nav = form.querySelector('.form-nav');
+
+    // Buttons stehen normal unten im Formular. Nur bei "Anhänger mit Zugfahrzeug" (letztes Feld
+    // Getriebetyp ist halb breit) kommen sie ins Raster von Schritt 1, rechts neben das Getriebe.
+    function placeNav() {
+        if (!nav) return;
+        const inline = current === 1 && form.dataset.fahrzeug === 'Anhänger' && form.dataset.zug === 'ja';
+        if (inline) stepEls[0].appendChild(nav);
+        else stepEls[stepEls.length - 1].after(nav);
+    }
+
+    form.classList.add('is-stepped');
+    if (progress) progress.hidden = false;
+    if (nextBtn) nextBtn.hidden = false;
+
+    // ── Kacheln / Knöpfe ↔ verstecktes <select> ──
+    const choiceGroups = Array.from(form.querySelectorAll('[data-choice-for]'));
+    function syncChoices() {
+        choiceGroups.forEach(group => {
+            const sel = form.querySelector('#' + group.dataset.choiceFor);
+            group.querySelectorAll('button[data-value]').forEach(btn => {
+                btn.setAttribute('aria-pressed', String(!!sel && btn.dataset.value === sel.value));
+            });
+        });
+    }
+    choiceGroups.forEach(group => {
+        const sel = form.querySelector('#' + group.dataset.choiceFor);
+        if (!sel) return;
+        group.hidden = false;
+        group.closest('.field').classList.add('has-choices');
+        group.addEventListener('click', e => {
+            const btn = e.target.closest('button[data-value]');
+            if (!btn || sel.value === btn.dataset.value) return;
+            sel.value = btn.dataset.value;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        sel.addEventListener('change', syncChoices);
+    });
+
+    // ── Fahrzeug-Details erst nach Wahl der Fahrzeugart zeigen ──
+    // data-only-for: nur bei dieser Fahrzeugart (Zugfahrzeug-Frage nur bei Anhänger)
+    // data-not-for:  nicht bei dieser Fahrzeugart (Getriebe/Kupplung nicht bei Anhänger) –
+    //                außer data-with-zug ist gesetzt und ein Zugfahrzeug wird mitgemietet
+    const zugSel = form.querySelector('#zugfahrzeug');
+    function syncDetails() {
+        const wert = fahrzeugSel ? fahrzeugSel.value : '';
+        const mitZug = !!zugSel && zugSel.value.startsWith('Ja');
+        form.dataset.fahrzeug = wert;
+        form.dataset.zug = mitZug ? 'ja' : '';
+        // Bei Anhänger geht es um die Anhängergruppe, nicht um die Gruppe des Zugfahrzeugs
+        const gruppeLabel = form.querySelector('label[for="fahrzeugkategorie"]');
+        if (gruppeLabel) gruppeLabel.textContent = wert === 'Anhänger' ? 'Anhängergruppe' : 'Fahrzeuggruppe';
+        placeNav();
+        form.querySelectorAll('[data-step-detail]').forEach(field => {
+            let show = !!wert;
+            if (field.dataset.onlyFor) show = show && wert === field.dataset.onlyFor;
+            if (field.dataset.notFor === wert) show = 'withZug' in field.dataset && mitZug;
+            field.hidden = !show;
+            // Ausgeblendete Felder deaktivieren, damit ein vorher gewählter Wert nicht mitgeschickt wird
+            field.querySelectorAll('input, select, textarea').forEach(input => {
+                input.disabled = !!wert && !show;
+            });
+        });
+    }
+    if (fahrzeugSel) fahrzeugSel.addEventListener('change', syncDetails);
+    if (zugSel) zugSel.addEventListener('change', syncDetails);
+
+    // ── Zusammenfassung über den Kontaktdaten ──
+    function updateSummary() {
+        if (!summary) return;
+        const val = id => { const el = form.querySelector('#' + id); return el && !el.disabled ? el.value : ''; };
+        // Fahrzeug: Art fett, Details (Gruppe, Zugfahrzeug) dahinter in Grau
+        const fahrzeugText = fahrzeugSel && fahrzeugSel.value ? fahrzeugSel.options[fahrzeugSel.selectedIndex].text : '';
+        const details = [];
+        const gruppe = val('fahrzeugkategorie');
+        if (gruppe && gruppe !== 'Kategorie egal') details.push(gruppe);
+        const zug = val('zugfahrzeug');
+        if (zug.startsWith('Ja')) details.push(`mit ${zug.replace('Ja, ', '')}`);
+        const fahrzeugEl = summary.querySelector('.form-summary-fahrzeug');
+        fahrzeugEl.innerHTML = fahrzeugText
+            ? `<strong>${escapeHtml(fahrzeugText)}</strong>${details.length ? ` <span>${escapeHtml(details.join(', '))}</span>` : ''}`
+            : '';
+        fahrzeugEl.hidden = !fahrzeugText;
+        // Zeitraum: "Fr, 27.11. 17:30 Uhr → Mi, 16.12. 16:00 Uhr"
+        const zeitEl = summary.querySelector('.form-summary-zeitraum');
+        // "Uhr" in eigenem span, damit es auf schmalen Handys ausgeblendet werden kann
+        const zeit = t => t ? `${t.replace(/^0(?=\d:)/, '')}<span class="form-summary-unit"> Uhr</span>` : '';
+        const ab = val('abholung_datum'), rueck = val('rueckgabe_datum');
+        zeitEl.innerHTML = ab && rueck
+            ? `<strong>${formatTag(ab)}</strong> <span>${zeit(val('abholung_uhrzeit'))}</span>`
+              + `<span class="form-summary-arrow" aria-hidden="true">→</span>`
+              + `<strong>${formatTag(rueck)}</strong> <span>${zeit(val('rueckgabe_uhrzeit'))}</span>`
+            : '';
+        zeitEl.hidden = !(ab && rueck);
+        summary.hidden = fahrzeugEl.hidden && zeitEl.hidden;
+        const summaryTitle = form.querySelector('.form-summary-title');
+        if (summaryTitle) summaryTitle.hidden = summary.hidden;
+    }
+
+    function stepEl(n) { return stepEls[n - 1]; }
+
+    function render(n, { focus = true } = {}) {
+        current = n;
+        maxReached = Math.max(maxReached, n);
+        placeNav();
+        stepEls.forEach((el, i) => { el.hidden = i + 1 !== n; });
+        progressBtns.forEach(btn => {
+            const s = Number(btn.dataset.goto);
+            btn.parentElement.classList.toggle('is-done', s < n);
+            btn.parentElement.classList.toggle('is-current', s === n);
+            btn.disabled = s > maxReached || s === n;
+            if (s === n) btn.setAttribute('aria-current', 'step'); else btn.removeAttribute('aria-current');
+        });
+        const isLast = n === stepEls.length;
+        if (backBtn) backBtn.hidden = n === 1;
+        if (nextBtn) nextBtn.hidden = isLast;
+        if (submitBtn) submitBtn.hidden = !isLast;
+        if (isLast) updateSummary();
+
+        if (!reduceMotion) {
+            const el = stepEl(n);
+            el.classList.remove('form-step-enter');
+            void el.offsetWidth;
+            el.classList.add('form-step-enter');
+        }
+        if (!focus) return;
+        // Formularanfang ins Bild holen, falls er oberhalb des sichtbaren Bereichs liegt (v.a. Handy)
+        const offset = parseFloat(getComputedStyle(document.body).paddingTop) || 0;
+        const top = form.getBoundingClientRect().top;
+        if (top < offset) {
+            window.scrollBy({ top: top - offset - 16, behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
+        const title = stepEl(n).querySelector('.form-group-title:not([hidden])');
+        if (title) title.focus({ preventScroll: true });
+    }
+
+    // Vorwärts nur, wenn alle Schritte bis dorthin vollständig sind
+    function goTo(target) {
+        for (let s = current; s < target; s++) {
+            const invalid = validation.validateAll(stepEl(s));
+            if (invalid) {
+                if (s !== current) render(s);
+                showValidationToast('Bitte prüfen Sie die markierten Felder.');
+                focusField(invalid);
+                return false;
+            }
+        }
+        const firstVisit = target > maxReached;
+        render(target);
+        if (firstVisit && typeof window.gtag === 'function') {
+            window.gtag('event', 'form_step', { form_name: 'anfrage', step: target });
+        }
+        return true;
+    }
+
+    // Fokus auf ein Feld; bei versteckten Selects stattdessen auf die erste Kachel/den ersten Knopf
+    function focusField(field) {
+        const group = form.querySelector(`[data-choice-for="${field.id}"]`);
+        const target = group && !group.hidden ? group.querySelector('button') : field;
+        if (target) target.focus();
+    }
+
+    function validateAllSteps() {
+        for (let s = 1; s <= stepEls.length; s++) {
+            const invalid = validation.validateAll(stepEl(s));
+            if (invalid) {
+                if (s !== current) render(s, { focus: false });
+                return invalid;
+            }
+        }
+        return null;
+    }
+
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+    if (backBtn) backBtn.addEventListener('click', () => render(current - 1));
+    form.querySelectorAll('[data-goto]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = Number(btn.dataset.goto);
+            if (target < current) render(target); else if (target > current) goTo(target);
+        });
+    });
+
+    // Nach dem erfolgreichen Absenden (form.reset in showFormSuccess) zurück auf Schritt 1
+    form.addEventListener('reset', () => setTimeout(() => {
+        form.querySelectorAll('select.custom-select-hidden').forEach(sel => {
+            const display = sel.nextElementSibling;
+            const textEl = display && display.querySelector('.custom-select-text');
+            const opt = sel.options[sel.selectedIndex];
+            const hasValue = !!(opt && opt.value);
+            if (textEl) textEl.textContent = hasValue ? opt.text : 'Auswählen';
+            if (display) display.classList.toggle('has-value', hasValue);
+        });
+        form.querySelectorAll('.date-input-wrap').forEach(wrap => {
+            const input = wrap.querySelector('input');
+            wrap.classList.toggle('has-value', !!(input && input.value));
+        });
+        syncChoices();
+        syncDetails();
+        maxReached = 1;
+        render(1, { focus: false });
+    }, 0));
+
+    syncChoices();
+    syncDetails();
+    render(1, { focus: false });
+
+    const api = {
+        isLast: () => current === stepEls.length,
+        next: () => goTo(current + 1),
+        validateAllSteps,
+        focusField,
+        // Für prefillFormFromUrl: Kacheln und Details nach programmatischer Änderung abgleichen
+        sync: () => { syncChoices(); syncDetails(); },
+    };
+    form.formSteps = api;
+    return api;
+}
+
+// ── 1d. Uhrzeit als Auswahlliste statt Eintippen ──
+// Ersetzt die Bedienung der <input type="time">-Felder durch eine Liste im 30-Minuten-Takt
+// (auf dem iPhone erscheint dafür das Auswahlrad). Abholung: nur Zeiten in den Öffnungszeiten
+// des gewählten Tages (bis 30 Min. vor Schluss). Rückgabe: 6–22 Uhr, da jederzeit möglich.
+// "Andere Zeit …" blendet das echte Zeitfeld zum freien Eintragen ein (z.B. 9:15).
+// Das echte Zeitfeld bleibt das abgeschickte Feld, die Liste hat keinen name.
+function setupTimeSelects() {
+    const CUSTOM = 'custom';
+    const pad = n => String(n).padStart(2, '0');
+    const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+    const toTime = min => `${pad(Math.floor(min / 60))}:${pad(min % 60)}`;
+    const label = t => `${t.replace(/^0/, '')} Uhr`;
+
+    function pickupSlots(dateValue) {
+        let day = dateValue ? new Date(dateValue + 'T12:00').getDay() : 1;
+        if (!OPENING_HOURS[day]) day = 1; // geschlossener Tag (Ausnahme): Werktagszeiten anbieten
+        const slots = [];
+        OPENING_HOURS[day].forEach(([start, end]) => {
+            for (let m = toMin(start); m <= toMin(end) - 30; m += 30) slots.push(toTime(m));
+        });
+        return slots;
+    }
+    function returnSlots() {
+        const slots = [];
+        for (let m = 6 * 60; m <= 22 * 60; m += 30) slots.push(toTime(m));
+        return slots;
+    }
+
+    [
+        { timeId: 'abholung_uhrzeit', dateId: 'abholung_datum', name: 'Abholzeit', slots: pickupSlots },
+        { timeId: 'rueckgabe_uhrzeit', dateId: null, name: 'Rückgabezeit', slots: returnSlots },
+    ].forEach(cfg => {
+        const input = document.getElementById(cfg.timeId);
+        if (!input) return;
+        const split = input.closest('.split-input');
+        const field = input.closest('.field');
+        const dateInput = cfg.dateId && document.getElementById(cfg.dateId);
+
+        const select = document.createElement('select');
+        select.className = 'time-select';
+        select.setAttribute('aria-label', cfg.name);
+        input.insertAdjacentElement('beforebegin', select);
+
+        // Zeile für die eigene Uhrzeit; das echte Zeitfeld wandert dort hinein
+        const custom = document.createElement('div');
+        custom.className = 'time-custom';
+        custom.hidden = true;
+        custom.innerHTML = `<span>Ihre Uhrzeit:</span>`;
+        custom.appendChild(input);
+        split.insertAdjacentElement('afterend', custom);
+        field.classList.add('has-time-select');
+
+        let customMode = false;
+
+        function setCustom(on) {
+            customMode = on;
+            custom.hidden = !on;
+            select.value = on ? CUSTOM : input.value;
+        }
+
+        function build() {
+            const slots = cfg.slots(dateInput ? dateInput.value : '');
+            select.innerHTML = slots.map(t => `<option value="${t}">${label(t)}</option>`).join('')
+                + `<option value="${CUSTOM}">Andere Zeit …</option>`;
+            if (customMode) { select.value = CUSTOM; return; }
+            // Gewählte Zeit gibt es am neuen Tag nicht: offen als eigene Uhrzeit zeigen statt still zu ändern
+            if (input.value && !slots.includes(input.value)) setCustom(true);
+            else select.value = input.value || slots[0];
+        }
+
+        select.addEventListener('change', () => {
+            if (select.value === CUSTOM) {
+                setCustom(true);
+                input.focus();
+                try { if (input.showPicker) input.showPicker(); } catch (e) { /* nicht unterstützt */ }
+                return;
+            }
+            customMode = false;
+            custom.hidden = true;
+            input.value = select.value;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        if (dateInput) dateInput.addEventListener('change', build);
+        const form = input.closest('form');
+        if (form) form.addEventListener('reset', () => setTimeout(() => { setCustom(false); build(); }, 0));
+        build();
+    });
+}
+
+// ── 1c. Kalender im Schritt "Zeitraum" ──
+// Zeigt zwei Monate (mobil einen) und hebt den Zeitraum zwischen Abholung und Rückgabe hervor.
+// Ablauf: 1. Tipp = Abholung, 2. Tipp = Rückgabe, nächster Tipp startet einen neuen Zeitraum.
+// Welcher Tag als Nächstes dran ist, zeigt eine Anleitung über dem Kalender und eine rote
+// Umrandung am passenden Datumsfeld oben (wichtig auf dem Handy, wo es kein Hover gibt).
+// Werte werden in die echten Datumsfelder geschrieben (inkl. change-Event), damit Validierung,
+// Hinweise, Uhrzeitlisten und Zusammenfassung mitlaufen.
+function setupRangeCalendar() {
+    const cal = document.querySelector('.range-calendar');
+    const start = document.getElementById('abholung_datum');
+    const end = document.getElementById('rueckgabe_datum');
+    if (!cal || !start || !end) return;
+
+    const monthsEl = cal.querySelector('.range-calendar-months');
+    const hintEl = cal.querySelector('.range-calendar-hint');
+    const startBox = start.closest('.split-input');
+    const endBox = end.closest('.split-input');
+    const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    const pad = n => String(n).padStart(2, '0');
+    const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const parse = v => { const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d); };
+
+    const today = new Date();
+    let view = new Date(today.getFullYear(), today.getMonth(), 1); // erster angezeigter Monat
+    let awaitingEnd = false; // true nach dem Abholtag: nächster Tipp setzt die Rückgabe
+    let hoverIso = '';
+    let updating = false; // true, solange der Kalender selbst Werte setzt
+
+    function setValue(input, value) {
+        updating = true;
+        input.value = value;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        updating = false;
+    }
+
+    function renderMonth(first) {
+        const y = first.getFullYear(), m = first.getMonth();
+        const todayIso = iso(today);
+        const s = start.value;
+        const preview = awaitingEnd && hoverIso && s && hoverIso >= s;
+        const e = preview ? hoverIso : end.value;
+        const offset = (first.getDay() + 6) % 7; // Montag zuerst
+        let html = `<div class="range-calendar-month"><p class="range-calendar-title">${MONATE[m]} ${y}</p>
+            <div class="range-calendar-grid">${['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map(t => `<span class="range-calendar-wd">${t}</span>`).join('')}`;
+        for (let i = 0; i < 42; i++) { // immer 6 Zeilen, damit die Höhe beim Blättern gleich bleibt
+            const d = new Date(y, m, i - offset + 1);
+            if (d.getMonth() !== m) { html += '<span class="range-calendar-empty"></span>'; continue; }
+            const v = iso(d);
+            const cls = ['range-calendar-day'];
+            if (v < todayIso) cls.push('is-past');
+            if (v === todayIso) cls.push('is-today');
+            if (d.getDay() === 0) cls.push('is-sunday');
+            if (s && v === s) cls.push('is-start');
+            if (e && s && v === e && e >= s && !(awaitingEnd && !preview)) cls.push('is-end');
+            if (s && e && v > s && v < e && !(awaitingEnd && !preview)) cls.push('in-range');
+            if (preview && v === e) cls.push('is-preview');
+            html += `<button type="button" tabindex="-1" class="${cls.join(' ')}" data-date="${v}"${v < todayIso ? ' disabled' : ''}${d.getDay() === 0 ? ' title="Sonntag geschlossen, keine Abholung"' : ''}>${d.getDate()}</button>`;
+        }
+        return html + '</div></div>';
+    }
+
+    function renderHint() {
+        if (awaitingEnd) hintEl.innerHTML = 'Jetzt den <strong>Rückgabetag</strong> antippen';
+        else if (start.value && end.value) hintEl.innerHTML = 'Für einen neuen Zeitraum den <strong>Abholtag</strong> antippen';
+        else hintEl.innerHTML = 'Zuerst den <strong>Abholtag</strong> antippen, dann den Rückgabetag';
+        // Das Datumsfeld, das der nächste Tipp setzt, rot umranden
+        if (startBox) startBox.classList.toggle('is-calendar-target', !awaitingEnd);
+        if (endBox) endBox.classList.toggle('is-calendar-target', awaitingEnd);
+    }
+
+    function render() {
+        const second = new Date(view.getFullYear(), view.getMonth() + 1, 1);
+        monthsEl.innerHTML = renderMonth(view) + renderMonth(second);
+        cal.querySelector('.range-calendar-prev').disabled =
+            view.getFullYear() === today.getFullYear() && view.getMonth() === today.getMonth();
+        renderHint();
+    }
+
+    // Angezeigten Monat so wählen, dass das Datum sichtbar ist (mobil nur ein Monat sichtbar)
+    function showMonthOf(value) {
+        if (!value) return;
+        const d = parse(value);
+        const first = new Date(d.getFullYear(), d.getMonth(), 1);
+        const oneMonth = window.matchMedia('(max-width: 600px)').matches;
+        const last = new Date(view.getFullYear(), view.getMonth() + (oneMonth ? 0 : 1), 1);
+        if (first < view || first > last) view = first;
+    }
+
+    monthsEl.addEventListener('click', e => {
+        const btn = e.target.closest('.range-calendar-day');
+        if (!btn || btn.disabled) return;
+        const v = btn.dataset.date;
+        if (awaitingEnd && start.value && v >= start.value) {
+            awaitingEnd = false;
+            setValue(end, v);
+        } else {
+            // Neuer Zeitraum (oder Tag vor der Abholung angetippt): Abholung setzen
+            setValue(start, v);
+            setValue(end, v); // vorläufig derselbe Tag, bis die Rückgabe gewählt ist
+            awaitingEnd = true;
+        }
+        hoverIso = '';
+        render();
+    });
+    monthsEl.addEventListener('mouseover', e => {
+        const btn = e.target.closest('.range-calendar-day');
+        if (!awaitingEnd || !btn || btn.dataset.date === hoverIso) return;
+        hoverIso = btn.dataset.date;
+        render();
+    });
+    monthsEl.addEventListener('mouseleave', () => { if (hoverIso) { hoverIso = ''; render(); } });
+    cal.querySelectorAll('.range-calendar-nav').forEach(btn => btn.addEventListener('click', () => {
+        view = new Date(view.getFullYear(), view.getMonth() + Number(btn.dataset.dir), 1);
+        render();
+    }));
+    // Manuelle Eingabe oben: Kalender nachziehen
+    [start, end].forEach(input => input.addEventListener('change', () => {
+        if (updating) return;
+        awaitingEnd = false;
+        showMonthOf(input === end ? end.value : start.value);
+        render();
+    }));
+    const form = start.closest('form');
+    if (form) form.addEventListener('reset', () => setTimeout(() => {
+        awaitingEnd = false;
+        view = new Date(today.getFullYear(), today.getMonth(), 1);
+        render();
+    }, 0));
+
+    cal.hidden = false;
+    showMonthOf(start.value);
+    render();
+}
+
 // Liegt der Wunsch-Abholtermin in den nächsten 48 Stunden (oder in der Vergangenheit)?
 function isShortNotice() {
     const date = document.getElementById('abholung_datum');
@@ -286,21 +809,16 @@ function setupShortNoticeHint() {
     const date = document.getElementById('abholung_datum');
     const time = document.getElementById('abholung_uhrzeit');
     if (!hint || !date) return;
+    // Nur die Abholung muss in den Öffnungszeiten liegen. Die Rückgabe geht jederzeit
+    // (Schlüssel wird in den Türeinwurf geworfen), dafür gibt es bewusst keinen Hinweis.
     const closedHint = document.getElementById('closed-hours-hint');
-    const closedText = closedHint && closedHint.querySelector('.closed-hours-text');
-    const pickupAt = (d, t) => (d && d.value && t && t.value) ? new Date(d.value + 'T' + t.value) : null;
     const update = () => {
         hint.hidden = !isShortNotice();
         if (!closedHint) return;
-        const pickup = pickupAt(date, time);
-        const returnAt = pickupAt(document.getElementById('rueckgabe_datum'), document.getElementById('rueckgabe_uhrzeit'));
-        const outside = [];
-        if (pickup && !isNaN(pickup) && !isOpenAt(pickup)) outside.push('Abholung');
-        if (returnAt && !isNaN(returnAt) && !isOpenAt(returnAt)) outside.push('Rückgabe');
-        closedHint.hidden = outside.length === 0;
-        if (outside.length) closedText.textContent = outside.join(' und ');
+        const pickup = date.value && time && time.value ? new Date(date.value + 'T' + time.value) : null;
+        closedHint.hidden = !(pickup && !isNaN(pickup) && !isOpenAt(pickup));
     };
-    ['abholung_datum', 'abholung_uhrzeit', 'rueckgabe_datum', 'rueckgabe_uhrzeit'].forEach(id => {
+    ['abholung_datum', 'abholung_uhrzeit'].forEach(id => {
         const el = document.getElementById(id);
         if (el) ['change', 'input'].forEach(ev => el.addEventListener(ev, update));
     });
@@ -864,6 +1382,8 @@ function prefillFormFromUrl() {
                     if (display) display.classList.remove('has-value');
                 }
                 if (textarea) textarea.value = '';
+                const form = document.querySelector('.inquiry-form');
+                if (form && form.formSteps) form.formSteps.sync();
                 note.hidden = true;
             });
         }
@@ -1139,6 +1659,8 @@ window.addEventListener('DOMContentLoaded', () => {
   setupMobileNavToggle();
   setupContactForm();
   setupShortNoticeHint();
+  setupTimeSelects();
+  setupRangeCalendar();
   setupTestimonialsSlider();
   setupFuhrparkFinder();
   setupMapConsent();
@@ -1480,17 +2002,25 @@ function setupFahrzeugkategorie() {
     tooltip.hidden = true;
     document.body.appendChild(tooltip);
 
+    // Tooltip so breit wie der Inhaltsbereich des weißen Formulars, bündig mit den Feldern,
+    // direkt unter "Mehr erfahren"; der kleine Pfeil oben zeigt auf den Link.
     function positioniereTooltip() {
         const rect = infoLink.getBoundingClientRect();
+        const scrollX = window.scrollX || document.documentElement.scrollLeft;
         const scrollY = window.scrollY || document.documentElement.scrollTop;
-        tooltip.style.top = `${rect.bottom + scrollY + 8}px`;
-        // Links ausrichten, aber nicht über den Viewport-Rand hinaus
-        let left = rect.left;
-        const tooltipWidth = Math.min(520, window.innerWidth * 0.9);
-        if (left + tooltipWidth > window.innerWidth - 12) {
-            left = window.innerWidth - tooltipWidth - 12;
+        const form = infoLink.closest('.inquiry-form');
+        let left = 12, width = window.innerWidth - 24;
+        if (form) {
+            const f = form.getBoundingClientRect();
+            const cs = getComputedStyle(form);
+            left = f.left + parseFloat(cs.paddingLeft);
+            width = f.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         }
-        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${rect.bottom + scrollY + 10}px`;
+        tooltip.style.left = `${left + scrollX}px`;
+        tooltip.style.width = `${width}px`;
+        const arrowX = Math.min(Math.max(rect.left + rect.width / 2 - left, 16), width - 16);
+        tooltip.style.setProperty('--arrow-x', `${arrowX}px`);
     }
 
     function zeigeTooltip(config) {
@@ -1542,9 +2072,9 @@ function setupFahrzeugkategorie() {
             versteckeTooltip();
         }
     });
-    window.addEventListener('scroll', () => {
+    ['scroll', 'resize'].forEach(ev => window.addEventListener(ev, () => {
         if (!tooltip.hidden) positioniereTooltip();
-    }, { passive: true });
+    }, { passive: true }));
 
     // ── Initialer deaktivierter Zustand ──
     const display = kategorieSel.nextElementSibling;
@@ -1626,7 +2156,7 @@ function setupFahrzeugkategorie() {
 // Die echten <select>-Felder (#fahrzeug, #getriebe, #fahrzeugkategorie) sind unsichtbar;
 // sichtbar ist stattdessen ein gestyltes <div class="custom-select-display"> daneben.
 // Dieser Block hält den angezeigten Text synchron, sobald sich der Wert ändert.
-['fahrzeug', 'getriebe', 'fahrzeugkategorie', 'anhaengkupplung', 'anrede'].forEach(id => {
+['fahrzeug', 'getriebe', 'fahrzeugkategorie', 'anhaengkupplung', 'zugfahrzeug', 'anrede'].forEach(id => {
   const sel = document.getElementById(id);
   if (!sel) return;
   const display = sel.nextElementSibling;
