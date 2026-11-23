@@ -4914,12 +4914,13 @@ mark.spec-highlight {
     margin-top: 26px;
 }
 
-/* Kennzahlen unter dem Foto, bündig mit der Überschrift; Adresse rechts als Link zur Anfahrt */
+/* Kennzahlen unter dem Foto, mittig unter dem Bild */
 .hero-facts {
     list-style: none;
     margin: 28px 0 0;
     padding: 0 48px;
     display: flex;
+    justify-content: center;
     align-items: flex-end;
 }
 
@@ -4932,6 +4933,11 @@ mark.spec-highlight {
 .hero-facts li:first-child {
     padding-left: 0;
     border-left: 0;
+}
+
+/* Gleich viel Abstand links und rechts, damit die Gruppe optisch genau mittig sitzt */
+.hero-facts li:last-child {
+    padding-right: 0;
 }
 
 .hero-facts strong {
@@ -5082,6 +5088,7 @@ mark.spec-highlight {
         justify-content: space-between;
         align-items: start;
         row-gap: 16px;
+        text-align: center;
     }
 
     .hero-facts li {
