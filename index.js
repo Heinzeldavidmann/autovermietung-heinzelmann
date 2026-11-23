@@ -1795,6 +1795,35 @@ function setupCounterAnimation() {
     counters.forEach(el => observer.observe(el));
 }
 
+// ── 14. Eyebrow-Wasserzeichen einpassen ──
+// Die großen, blassen Rubrik-Labels (.eyebrow) sollen in einer Zeile stehen.
+// Ist ein Label breiter als sein Platz, wird die Schrift passend verkleinert.
+function setupEyebrowFit() {
+    const labels = document.querySelectorAll('.eyebrow');
+    if (!labels.length) return;
+
+    const fit = () => {
+        labels.forEach(el => {
+            el.style.fontSize = '';
+            el.style.whiteSpace = 'nowrap';
+            const avail = el.clientWidth;
+            const needed = el.scrollWidth;
+            if (avail > 0 && needed > avail) {
+                const size = parseFloat(getComputedStyle(el).fontSize);
+                el.style.fontSize = `${Math.floor(size * avail / needed * 0.98)}px`;
+            }
+        });
+    };
+
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    let timer;
+    window.addEventListener('resize', () => {
+        clearTimeout(timer);
+        timer = setTimeout(fit, 120);
+    });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   // Jede Funktion einzeln absichern: ein Fehler in einem Teil (z.B. ein kaputter Link)
   // darf nicht den Rest der Seite lahmlegen (sonst bleiben z.B. .reveal-Abschnitte unsichtbar).
@@ -1814,6 +1843,7 @@ window.addEventListener('DOMContentLoaded', () => {
     restoreFormDraft,
     setupScrollReveal,
     setupCounterAnimation,
+    setupEyebrowFit,
   ].forEach(fn => {
     try { fn(); } catch (err) { console.error(`${fn.name} fehlgeschlagen:`, err); }
   });

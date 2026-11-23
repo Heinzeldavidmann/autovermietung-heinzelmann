@@ -224,13 +224,15 @@
 
 <!-- Hero: erste Ansicht beim Laden der Startseite, mit Haupt-CTA -->
 <!-- Hero: Firmengebäude als Bühne. Der vorherige Hero ist im Git-Tag "hero-original" gesichert (siehe CLAUDE.md). -->
-<section id="home" class="hero-stage-section">
-    <div class="hero-stage">
+<section id="home" class="hero-card-section">
+    <div class="hero-card-photo">
         <picture>
-            <source type="image/webp" sizes="(max-width: 1228px) calc(100vw - 48px), 1180px" srcset="images/responsive/Saumstrasse_Heute-480.webp 480w, images/responsive/Saumstrasse_Heute-800.webp 800w, images/responsive/Saumstrasse_Heute-1200.webp 1200w, images/Saumstrasse_Heute.webp 1402w">
-            <img class="hero-stage-photo" width="1402" height="1052" fetchpriority="high" src="images/Saumstrasse_Heute.jpg" alt="Firmengebäude der Autovermietung Heinzelmann in der Saumstraße, Herbertingen">
+            <source type="image/webp" sizes="100vw" srcset="images/responsive/Saumstrasse_Heute-480.webp 480w, images/responsive/Saumstrasse_Heute-800.webp 800w, images/responsive/Saumstrasse_Heute-1200.webp 1200w, images/Saumstrasse_Heute.webp 1402w">
+            <img class="hero-card-img" width="1402" height="1052" fetchpriority="high" src="images/Saumstrasse_Heute.jpg" alt="Firmengebäude der Autovermietung Heinzelmann in der Saumstraße, Herbertingen">
         </picture>
-        <div class="hero-stage-copy">
+    </div>
+    <div class="hero-card">
+        <div class="hero-card-main">
             <p class="eyebrow">Familienbetrieb seit 1963</p>
             <h1>Mietwagen, Transporter und 9&#8209;Sitzer in Herbertingen</h1>
             <div class="hero-actions" aria-label="Schnelleinstieg">
@@ -238,12 +240,12 @@
                 <a href="fuhrpark.html" class="button button-secondary">Fuhrpark ansehen</a>
             </div>
         </div>
+        <ul class="hero-card-info" aria-label="Kurzüberblick">
+            <li><strong data-count="60" data-count-suffix="+">60+</strong><span>Jahre Erfahrung</span></li>
+            <li><strong data-count="75" data-count-suffix="+">75+</strong><span>Fahrzeuge im Fuhrpark</span></li>
+            <li class="hero-card-place"><strong>Saumstraße 2–4</strong><span>Zentral in Herbertingen</span></li>
+        </ul>
     </div>
-    <ul class="hero-facts" aria-label="Kurzüberblick">
-        <li><strong data-count="60" data-count-suffix="+">60+</strong><span>Jahre Erfahrung</span></li>
-        <li><strong data-count="75" data-count-suffix="+">75+</strong><span>Fahrzeuge im Fuhrpark</span></li>
-        <li><strong>Saumstraße 2–4</strong><span>Zentral in Herbertingen</span></li>
-    </ul>
 </section>
 
 <!-- Kurzübersicht der 3 Fahrzeug-Hauptkategorien, verlinkt auf pkw.html/transporter.html/9sitzer.html -->

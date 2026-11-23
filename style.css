@@ -5115,6 +5115,200 @@ mark.spec-highlight {
 }
 
 
+/* =========================
+   Hero „Visitenkarte" (Startseite, #home)
+   Foto über die volle Seitenbreite, darüber eine Karte in Abschnittsbreite
+   (gleiche Breite, Ecken und Schatten wie die übrigen <section>-Kästen).
+   Der vorherige Hero „Firmengebäude als Bühne" (.hero-stage…, oben) ist im Git-Tag "hero-buehne" gesichert.
+   ========================= */
+.hero-card-section {
+    max-width: none;
+    margin: 0 0 40px;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.hero-card-photo {
+    position: relative;
+    height: clamp(380px, 62vh, 640px);
+    overflow: hidden;
+    background: #d9dde2;
+}
+
+.hero-card-photo picture {
+    position: absolute;
+    inset: 0;
+}
+
+.hero-card-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ausschnitt nach unten: Die Mietwagen vor dem Haus bleiben über der Karte sichtbar */
+    object-position: 50% 72%;
+}
+
+/* Sehr breite Bildschirme: Bild wird höher skaliert, Ausschnitt etwas nach oben, damit der Schriftzug am Haus ganz bleibt */
+@media (min-width: 1600px) {
+    .hero-card-img {
+        object-position: 50% 60%;
+    }
+}
+
+.hero-card {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 270px;
+    gap: 40px;
+    max-width: var(--container);
+    margin: -90px auto 0;
+    padding: 40px;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 18px 50px rgba(17, 24, 39, 0.16);
+}
+
+.hero-card-main .eyebrow {
+    margin: 0 0 16px;
+}
+
+.hero-card-main h1 {
+    margin: 0;
+    text-align: left;
+    font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+    text-wrap: balance;
+}
+
+.hero-card .hero-actions {
+    max-width: 520px;
+    margin-top: 26px;
+}
+
+.hero-card-info {
+    position: relative;
+    display: grid;
+    align-content: center;
+    gap: 18px;
+    margin: 0;
+    padding: 0 0 0 32px;
+    list-style: none;
+}
+
+/* Trennlinie zum Text: links (Desktop) bzw. oben (Tablet/Handy) */
+.hero-card-info::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: var(--color-border);
+}
+
+.hero-card-info strong {
+    display: block;
+    font-style: italic;
+    font-weight: 900;
+    font-size: 2.1rem;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    color: var(--color-dark);
+    white-space: nowrap;
+}
+
+.hero-card-info span {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.92rem;
+    color: var(--color-muted);
+}
+
+.hero-card-info .hero-card-place strong {
+    font-style: normal;
+    font-weight: 800;
+    font-size: 1.15rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .hero-card {
+        background: #242424;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-card-info::before {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .hero-card-info strong {
+        color: #f0f0f0;
+    }
+}
+
+/* Tablet: Infos unter den Text, nebeneinander */
+@media (max-width: 1024px) {
+    .hero-card {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        margin-top: -70px;
+    }
+
+    .hero-card-info {
+        grid-template-columns: repeat(3, auto);
+        justify-content: start;
+        align-items: end;
+        gap: 16px 48px;
+        padding: 22px 0 0;
+    }
+
+    .hero-card-info::before {
+        bottom: auto;
+        right: 0;
+        width: auto;
+        height: 1px;
+    }
+}
+
+/* Handy: wie die übrigen Abschnitte volle Breite ohne Ecken; Karte schließt unten ans Foto an */
+@media (max-width: 600px) {
+    .hero-card-section {
+        margin-bottom: 18px;
+    }
+
+    .hero-card-photo {
+        height: 260px;
+    }
+
+    .hero-card-img {
+        object-position: 40% 30%;
+    }
+
+    .hero-card {
+        margin-top: 0;
+        padding: 24px 20px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .hero-card-info {
+        grid-template-columns: repeat(2, auto);
+        justify-content: start;
+        gap: 16px 40px;
+    }
+
+    .hero-card-info strong {
+        font-size: 1.6rem;
+    }
+
+    .hero-card-info .hero-card-place {
+        grid-column: 1 / -1;
+    }
+}
+
+
 /* ============================================================
    Anfrageformular in drei Schritten (setupFormSteps in index.js)
    Ohne JavaScript fehlt .is-stepped: Dann sind alle Schritte sichtbar,
@@ -6160,5 +6354,78 @@ mark.spec-highlight {
     }
     #closed-banner {
         top: 16px;
+    }
+}
+
+
+/* =========================
+   Eyebrow als Wasserzeichen (alle Seiten)
+   Das Rubrik-Label (.eyebrow) steht groß, kursiv und blass hinter der Überschrift,
+   die Überschrift sitzt halb darauf. setupEyebrowFit() in index.js verkleinert lange
+   Labels, bis sie in eine Zeile passen; ohne JS brechen sie einfach um.
+   Zurück zum kleinen Label mit Strich: diesen Abschnitt löschen.
+   ========================= */
+.eyebrow,
+.anforderungen-intro .eyebrow,
+.section-heading .eyebrow,
+.inquiry-copy p.eyebrow {
+    display: block;
+    /* nie breiter als der Platz, damit setupEyebrowFit() messen und verkleinern kann */
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 0 -0.5em;
+    color: var(--color-primary-text);
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    opacity: 0.12;
+}
+
+.eyebrow::before,
+.anforderungen-intro .eyebrow::before {
+    display: none;
+}
+
+/* Spalten dürfen wegen des einzeiligen Labels nicht breiter werden */
+.hero-card-main,
+.inquiry-copy,
+.anforderungen-intro {
+    min-width: 0;
+}
+
+/* Überschrift liegt über dem Wasserzeichen */
+.eyebrow + h1,
+.eyebrow + h2,
+.preise-eyebrow-row + h2 {
+    position: relative;
+}
+
+/* Preise: Fahrzeug-Symbol über dem Wasserzeichen statt daneben */
+.preise-eyebrow-row {
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 0;
+}
+
+.preise-eyebrow-row svg {
+    order: -1;
+}
+
+.preise-eyebrow-row .eyebrow {
+    width: 100%;
+    margin: 0 0 -0.5em;
+}
+
+/* Dunkle Flächen: etwas kräftiger, sonst verschwindet es */
+#neuzugaenge .eyebrow,
+.inquiry-section .eyebrow {
+    opacity: 0.16;
+}
+
+@media (prefers-color-scheme: dark) {
+    .eyebrow {
+        opacity: 0.16;
     }
 }

@@ -56,7 +56,7 @@ Body has `padding-top: calc(var(--header-offset) + var(--utility-height))` to cl
 
 ## Component Patterns
 
-**Eyebrow label** — always use this pattern before section headings:
+**Eyebrow label** — always use this pattern before section headings. Seit 2026-11-23 erscheint das Label als großes, blasses Wasserzeichen hinter der Überschrift (Abschnitt „Eyebrow als Wasserzeichen“ am Ende von `style.css`); `setupEyebrowFit()` in `index.js` verkleinert lange Labels auf eine Zeile. Die geringe Lesbarkeit ist gewollt, die Überschrift trägt die Aussage. Ideen-Sammlung: `../Hero-Labor/eyebrow.html`.
 ```html
 <div class="section-heading">
     <p class="eyebrow">Label text</p>
@@ -90,9 +90,9 @@ Body has `padding-top: calc(var(--header-offset) + var(--utility-height))` to cl
 
 ## Hero der Startseite
 
-Der Hero (`#home` in `index.html`) zeigt das Firmengebäude (`images/Saumstrasse_Heute.*`) als große Bühne mit dunklem Verlauf, darunter die drei Kennzahlen (`.hero-facts`). Styles: Abschnitt „Hero Firmengebäude als Bühne" am Ende von `style.css`.
+Der Hero (`#home` in `index.html`) ist eine „Visitenkarte“: Das Foto des Firmengebäudes (`images/Saumstrasse_Heute.*`, nur 1402 px breit, ein größeres gibt es nicht) läuft über die volle Seitenbreite, darüber liegt eine Karte (`.hero-card`) genau in der Breite der übrigen Abschnitte (`--container`, gleiche Ecken). Links Überschrift und zwei Knöpfe, rechts die drei Kennzahlen (60+ Jahre, 75+ Fahrzeuge, Saumstraße 2–4; die Zahlen zählen über `data-count` hoch). Öffnungsstatus und Telefon stehen bewusst nicht in der Karte, weil die Schnellzugriff-Leiste direkt darüber sie schon zeigt. Am Handy schließt die Karte unten ans Foto an. Styles: Abschnitt „Hero ‚Visitenkarte‘“ in `style.css`.
 
-Der vorherige Hero (Text links, Foto + Logo-Kasten rechts, drei Kacheln) ist im Git-Tag `hero-original` gesichert. Zum Zurückwechseln den `<section id="home" …>`-Block aus `git show hero-original:index.html` übernehmen. Die alten Klassen (`.hero-section`, `.hero-wrapper`, `.hero-right`, `.hero-logo-panel`, `.trust-item` …) sind in `style.css` weiterhin vorhanden. Der Absatz `.hero-text` stand damals im Hero und steht jetzt unter „Mobilität für jeden Bedarf".
+Frühere Fassungen: „Firmengebäude als Bühne“ (Foto mit dunklem Verlauf, Kennzahlen darunter) im Git-Tag `hero-buehne`, der Hero davor im Tag `hero-original`. Zum Zurückwechseln den `<section id="home" …>`-Block aus `git show <tag>:index.html` übernehmen; die alten Klassen (`.hero-stage…`, `.hero-facts`, `.hero-section` …) sind in `style.css` noch vorhanden. Ideen-Sammlung zum Seitenanfang: `../Hero-Labor/` (nicht im Repo).
 
 ## Navigation
 
