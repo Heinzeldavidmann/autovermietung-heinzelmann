@@ -15,6 +15,7 @@
     <meta property="og:image" content="https://autovermietung-heinzelmann.de/images/Au%C3%9Fenwand_Autovermietung_cropped.jpg">
     <meta property="og:url" content="https://autovermietung-heinzelmann.de/">
     <meta property="og:locale" content="de_DE">
+    <link rel="preload" href="fonts/mona-sans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css?v=2">
     <script src="index.js" defer></script>
     <script type="application/ld+json">
@@ -201,7 +202,7 @@
 
 <header class="site-header">
     <a href="index.html" class="logo" aria-label="Zur Startseite">
-        <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+        <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
     </a>
 
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
@@ -226,7 +227,7 @@
 <section id="home" class="hero-stage-section">
     <div class="hero-stage">
         <picture>
-            <source srcset="images/Saumstrasse_Heute.webp" type="image/webp">
+            <source type="image/webp" sizes="(max-width: 1228px) calc(100vw - 48px), 1180px" srcset="images/responsive/Saumstrasse_Heute-480.webp 480w, images/responsive/Saumstrasse_Heute-800.webp 800w, images/responsive/Saumstrasse_Heute-1200.webp 1200w, images/Saumstrasse_Heute.webp 1402w">
             <img class="hero-stage-photo" width="1402" height="1052" fetchpriority="high" src="images/Saumstrasse_Heute.jpg" alt="Firmengebäude der Autovermietung Heinzelmann in der Saumstraße, Herbertingen">
         </picture>
         <div class="hero-stage-copy">
@@ -256,7 +257,7 @@
         <a href="pkw.html" class="vehicle">
             <div class="vehicle-img-wrap">
                 <picture>
-                    <source srcset="images/PKW_Fuhrpark.webp" type="image/webp">
+                    <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 47vw, 350px" srcset="images/responsive/PKW_Fuhrpark-480.webp 480w, images/responsive/PKW_Fuhrpark-800.webp 800w, images/responsive/PKW_Fuhrpark-1200.webp 1200w, images/PKW_Fuhrpark.webp 1600w">
                     <img width="1600" height="1200" loading="lazy" decoding="async" src="images/PKW_Fuhrpark.jpeg" alt="PKW">
                 </picture>
             </div>
@@ -270,7 +271,7 @@
         <a href="transporter.html" class="vehicle">
             <div class="vehicle-img-wrap">
                 <picture>
-                    <source srcset="images/Sprinter_Halle.webp" type="image/webp">
+                    <source type="image/webp" sizes="(max-width: 700px) 125vw, (max-width: 1180px) 63vw, 470px" srcset="images/responsive/Sprinter_Halle-480.webp 480w, images/responsive/Sprinter_Halle-800.webp 800w, images/responsive/Sprinter_Halle-1200.webp 1200w, images/Sprinter_Halle.webp 1600w">
                     <img width="1600" height="1200" loading="lazy" decoding="async" src="images/Sprinter_Halle.jpeg" alt="Transporter" class="img-zoom-transporter">
                 </picture>
             </div>
@@ -284,7 +285,7 @@
         <a href="9sitzer.html" class="vehicle">
             <div class="vehicle-img-wrap">
                 <picture>
-                    <source srcset="images/9Sitzer_Halle.webp" type="image/webp">
+                    <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 47vw, 350px" srcset="images/responsive/9Sitzer_Halle-480.webp 480w, images/responsive/9Sitzer_Halle-800.webp 800w, images/responsive/9Sitzer_Halle-1200.webp 1200w, images/9Sitzer_Halle.webp 1600w">
                     <img width="1600" height="1200" loading="lazy" decoding="async" src="images/9Sitzer_Halle.jpeg" alt="9-Sitzer">
                 </picture>
             </div>
@@ -442,7 +443,7 @@
                 <div class="field field-third" id="field-fahrtstrecke" data-step-detail>
                     <label for="fahrtstrecke">Fahrtstrecke <span class="label-optional">(optional)</span></label>
                     <div class="split-input">
-                        <input type="number" id="fahrtstrecke" name="fahrtstrecke" placeholder="500" min="0" inputmode="numeric">
+                        <input type="number" id="fahrtstrecke" name="fahrtstrecke" placeholder="500" min="0" max="99999" step="1" inputmode="numeric">
                         <span class="split-divider"></span>
                         <span class="split-unit">km</span>
                     </div>
@@ -536,27 +537,27 @@
 
                 <div class="field field-third" id="field-vorname">
                     <label for="vorname">Vorname</label>
-                    <input type="text" id="vorname" name="vorname" placeholder="Max" autocomplete="given-name" required>
+                    <input type="text" id="vorname" name="vorname" maxlength="80" placeholder="Max" autocomplete="given-name" required>
                 </div>
 
                 <div class="field field-third" id="field-nachname">
                     <label for="nachname">Nachname</label>
-                    <input type="text" id="nachname" name="nachname" placeholder="Mustermann" autocomplete="family-name" required>
+                    <input type="text" id="nachname" name="nachname" maxlength="80" placeholder="Mustermann" autocomplete="family-name" required>
                 </div>
 
                 <div class="field" id="field-telefon">
                     <label for="telefon">Telefonnummer</label>
-                    <input type="tel" id="telefon" name="telefon" placeholder="0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 \(\)\/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
+                    <input type="tel" id="telefon" name="telefon" maxlength="40" placeholder="0151 23456789" inputmode="tel" autocomplete="tel" pattern="^\+?[0-9 \(\)\/\-]{6,}$" title="Bitte geben Sie eine gültige Telefonnummer ein." required>
                 </div>
 
                 <div class="field" id="field-email">
                     <label for="email">E-Mail</label>
-                    <input type="email" id="email" name="email" placeholder="max@beispiel.de" autocomplete="email" required>
+                    <input type="email" id="email" name="email" maxlength="254" placeholder="max@beispiel.de" autocomplete="email" required>
                 </div>
 
                 <div class="field field-full" id="field-nachricht">
                     <label for="nachricht">Nachricht <span class="label-optional">(optional)</span></label>
-                    <textarea id="nachricht" name="nachricht" rows="2" placeholder="z.B. Umzug, Ersatzfahrzeug oder Gruppenfahrt"></textarea>
+                    <textarea id="nachricht" name="nachricht" maxlength="3000" rows="2" placeholder="z.B. Umzug, Ersatzfahrzeug oder Gruppenfahrt"></textarea>
                 </div>
             </div>
 
@@ -823,7 +824,7 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <img width="2313" height="491" loading="lazy" decoding="async" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" loading="lazy" decoding="async" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
             <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Oberschwaben <br> – seit über 60 Jahren.</p>
         </div>
         <div class="footer-links">

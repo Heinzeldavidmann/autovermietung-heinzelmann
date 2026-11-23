@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
+    <link rel="preload" href="fonts/mona-sans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js" defer></script>
@@ -41,7 +42,7 @@
 
 <header class="site-header">
     <a href="index.html" class="logo" aria-label="Zur Startseite">
-        <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+        <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
     </a>
 
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
@@ -92,6 +93,9 @@
         <p>
             Auf unserer Website steht ein Kontaktformular bereit, über das Sie uns eine Anfrage zukommen lassen können. Die im Formular eingegebenen Daten (z.B. Name, Telefonnummer, E-Mail-Adresse, Wunschfahrzeug und Reisezeitraum) werden über Netlify Forms verarbeitet und per E-Mail an uns weitergeleitet. Netlify, Inc. verarbeitet die Formulardaten dabei als Auftragsverarbeiter auf Servern in den USA. Die übermittelten Daten verwenden wir ausschließlich zur Bearbeitung Ihrer Anfrage und für etwaige Rückfragen. Eine darüber hinausgehende Weitergabe an Dritte erfolgt nicht.
             Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Durchführung vorvertraglicher Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Kundenanfragen).
+        </p>
+        <p>
+            Damit Ihre Eingaben nicht verloren gehen, wenn die Seite versehentlich neu geladen wird, speichert das Formular sie vorübergehend in Ihrem Browser (Session Storage). Diese Zwischenspeicherung findet nur auf Ihrem Gerät statt; an uns übertragen werden die Daten erst, wenn Sie die Anfrage absenden. Die zwischengespeicherten Eingaben werden nach dem erfolgreichen Absenden gelöscht, spätestens aber, wenn Sie den Browser-Tab schließen.
         </p>
 
         <h3>5. Google Maps</h3>
@@ -144,7 +148,7 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
             <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
         </div>
         <div class="footer-links">

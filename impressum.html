@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
+    <link rel="preload" href="fonts/mona-sans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js" defer></script>
@@ -41,7 +42,7 @@
 
 <header class="site-header">
     <a href="index.html" class="logo" aria-label="Zur Startseite">
-        <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+        <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
     </a>
 
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
@@ -115,7 +116,7 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
             <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
         </div>
         <div class="footer-links">

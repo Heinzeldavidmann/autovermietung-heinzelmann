@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Static website for **Autovermietung Heinzelmann GbR**, a regional vehicle rental company in Herbertingen, Germany. No build system — plain HTML/CSS/JS. Hosted on GitHub Pages.
+Static website for **Autovermietung Heinzelmann GbR**, a regional vehicle rental company in Herbertingen, Germany. No build system — plain HTML/CSS/JS. Hosted on **Netlify** (inkl. Netlify Forms für das Anfrageformular); das GitHub-Repository ist die Quelle, ein Push auf `main` löst das Deploy aus.
 
-**Live site:** https://heinzeldavidmann.github.io/autovermietung-heinzelmann/
+**Live site:** https://autovermietung-heinzelmann.de/
 
 To preview locally: open any `.html` file in a browser, or run a simple HTTP server:
 ```bash
@@ -31,7 +31,8 @@ python3 -m http.server 8000
 | `images/` | All photos (JPG/HEIC/WebP) |
 | `preislisten/` | PDF price lists (Anhänger, Transporter, PKW, LKW, Umzugszubehör) |
 | `robots.txt` / `sitemap.xml` | SEO crawl/index directives |
-| `CNAME` | Custom domain for GitHub Pages (autovermietung-heinzelmann.de) |
+| `netlify.toml` | Netlify-Einstellungen: Weiterleitung auf https, Browser-Zwischenspeicher für Bilder und Schriften |
+| `convert_to_webp.py` | Erzeugt WebP-Fassungen und verkleinerte Bildgrößen (siehe „Bilder") |
 
 ## Design System (style.css)
 
@@ -85,6 +86,8 @@ Body has `padding-top: calc(var(--header-offset) + var(--utility-height))` to cl
 
 **Anforderungen (requirements) layout** — 2-column: intro left, icon list right. Used on both `index.html` and `preise.html`.
 
+**Tippflächen (Handy):** Alles Antippbare soll mindestens ca. 44 px groß sein. Wenn das sichtbare Element klein bleiben soll (Slider-Punkte, Kalenderpfeile, Timeline-Punkte), wird nur die Tippfläche über ein unsichtbares `::after` vergrößert; bei allein stehenden Textlinks über `padding` plus gleich großes negatives `margin`. Sammlung: Abschnitt „Handy und Tablet: Tippflächen und Querformat" am Ende von `style.css`. Im Querformat auf niedrigen Bildschirmen (`max-height: 500px`) scrollen Kopfzeile und Schnellzugriff-Leiste mit; JS liest die verdeckte Höhe deshalb über `fixedHeaderOffset()` aus `scroll-padding-top`, nicht aus dem `padding-top` des Body.
+
 ## Hero der Startseite
 
 Der Hero (`#home` in `index.html`) zeigt das Firmengebäude (`images/Saumstrasse_Heute.*`) als große Bühne mit dunklem Verlauf, darunter die drei Kennzahlen (`.hero-facts`). Styles: Abschnitt „Hero Firmengebäude als Bühne" am Ende von `style.css`.
@@ -108,6 +111,12 @@ All pages share the same header/utility bar HTML. Nav links use plain text (no `
 
 Das Formular ist dreistufig (Fahrzeug → Zeitraum → Kontakt), gesteuert von `setupFormSteps()` in `index.js`. Alle Felder liegen weiter in einem `<form>` (Netlify Forms unverändert), die Schritte sind `.form-step`-Blöcke. Fahrzeugart-Kacheln und Anrede-Knöpfe (`[data-choice-for]`) setzen die versteckten `<select>`-Felder `#fahrzeug` / `#anrede`. Felder mit `data-step-detail` erscheinen erst nach Wahl der Fahrzeugart; `data-only-for` / `data-not-for` steuern, welche Felder je Fahrzeugart erscheinen: Bei Anhänger kommt die Frage nach einem Zugfahrzeug (`#zugfahrzeug`), Getriebe erscheint dort nur mit Zugfahrzeug (`data-with-zug`), die Anhängkupplung nie. Ausgeblendete Felder werden deaktiviert und nicht mitgeschickt. Im Schritt „Zeitraum" zeigt `setupRangeCalendar()` einen Kalender (2 Monate, mobil 1), der den Mietzeitraum hervorhebt und per Klick Abholung/Rückgabe in die Datumsfelder schreibt. Ablauf: 1. Tipp = Abholung, 2. Tipp = Rückgabe, nächster Tipp = neuer Zeitraum. Eine Anleitungszeile über dem Kalender und eine rote Umrandung am passenden Datumsfeld zeigen, welcher Tag als Nächstes dran ist. Das ist vor allem fürs Handy wichtig, wo es kein Hover gibt. Keine zweite Anzeige der Daten im Kalender (wurde als redundant abgelehnt). Uhrzeiten wählt man per Liste (`setupTimeSelects()`, 30-Minuten-Takt): Abholzeiten werden aus `OPENING_HOURS` für den gewählten Tag erzeugt (bis 30 Min. vor Schluss), Rückgabe 6–22 Uhr (Rückgabe ist jederzeit per Schlüsseleinwurf möglich, daher kein Öffnungszeiten-Hinweis dafür). „Andere Zeit …" blendet das echte `<input type="time">` zum freien Eintragen ein; nur dieses Feld wird abgeschickt. Styles: Abschnitte „Anfrageformular in drei Schritten", „Kalender im Schritt Zeitraum" und „Uhrzeit-Auswahlliste" am Ende von `style.css`. Der alte einstufige Stand ist im Git-Tag `formular-original` gesichert.
 
+Robustheit: Eingaben werden als Entwurf im `sessionStorage` des Tabs gesichert (`setupFormDraft`/`restoreFormDraft`) und nach einem Neuladen wiederhergestellt, nach erfolgreichem Absenden gelöscht; ein Link mit Vorauswahl hat Vorrang. Absenden hat ein Zeitlimit von 20 s und getrennte Meldungen für offline, Zeitüberschreitung und Serverfehler. Nach Erfolg zeigt das Formular nur die Bestätigung (`.is-sent`) mit „Weitere Anfrage stellen“. Feldfehler hängen per `aria-describedby` am Feld; vorgelesen wird nur ein Sammelhinweis („Bitte prüfen Sie 2 markierte Felder.“).
+
+## Bilder
+
+Fotos liegen als JPEG (Rückfall) und WebP in `images/`, dazu verkleinerte Fassungen (480/800/1200 px) in `images/responsive/`. Eingebunden werden sie per `<picture>` mit `srcset` + `sizes`, damit Handys nur die Größe laden, die sie anzeigen. Neue Bilder: Datei in `images/` legen und `python3 convert_to_webp.py` ausführen (erzeugt WebP und die verkleinerten Fassungen), dann im HTML den `<source>` nach dem Muster der vorhandenen Bilder mit `srcset`/`sizes` anlegen. Logo und Preislisten-Vorschauen haben eine eigene WebP-Fassung in einem `<picture class="picture-plain">` (`display: contents`, damit das Layout unverändert bleibt). In `netlify.toml` werden Bilder 1 Woche und Schriften 1 Jahr im Browser zwischengespeichert: Ein ersetztes Bild besser unter neuem Dateinamen ablegen.
+
 ## JavaScript (index.js)
 
 Ten responsibilities, called in order from the central `DOMContentLoaded` listener:
@@ -122,7 +131,7 @@ Ten responsibilities, called in order from the central `DOMContentLoaded` listen
 9. **Opening hours** — updates `#open-status` with current status based on `OPENING_HOURS` object (Mo–Fr 7:30–12 & 13–18, Sa 7:30–13)
 10. **Custom select** — syncs `#fahrzeug` select value to `.custom-select-display` span
 
-New `setup*()` functions must be added to the `DOMContentLoaded` listener, otherwise they never run. Script must use `defer` attribute: `<script src="index.js" defer></script>`
+New `setup*()` functions must be added to the `DOMContentLoaded` listener (an array of functions, each wrapped in try/catch so one failure cannot break the rest of the page), otherwise they never run. Script must use `defer` attribute: `<script src="index.js" defer></script>`
 
 ## Opening Hours Data
 

@@ -14,6 +14,7 @@
     <meta property="og:image" content="https://autovermietung-heinzelmann.de/images/Au%C3%9Fenwand_Autovermietung_cropped.jpg">
     <meta property="og:url" content="https://autovermietung-heinzelmann.de/ueber_uns.html">
     <meta property="og:locale" content="de_DE">
+    <link rel="preload" href="fonts/mona-sans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js" defer></script>
@@ -47,7 +48,7 @@
 
 <header class="site-header">
     <a href="index.html" class="logo" aria-label="Zur Startseite">
-        <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+        <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
     </a>
 
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
@@ -125,7 +126,7 @@
         </div>
         <figure class="about-figure">
             <picture>
-                <source srcset="images/Mietfuhrpark_1965.webp" type="image/webp">
+                <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 45vw, 520px" srcset="images/responsive/Mietfuhrpark_1965-480.webp 480w, images/Mietfuhrpark_1965.webp 676w">
                 <img width="676" height="476" src="images/Mietfuhrpark_1965.jpg" alt="Historischer Mietfuhrpark mit VW Käfern auf einer Wiese">
             </picture>
             <figcaption>Der erste Mietfuhrpark um 1965.</figcaption>
@@ -142,14 +143,14 @@
         <div class="about-duo-images">
             <figure class="about-figure">
                 <picture>
-                    <source srcset="images/Umbau_1983.webp" type="image/webp">
+                    <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 45vw, 520px" srcset="images/responsive/Umbau_1983-480.webp 480w, images/Umbau_1983.webp 774w">
                     <img width="774" height="709" loading="lazy" decoding="async" src="images/Umbau_1983.jpg" alt="Umbauarbeiten am Nachbargebäude 1983">
                 </picture>
                 <figcaption>Umbauarbeiten am Nachbargebäude, 1983.</figcaption>
             </figure>
             <figure class="about-figure">
                 <picture>
-                    <source srcset="images/Halle_1983_fertig.webp" type="image/webp">
+                    <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 45vw, 520px" srcset="images/responsive/Halle_1983_fertig-480.webp 480w, images/responsive/Halle_1983_fertig-800.webp 800w, images/Halle_1983_fertig.webp 985w">
                     <img width="985" height="711" loading="lazy" decoding="async" src="images/Halle_1983_fertig.jpg" alt="Die fertige Fahrzeughalle nach dem Umbau">
                 </picture>
                 <figcaption>Die fertiggestellte Fahrzeughalle.</figcaption>
@@ -175,7 +176,7 @@
         </div>
         <figure class="about-figure">
             <picture>
-                <source srcset="images/Gesamtbild_Halle_V2.webp" type="image/webp">
+                <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 45vw, 520px" srcset="images/responsive/Gesamtbild_Halle_V2-480.webp 480w, images/responsive/Gesamtbild_Halle_V2-800.webp 800w, images/responsive/Gesamtbild_Halle_V2-1200.webp 1200w, images/Gesamtbild_Halle_V2.webp 1600w">
                 <img width="1600" height="1200" loading="lazy" decoding="async" src="images/Gesamtbild_Halle_V2.jpeg" alt="Fahrzeughalle der Autovermietung Heinzelmann">
             </picture>
             <figcaption>Die Fahrzeughalle im Gewerbegebiet Herbertingen.</figcaption>
@@ -195,7 +196,7 @@
         </div>
         <figure class="about-figure">
             <picture>
-                <source srcset="images/Unternehmerfamilie.webp" type="image/webp">
+                <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 45vw, 520px" srcset="images/responsive/Unternehmerfamilie-480.webp 480w, images/responsive/Unternehmerfamilie-800.webp 800w, images/responsive/Unternehmerfamilie-1200.webp 1200w, images/Unternehmerfamilie.webp 1600w">
                 <img width="1600" height="1200" loading="lazy" decoding="async" src="images/Unternehmerfamilie.jpg" alt="Die Unternehmerfamilie Heinzelmann vor einem Transporter">
             </picture>
             <figcaption>Die Inhaberfamilie Heinzelmann.</figcaption>
@@ -216,7 +217,7 @@
         </div>
         <figure class="about-figure">
             <picture>
-                <source srcset="images/Saumstrasse_Heute.webp" type="image/webp">
+                <source type="image/webp" sizes="(max-width: 700px) 94vw, (max-width: 1180px) 45vw, 520px" srcset="images/responsive/Saumstrasse_Heute-480.webp 480w, images/responsive/Saumstrasse_Heute-800.webp 800w, images/responsive/Saumstrasse_Heute-1200.webp 1200w, images/Saumstrasse_Heute.webp 1402w">
                 <img width="1402" height="1052" loading="lazy" decoding="async" src="images/Saumstrasse_Heute.jpg" alt="Firmengebäude Autovermietung Heinzelmann, Saumstraße 2, heute">
             </picture>
             <figcaption>Der heutige Firmensitz in der Saumstraße 2, Herbertingen.</figcaption>
@@ -228,7 +229,7 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <img width="2313" height="491" loading="lazy" decoding="async" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" loading="lazy" decoding="async" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
             <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
         </div>
         <div class="footer-links">

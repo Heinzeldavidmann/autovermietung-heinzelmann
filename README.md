@@ -1,9 +1,9 @@
 [![Status](https://img.shields.io/badge/status-active-success)]()
-[![Pages](https://img.shields.io/badge/hosted-GitHub%20Pages-blue)]()
+[![Hosting](https://img.shields.io/badge/hosted-Netlify-blue)]()
 
 # Autovermietung Heinzelmann – Digital Transformation
 
-**Live:** https://heinzeldavidmann.github.io/autovermietung-heinzelmann/  
+**Live:** https://autovermietung-heinzelmann.de/  
 
 This repository is part of an ongoing initiative to modernize and digitize the operations of Autovermietung Heinzelmann GbR, a regional vehicle rental company in southern Germany.
 The project focuses on creating a contemporary, user-friendly, and responsive website while also exploring how digital tools and automation can enhance customer experience, internal workflows, and overall efficiency.
@@ -21,7 +21,7 @@ HTML5 · CSS3 · JavaScript (vanilla) · PDF embed
 1. Clone or download this repository.
 2. Open `index.html` in your browser (double-click).
 3. For development, edit files in your editor (WebStorm).
-4. Push changes → GitHub Pages auto-updates the live site.
+4. Push changes to `main` → Netlify deploys the live site automatically.
 
 ## Roadmap
 - ✅ Initial website setup

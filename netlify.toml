@@ -9,3 +9,17 @@
   to = "https://autovermietung-heinzelmann.de/:splat"
   status = 301
   force = true
+
+# Zwischenspeicher im Browser: Schrift ändert sich nie (1 Jahr),
+# Bilder 1 Woche. Wird ein Bild unter gleichem Namen ersetzt, sehen
+# wiederkehrende Besucher es bis zu einer Woche lang noch in der alten Fassung.
+# HTML, CSS und JS behalten die Netlify-Vorgabe (bei jedem Besuch kurz prüfen).
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"

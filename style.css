@@ -58,6 +58,8 @@
     --radius-lg: 8px;   /* große Abschnitte, Hero, Banner */
 
     --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.08);
+    --shadow-button: 0 2px 6px rgba(17, 17, 17, 0.14);        /* Buttons: neutral, kein roter Schein */
+    --shadow-button-hover: 0 6px 14px rgba(17, 17, 17, 0.18);
     --shadow-hover: 0 20px 48px rgba(0, 0, 0, 0.12);
 
     --container: 1180px;
@@ -632,7 +634,7 @@ nav ul li a.nav-active {
 
 .finder-option:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 8px 20px rgba(230, 0, 0, 0.1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .finder-option.active {
@@ -880,16 +882,15 @@ footer {
 /* ── Validation Toast & Bounce ── */
 @keyframes field-bounce {
   0%   { transform: translateX(0); }
-  20%  { transform: translateX(-8px); }
-  40%  { transform: translateX(8px); }
-  60%  { transform: translateX(-5px); }
-  80%  { transform: translateX(5px); }
+  25%  { transform: translateX(-4px); }
+  50%  { transform: translateX(3px); }
+  75%  { transform: translateX(-2px); }
   100% { transform: translateX(0); }
 }
 .field-bounce input,
 .field-bounce select,
 .field-bounce .custom-select-display {
-    animation: field-bounce 0.5s ease;
+    animation: field-bounce 0.35s ease-out;
     border-color: #e60000 !important;
     box-shadow: 0 0 0 3px rgba(230,0,0,0.15) !important;
 }
@@ -940,10 +941,9 @@ footer {
     border-radius: var(--radius-sm);
     font-size: 0.9rem;
     font-weight: 500;
-    border-left: 4px solid #e60000;
     box-shadow: 0 8px 32px rgba(0,0,0,0.28);
     opacity: 0;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
     pointer-events: none;
     max-width: calc(100vw - 40px);
     text-align: center;
@@ -963,7 +963,7 @@ footer {
     z-index: 9999;
     width: min(560px, calc(100vw - 32px));
     opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
     pointer-events: none;
 }
 #closed-banner.closed-banner-visible {
@@ -980,7 +980,6 @@ footer {
     border-radius: var(--radius-sm);
     padding: 18px 20px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.28);
-    border-left: 4px solid #e60000;
 }
 .closed-banner-icon {
     flex-shrink: 0;
@@ -1038,7 +1037,7 @@ footer {
     bottom: 0;
     z-index: 9998;
     transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 #cookie-consent-banner.cookie-consent-visible {
@@ -1259,7 +1258,7 @@ form:not(.inquiry-form) button:hover {
 
 .anforderungen-list li:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 4px 16px rgba(230, 0, 0, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .anforderungen-list svg {
@@ -1559,14 +1558,14 @@ form:not(.inquiry-form) button:hover {
     text-transform: uppercase;
     letter-spacing: 0.04em;
     text-decoration: none;
-    box-shadow: 0 8px 20px rgba(230, 0, 0, 0.2);
-    transition: background-color var(--transition);
+    box-shadow: var(--shadow-button);
+    transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 .map-directions-btn:hover {
     background-color: #8a0000;
-    transform: translateY(-2px);
-    box-shadow: 0 16px 32px rgba(230, 0, 0, 0.3);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-button-hover);
 }
 
 #anfahrt iframe {
@@ -1606,14 +1605,14 @@ form:not(.inquiry-form) button:hover {
     line-height: 1;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 12px 26px rgba(230, 0, 0, 0.22);
+    box-shadow: var(--shadow-button);
     transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 .button:hover {
     background-color: #8a0000;
-    transform: translateY(-2px);
-    box-shadow: 0 18px 36px rgba(230, 0, 0, 0.3);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-button-hover);
 }
 
 .preisliste-container {
@@ -1885,7 +1884,7 @@ form:not(.inquiry-form) button:hover {
 
 .faq-item:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 4px 16px rgba(230, 0, 0, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .faq-question {
@@ -1950,44 +1949,6 @@ form:not(.inquiry-form) button:hover {
     gap: 1rem;
     padding-bottom: 1rem;
     scroll-behavior: smooth;
-}
-
-.vehicle-slide {
-    background-color: #f9f9f9;
-    border-left: 5px solid #e60000;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: var(--radius-sm);
-    font-style: italic;
-    position: relative;
-    min-width: 300px;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    width: 320px;
-}
-
-.vehicle-slide:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: transform var(--transition), box-shadow var(--transition);
-    cursor: default;
-}
-
-.vehicle-slide img {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-sm);
-    max-height: 200px;
-    object-fit: cover;
-    aspect-ratio: 4 / 3;
-}
-
-.vehicle-slide small {
-    display: block;
-    margin-top: 0.5rem;
-    font-style: italic;
-    color: #666;
 }
 
 /* Datetime Row */
@@ -3024,7 +2985,7 @@ form:not(.inquiry-form) button:hover {
     font-style: italic;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    box-shadow: 0 12px 26px rgba(230, 0, 0, 0.22);
+    box-shadow: var(--shadow-button);
     padding: 13px 22px;
     cursor: pointer;
     display: inline-flex;
@@ -3493,15 +3454,6 @@ form:not(.inquiry-form) button:hover {
 
     nav ul {
         gap: 0.75rem;
-    }
-
-    .vehicle-slide {
-        width: 240px;
-        padding: 0.75rem;
-    }
-
-    .vehicle-slide img {
-        max-height: 160px;
     }
 
     .hero-section {
@@ -4197,7 +4149,7 @@ mark.spec-highlight {
         background-color: var(--color-primary);
         border-color: var(--color-primary);
         color: #ffffff;
-        box-shadow: 0 4px 14px rgba(230, 0, 0, 0.30);
+        box-shadow: var(--shadow-button);
     }
 
     .button-secondary.spec-card-btn:hover {
@@ -4296,7 +4248,7 @@ mark.spec-highlight {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px rgba(230, 0, 0, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
     opacity: 0;
     transform: translateY(12px);
     pointer-events: none;
@@ -4783,9 +4735,9 @@ mark.spec-highlight {
     grid-column: 1 / -1;
     margin: 0;
     padding: 10px 14px;
-    border-left: 3px solid var(--color-primary);
+    border: 1px solid rgba(230, 0, 0, 0.22);
     border-radius: var(--radius-sm);
-    background: rgba(230, 0, 0, 0.06);
+    background: rgba(230, 0, 0, 0.05);
     color: var(--color-text, #111111);
     font-size: 0.86rem;
     line-height: 1.5;
@@ -5903,4 +5855,303 @@ mark.spec-highlight {
     resize: none;
     overflow-y: auto;
     line-height: 1.5;
+}
+
+
+/* ============================================================
+   Erfolgs-/Fehlermeldung des Anfrageformulars (showFormMessage in index.js)
+   ============================================================ */
+.form-status-msg {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+    color: var(--color-dark);
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+.form-status-msg:focus {
+    outline: none;
+}
+.form-status-msg p {
+    margin: 0;
+}
+.form-status-msg a {
+    color: inherit;
+    font-weight: 700;
+    text-underline-offset: 2px;
+}
+.form-status-title {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1rem;
+    font-weight: 800;
+}
+.form-status-msg.is-success {
+    background: #f1faf4;
+    border-color: #b7e0c3;
+}
+.form-status-msg.is-success .form-status-title {
+    color: #15803d;
+}
+.form-status-msg.is-error {
+    background: #fff5f5;
+    border-color: #f3b4b4;
+}
+.form-status-msg.is-error .form-status-title {
+    color: var(--color-primary-text);
+}
+.form-status-again {
+    margin-top: 12px;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-primary-text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+.form-status-again:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+/* Nach dem Absenden nur die Bestätigung zeigen */
+.inquiry-form.is-sent > :not(.form-status-msg) {
+    display: none !important;
+}
+.inquiry-form.is-sent .form-status-msg {
+    margin-top: 0;
+    padding: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .form-status-msg {
+        color: #f0f0f0;
+    }
+    .form-status-msg.is-success {
+        background: #23352a;
+        border-color: #3f6b4c;
+    }
+    .form-status-msg.is-success .form-status-title {
+        color: #7fd49a;
+    }
+    .form-status-msg.is-error {
+        background: #3d2626;
+        border-color: #7a3a3a;
+    }
+}
+
+
+/* Meldungen oben/unten bei reduzierter Bewegung nur einblenden, nicht fahren */
+@media (prefers-reduced-motion: reduce) {
+    #validation-toast,
+    #closed-banner,
+    #cookie-consent-banner {
+        transition: opacity 0.2s ease;
+    }
+    .field-bounce input,
+    .field-bounce select,
+    .field-bounce .custom-select-display {
+        animation: none;
+    }
+}
+
+/* ===================================================
+   Bilder mit WebP-Quelle (Logo, Preislisten-Vorschau)
+   Der <picture>-Rahmen soll das Layout nicht verändern:
+   das <img> verhält sich, als stünde es direkt im Elternelement.
+   =================================================== */
+.picture-plain {
+    display: contents;
+}
+
+/* ===================================================
+   Handy und Tablet: Tippflächen und Querformat
+   Ziel: alles, was man antippt, ist mindestens ca. 44 px groß
+   (Daumen), ohne dass sich das Aussehen ändert. Wo das sichtbare
+   Element klein bleiben soll, wird nur die Tippfläche vergrößert.
+   =================================================== */
+
+/* Schnellzugriff-Leiste: Telefon, E-Mail, Anfahrt je 44 px breit.
+   Der Öffnungsstatus darf dafür zweizeilig werden, statt unter die
+   Symbole zu laufen. */
+@media (max-width: 768px) {
+    .utility-item.tel,
+    .utility-item.contact,
+    .utility-item.location {
+        justify-content: center;
+        min-width: 44px;
+        margin-left: 0;
+        padding: 14px 12px;
+        margin-top: -14px;
+        margin-bottom: -14px;
+    }
+    .utility-item.hours {
+        overflow: hidden;
+    }
+    .utility-item.hours .hours-text {
+        white-space: normal;
+        line-height: 1.2;
+    }
+}
+@media (max-width: 420px) {
+    /* Grüner bzw. roter Punkt zeigt den Status schon, die Uhr macht Platz für den Text */
+    .utility-item.hours svg {
+        display: none;
+    }
+}
+
+/* Slider-Punkte (Preisgruppen, Kundenstimmen): Die Punkte sehen aus wie
+   bisher, darüber liegt eine unsichtbare Tippfläche von 24 × 44 px.
+   Der Abstand ist so gewählt, dass sich die Flächen nicht überlappen. */
+.spec-slider-dots,
+.testimonials-dots {
+    gap: 16px;
+}
+.spec-slider-dot,
+.testimonials-dot {
+    position: relative;
+}
+/* Kundenstimmen-Punkte hatten den grauen Standardrahmen des Browsers */
+.testimonials-dot {
+    border: 0;
+    padding: 0;
+}
+.spec-slider-dot::after,
+.testimonials-dot::after {
+    content: "";
+    position: absolute;
+    inset: -18px -8px;
+}
+
+/* Kleine Elemente mit unsichtbar vergrößerter Tippfläche */
+.timeline-point::after,
+.range-calendar-nav::after,
+.back-to-top::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+}
+.range-calendar-nav::after {
+    inset: -8px;
+}
+.back-to-top::after {
+    inset: -4px;
+}
+
+/* Textlinks, die allein stehen: Tippfläche nach oben und unten erweitern,
+   die Zeilenabstände bleiben gleich */
+.form-summary-edit {
+    padding: 12px 8px;
+    margin: -12px -8px;
+}
+.form-summary-item {
+    padding-block: 6px;
+    margin-block: -6px;
+}
+.kategorie-info-link {
+    display: inline-block;
+    padding-block: 12px;
+    margin-block: -12px;
+}
+.spec-pdf-link {
+    padding-top: 11px;
+    margin-top: -11px;
+}
+.footer-links li a {
+    padding-block: 5px;
+    margin-block: -5px;
+}
+
+/* Knöpfe auf Touch-Geräten mindestens 44 px hoch */
+@media (pointer: coarse) {
+    .button,
+    .spec-price-toggle {
+        min-height: 44px;
+    }
+    .back-to-top {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Datumsfeld: „Datum wählen" läuft nicht mehr in das Kalender-Symbol */
+.date-input-placeholder {
+    right: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+@media (max-width: 600px) {
+    /* Handy (Chrome/Android): Das kleine Kalender-Symbol wird unsichtbar über das
+       ganze Datumsfeld gelegt. Ein Tipp irgendwo ins Feld öffnet die Datumsauswahl,
+       und „Datum wählen" hat die volle Breite. Safari auf dem iPhone zeigt kein
+       Symbol und öffnet die Auswahl ohnehin beim Antippen. */
+    .inquiry-form .date-input-wrap input[type="date"] {
+        position: relative;
+    }
+    .inquiry-form .date-input-wrap input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        inset: 0;
+        width: auto;
+        height: auto;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .date-input-placeholder {
+        left: 12px;
+        right: 8px;
+    }
+    .inquiry-form .split-input .date-input-wrap {
+        flex: 1 1 0;
+    }
+    .inquiry-form .split-input .time-select {
+        flex: 0 0 auto;
+        width: 138px;
+        min-width: 0;
+        padding: 0 30px 0 12px;
+        background-position: right 10px center;
+    }
+}
+
+@media (max-width: 359px) {
+    /* Sehr schmale Handys: Datum und Uhrzeit untereinander im selben Rahmen */
+    .inquiry-form .split-input:has(.date-input-wrap) {
+        flex-wrap: wrap;
+    }
+    .inquiry-form .split-input:has(.date-input-wrap) .date-input-wrap {
+        flex: 1 1 100%;
+    }
+    .inquiry-form .split-input:has(.date-input-wrap) .split-divider {
+        flex: 1 1 100%;
+        width: auto;
+        height: 1px;
+        margin: 0 12px;
+    }
+    .inquiry-form .split-input:has(.date-input-wrap) .time-select {
+        flex: 1 1 100%;
+        width: auto;
+    }
+}
+
+/* Handy im Querformat: Kopfzeile und Schnellzugriff scrollen mit, statt
+   ein Drittel des niedrigen Bildschirms dauerhaft zu belegen. */
+@media (orientation: landscape) and (max-height: 500px) {
+    header,
+    .utility-bar {
+        position: absolute;
+    }
+    html {
+        scroll-padding-top: 16px;
+    }
+    :where(h1, h2, h3, section) {
+        scroll-margin-top: 16px;
+    }
+    #closed-banner {
+        top: 16px;
+    }
 }

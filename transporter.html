@@ -15,6 +15,7 @@
     <meta property="og:image" content="https://autovermietung-heinzelmann.de/images/Au%C3%9Fenwand_Autovermietung_cropped.jpg">
     <meta property="og:url" content="https://autovermietung-heinzelmann.de/transporter.html">
     <meta property="og:locale" content="de_DE">
+    <link rel="preload" href="fonts/mona-sans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css?v=3">
     <script src="index.js" defer></script>
 <script>
@@ -135,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <header class="site-header">
     <a href="index.html" class="logo" aria-label="Zur Startseite">
-        <img width="2313" height="491" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+        <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
     </a>
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Menü öffnen">
         <span class="sr-only">Menü</span>
@@ -176,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div class="transporter-hero-img">
         <picture>
-            <source srcset="images/Sprinter_Halle.webp" type="image/webp">
+            <source type="image/webp" sizes="(max-width: 700px) 122vw, (max-width: 1180px) 63vw, 742px" srcset="images/responsive/Sprinter_Halle-480.webp 480w, images/responsive/Sprinter_Halle-800.webp 800w, images/responsive/Sprinter_Halle-1200.webp 1200w, images/Sprinter_Halle.webp 1600w">
             <img width="1600" height="1200" src="images/Sprinter_Halle.jpeg" alt="Transporter Heinzelmann" style="width:100%;height:100%;object-fit:cover;object-position:72% 58%;display:block;transform:scale(1.4);transform-origin:72% 58%;">
         </picture>
     </div>
@@ -426,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <img width="2313" height="491" loading="lazy" decoding="async" src="images/Logo_Autovermietung%20Heinzelmann.png" alt="Autovermietung Heinzelmann Logo">
+            <picture class="picture-plain"><source type="image/webp" srcset="images/responsive/Logo_Autovermietung%20Heinzelmann-600.webp"><img width="600" height="127" loading="lazy" decoding="async" src="images/responsive/Logo_Autovermietung%20Heinzelmann-600.png" alt="Autovermietung Heinzelmann Logo"></picture>
             <p>Ihr zuverlässiger Partner für Fahrzeugvermietung in Herbertingen – seit über 60 Jahren.</p>
         </div>
         <div class="footer-links">

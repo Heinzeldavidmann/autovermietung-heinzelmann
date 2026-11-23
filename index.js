@@ -51,6 +51,11 @@ function setupFormValidation(form) {
         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
     };
     const el = id => form.querySelector('#' + id);
+    // Spätestes erlaubtes Datum: heute in zwei Jahren (fängt Tippfehler wie 2062 ab)
+    const maxIso = () => {
+        const d = new Date(); d.setFullYear(d.getFullYear() + 2);
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    };
 
     const REQUIRED_MESSAGES = {
         fahrzeug: 'Bitte wählen Sie eine Fahrzeugart aus.',
@@ -86,6 +91,10 @@ function setupFormValidation(form) {
         const wrapper = field.closest('.field');
         if (!wrapper || isInactive(field)) return ''; // ausgeblendete/deaktivierte Felder überspringen
         const value = field.value.trim();
+        // Zahlenfeld mit ungültiger Eingabe (z.B. "abc") meldet value "" plus badInput
+        if (field.validity && field.validity.badInput) {
+            return field.id === 'fahrtstrecke' ? 'Bitte geben Sie die Fahrtstrecke als ganze Zahl in km an, z.B. 300.' : 'Bitte prüfen Sie Ihre Eingabe.';
+        }
         if (field.required && !value) {
             const msg = REQUIRED_MESSAGES[field.id];
             return (typeof msg === 'function' ? msg() : msg) || 'Bitte füllen Sie dieses Feld aus.';
@@ -94,8 +103,14 @@ function setupFormValidation(form) {
         if (field.id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
             return 'Bitte prüfen Sie die E-Mail-Adresse, z.B. name@beispiel.de.';
         }
-        if (field.id === 'telefon' && !field.checkValidity()) {
+        if (field.id === 'telefon' && (!field.checkValidity() || value.replace(/\D/g, '').length < 6)) {
             return 'Bitte geben Sie eine gültige Telefonnummer ein, z.B. 0151 23456789.';
+        }
+        if (field.id === 'fahrtstrecke' && !/^\d{1,5}$/.test(value)) {
+            return 'Bitte geben Sie die Fahrtstrecke als ganze Zahl in km an, z.B. 300.';
+        }
+        if ((field.id === 'abholung_datum' || field.id === 'rueckgabe_datum') && value > maxIso()) {
+            return 'Bitte wählen Sie ein Datum innerhalb der nächsten zwei Jahre.';
         }
         if (field.id === 'abholung_datum' && value < todayIso()) {
             return 'Das Abholdatum liegt in der Vergangenheit.';
@@ -120,7 +135,6 @@ function setupFormValidation(form) {
             err = document.createElement('p');
             err.className = 'field-error';
             err.id = 'error-' + field.id;
-            err.setAttribute('role', 'alert');
             wrapper.appendChild(err);
         }
         err.textContent = message;
@@ -144,9 +158,23 @@ function setupFormValidation(form) {
     const fields = Array.from(form.querySelectorAll('input[id], select[id], textarea[id]'));
     const isShown = field => field.closest('.field') && field.closest('.field').classList.contains('field-invalid');
 
+    // Klick auf Weiter/Absenden/Zurück direkt aus einem Feld heraus: Die Prüfung beim Verlassen
+    // des Felds würde eine Fehlermeldung einblenden, der Button rutscht nach unten und der Klick
+    // ginge ins Leere. Deshalb bei diesen Buttons überspringen (sie prüfen ohnehin selbst).
+    let skipBlur = false;
+    form.addEventListener('pointerdown', e => {
+        if (e.target.closest('.form-nav, .form-progress, .form-summary')) {
+            skipBlur = true;
+            setTimeout(() => { skipBlur = false; }, 400);
+        }
+    }, true);
+
     fields.forEach(field => {
         const isSelectLike = field.tagName === 'SELECT' || field.type === 'date' || field.type === 'time';
-        field.addEventListener(isSelectLike ? 'change' : 'blur', () => validateField(field));
+        field.addEventListener(isSelectLike ? 'change' : 'blur', () => {
+            if (!isSelectLike && skipBlur) return;
+            validateField(field);
+        });
         field.addEventListener('input', () => { if (isShown(field)) validateField(field); });
     });
 
@@ -156,6 +184,8 @@ function setupFormValidation(form) {
     if (abholung && rueckgabe) {
         abholung.min = todayIso();
         rueckgabe.min = todayIso();
+        abholung.max = maxIso();
+        rueckgabe.max = maxIso();
 
         abholung.addEventListener('change', () => {
             if (!abholung.value) { rueckgabe.min = todayIso(); return; }
@@ -189,8 +219,10 @@ function setupFormValidation(form) {
     // und liefert das erste fehlerhafte Feld (oder null)
     function validateAll(scope) {
         let first = null;
+        api.lastErrorCount = 0;
         fields.filter(field => !scope || scope.contains(field)).forEach(field => {
             if (!validateField(field)) {
+                api.lastErrorCount++;
                 const wrapper = field.closest('.field');
                 wrapper.classList.add('field-bounce');
                 setTimeout(() => wrapper.classList.remove('field-bounce'), 600);
@@ -200,7 +232,15 @@ function setupFormValidation(form) {
         return first;
     }
 
-    return { validateAll };
+    const api = { validateAll, lastErrorCount: 0 };
+    return api;
+}
+
+// "Bitte prüfen Sie 1 markiertes Feld." / "… 3 markierte Felder."
+function fehlerHinweis(anzahl) {
+    return anzahl === 1
+        ? 'Bitte prüfen Sie 1 markiertes Feld.'
+        : `Bitte prüfen Sie ${anzahl || 'die'} markierte${anzahl ? '' : 'n'} Felder.`;
 }
 
 // ── 1. Kontaktformular Submit-Handler (Netlify Forms) ──
@@ -211,6 +251,8 @@ function setupContactForm() {
     const validation = setupFormValidation(form);
     const steps = setupFormSteps(form, validation);
     setupAutoGrow(form.querySelector('#nachricht'));
+    setupFormDraft(form);
+    let sending = false;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -225,10 +267,16 @@ function setupContactForm() {
         // Mit Schritten: zum ersten Schritt mit Fehler springen.
         const firstInvalid = steps ? steps.validateAllSteps() : validation.validateAll();
         if (firstInvalid) {
-            showValidationToast('Bitte prüfen Sie die markierten Felder.');
+            showValidationToast(fehlerHinweis(validation.lastErrorCount));
             if (steps) steps.focusField(firstInvalid); else firstInvalid.focus();
             return;
         }
+
+        if (sending) return; // Doppeltes Absenden (Doppelklick, Enter) verhindern
+        if (!navigator.onLine) { showFormError(form, 'offline'); return; }
+        sending = true;
+        const alteMeldung = form.querySelector('.form-status-msg');
+        if (alteMeldung) alteMeldung.hidden = true;
 
         const btn = form.querySelector('button[type="submit"]');
         const originalText = btn.textContent;
@@ -272,12 +320,17 @@ function setupContactForm() {
 
         const vehicleType = (form.querySelector('#fahrzeug') || {}).value || '';
 
+        // Nach 20 Sekunden ohne Antwort abbrechen, damit der Button nicht ewig "Wird gesendet…" zeigt
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 20000);
+
         try {
             const data = new FormData(form);
             const response = await fetch('/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(data).toString(),
+                signal: controller.signal,
             });
             if (response.ok) {
                 // Messung nur, wenn Google Analytics per Einwilligung geladen wurde (dann existiert window.gtag)
@@ -289,8 +342,10 @@ function setupContactForm() {
                 showFormError(form);
             }
         } catch (err) {
-            showFormError(form);
+            showFormError(form, err.name === 'AbortError' ? 'timeout' : (navigator.onLine ? '' : 'offline'));
         } finally {
+            clearTimeout(timeout);
+            sending = false;
             // Echte Felder wieder aktivieren, hidden-Felder entfernen
             hiddenFields.forEach(({ field, hidden }) => {
                 field.disabled = false;
@@ -330,6 +385,13 @@ function setupAutoGrow(textarea) {
 }
 
 // ── 1b. Anfrageformular in drei Schritten (Fahrzeug → Zeitraum → Kontakt) ──
+// Platz, den die feste Kopfzeile oben verdeckt. Kommt aus scroll-padding-top in style.css,
+// damit Sprünge im Formular dieselbe Höhe nutzen wie Ankerlinks (im Querformat auf dem Handy
+// scrollt die Kopfzeile mit und der Wert ist entsprechend klein).
+function fixedHeaderOffset() {
+    return parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+}
+
 // Blendet immer nur einen .form-step ein, prüft beim "Weiter" nur die Felder des aktuellen
 // Schritts und zeigt oben eine Fortschrittsanzeige. Ohne JavaScript bleiben alle Schritte
 // sichtbar (normales einstufiges Formular). Die Fahrzeugart-Kacheln und Anrede-Knöpfe
@@ -477,10 +539,10 @@ function setupFormSteps(form, validation) {
         }
         if (!focus) return;
         // Formularanfang ins Bild holen, falls er oberhalb des sichtbaren Bereichs liegt (v.a. Handy)
-        const offset = parseFloat(getComputedStyle(document.body).paddingTop) || 0;
+        const offset = fixedHeaderOffset();
         const top = form.getBoundingClientRect().top;
         if (top < offset) {
-            window.scrollBy({ top: top - offset - 16, behavior: reduceMotion ? 'auto' : 'smooth' });
+            window.scrollBy({ top: top - offset, behavior: reduceMotion ? 'auto' : 'smooth' });
         }
         const title = stepEl(n).querySelector('.form-group-title:not([hidden])');
         if (title) title.focus({ preventScroll: true });
@@ -492,7 +554,7 @@ function setupFormSteps(form, validation) {
             const invalid = validation.validateAll(stepEl(s));
             if (invalid) {
                 if (s !== current) render(s);
-                showValidationToast('Bitte prüfen Sie die markierten Felder.');
+                showValidationToast(fehlerHinweis(validation.lastErrorCount));
                 focusField(invalid);
                 return false;
             }
@@ -653,6 +715,7 @@ function setupTimeSelects() {
         });
 
         if (dateInput) dateInput.addEventListener('change', build);
+        input.addEventListener('change', () => { if (!customMode) build(); });
         const form = input.closest('form');
         if (form) form.addEventListener('reset', () => setTimeout(() => { setCustom(false); build(); }, 0));
         build();
@@ -829,59 +892,137 @@ function setupShortNoticeHint() {
 
 function showFormSuccess(form, shortNotice) {
     const rushText = shortNotice
-        ? ' Bei einer Abholung innerhalb der nächsten 48 Stunden empfehlen wir Ihnen zusätzlich einen kurzen Anruf: 07586 / 9213-0.'
+        ? ' Bei einer Abholung innerhalb der nächsten 48 Stunden empfehlen wir Ihnen zusätzlich einen kurzen Anruf: <a href="tel:+49758692130">07586&nbsp;/&nbsp;9213-0</a>.'
         : '';
     const closedNowText = isOpenAt(new Date())
         ? ''
         : ' Wir sind gerade geschlossen und antworten zu unseren Öffnungszeiten.';
-    showFormMessage(form,
+    form.reset();
+    clearFormDraft();
+    // Formular ausblenden, nur die Bestätigung zeigen (sonst wirkt das leere Formular wie "nochmal ausfüllen")
+    form.classList.add('is-sent');
+    const msg = showFormMessage(form,
         'Vielen Dank für Ihre Anfrage!',
         'Wir prüfen die Verfügbarkeit und melden uns persönlich bei Ihnen. Sie haben noch nichts gebucht. Reserviert ist Ihr Fahrzeug erst, sobald wir uns gemeldet haben.' + rushText + closedNowText,
-        '#22c55e',
-        true
+        'success'
     );
-    form.reset();
+    const again = document.createElement('button');
+    again.type = 'button';
+    again.className = 'form-status-again';
+    again.textContent = 'Weitere Anfrage stellen';
+    again.addEventListener('click', () => {
+        form.classList.remove('is-sent');
+        msg.hidden = true;
+        const title = form.querySelector('.form-step:not([hidden]) .form-group-title');
+        if (title) title.focus();
+    });
+    msg.appendChild(again);
 }
 
-function showFormError(form) {
-    showFormMessage(form, null,
-        'Ihre Anfrage konnte leider nicht gesendet werden. Bitte rufen Sie uns an: 07586 / 9213-0 oder schreiben Sie uns direkt an info@autovermietung-heinzelmann.de',
-        '#e60000'
-    );
+// Fehlermeldung beim Absenden; kind: 'offline' | 'timeout' | '' (Serverfehler)
+function showFormError(form, kind) {
+    const kontakt = 'Rufen Sie uns an: <a href="tel:+49758692130">07586&nbsp;/&nbsp;9213-0</a> oder schreiben Sie an <a href="mailto:info@autovermietung-heinzelmann.de">info@autovermietung-heinzelmann.de</a>.';
+    const texte = {
+        offline: ['Keine Internetverbindung.', 'Ihre Angaben bleiben erhalten. Senden Sie die Anfrage erneut, sobald Sie wieder online sind, oder ' + kontakt.charAt(0).toLowerCase() + kontakt.slice(1)],
+        timeout: ['Der Server antwortet gerade nicht.', 'Ihre Angaben bleiben erhalten. Bitte versuchen Sie es gleich noch einmal. ' + kontakt],
+        '': ['Ihre Anfrage konnte leider nicht gesendet werden.', 'Ihre Angaben bleiben erhalten. Bitte versuchen Sie es noch einmal. ' + kontakt],
+    };
+    const [title, text] = texte[kind || ''] || texte[''];
+    showFormMessage(form, title, text, 'error');
 }
 
 function showFormFallback(form) {
     showFormMessage(form, null,
         'Das Formular ist in Kürze vollständig verfügbar. Bis dahin erreichen Sie uns telefonisch unter 07586 / 9213-0 oder per E-Mail an info@autovermietung-heinzelmann.de',
-        '#f0b429'
+        'error'
     );
 }
 
-// Zeigt die Erfolgs-/Fehler-/Fallback-Meldung unterhalb des Formulars an (erstellt sie beim ersten Mal).
-// emphasize=true (nur Erfolg) hebt die Meldung mit Titelzeile und gruenem Akzentstreifen hervor,
-// bleibt aber hell wie das umgebende Formular statt eines dunklen Fremdkoerpers.
-function showFormMessage(form, title, text, color, emphasize) {
+// Zeigt die Erfolgs- oder Fehlermeldung im Formular an (erstellt sie beim ersten Mal).
+// Erfolg wird als Status, Fehler als Alarm vorgelesen; der Fokus springt auf die Meldung.
+function showFormMessage(form, title, text, type) {
     let msg = form.querySelector('.form-status-msg');
     if (!msg) {
         msg = document.createElement('div');
-        msg.className = 'form-status-msg';
+        msg.tabIndex = -1;
         form.appendChild(msg);
     }
-    msg.style.cssText = emphasize
-        ? 'margin-top:16px;padding:16px 20px;border-radius:4px;font-size:0.92em;line-height:1.5;'
-        : 'margin-top:16px;padding:12px 16px;border-radius:4px;font-size:0.9em;line-height:1.5;font-weight:500;';
-    msg.innerHTML = title
-        ? `<strong style="display:block;margin-bottom:4px;color:${color};">${title}</strong>${text}`
-        : text;
-    if (emphasize) {
-        msg.style.background = '#f7fdf9';
-        msg.style.color = '#1a1a1a';
-        msg.style.border = '1px solid #e5e7eb';
-        msg.style.borderLeft = `4px solid ${color}`;
-    } else {
-        msg.style.background = color + '18';
-        msg.style.color = color === '#f0b429' ? '#856404' : color;
-        msg.style.border = `1px solid ${color}55`;
+    msg.className = `form-status-msg is-${type}`;
+    msg.setAttribute('role', type === 'success' ? 'status' : 'alert');
+    msg.innerHTML = (title ? `<strong class="form-status-title">${title}</strong>` : '') + `<p>${text}</p>`;
+    msg.hidden = false;
+    msg.focus({ preventScroll: true });
+    const r = msg.getBoundingClientRect();
+    const offset = fixedHeaderOffset();
+    if (r.top < offset || r.bottom > window.innerHeight) {
+        window.scrollBy({ top: r.top - offset, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+    return msg;
+}
+
+// ── Entwurf sichern ──
+// Lädt der Browser die Seite neu (z.B. auf dem Handy nach einem Anruf oder App-Wechsel),
+// gehen die Eingaben sonst verloren. Gespeichert wird nur in diesem Browser-Tab
+// (sessionStorage, wird beim Schließen des Tabs gelöscht) und nach dem Absenden entfernt.
+const DRAFT_KEY = 'anfrageEntwurf';
+
+function clearFormDraft() {
+    try { sessionStorage.removeItem(DRAFT_KEY); } catch (e) { /* Speicher nicht verfügbar */ }
+}
+
+function setupFormDraft(form) {
+    let timer;
+    const save = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            if (form.classList.contains('is-sent')) return;
+            const values = {};
+            form.querySelectorAll('input[id], select[id], textarea[id]').forEach(el => {
+                if (el.type === 'hidden' || el.name === 'bot-field' || !el.name) return;
+                if (el.value) values[el.id] = el.value;
+            });
+            try {
+                // Nur speichern, wenn wirklich etwas eingegeben wurde (Uhrzeit-Vorgaben allein zählen nicht)
+                const echt = Object.keys(values).filter(k => !/_uhrzeit$/.test(k));
+                if (echt.length) sessionStorage.setItem(DRAFT_KEY, JSON.stringify(values));
+                else sessionStorage.removeItem(DRAFT_KEY);
+            } catch (e) { /* Speicher voll oder gesperrt: dann eben ohne Entwurf */ }
+        }, 300);
+    };
+    form.addEventListener('input', save);
+    form.addEventListener('change', save);
+}
+
+function restoreFormDraft() {
+    const form = document.querySelector('.inquiry-form');
+    if (!form) return;
+    if (window.location.hash.includes('?')) return; // Link mit Vorauswahl hat Vorrang
+    let values = null;
+    try { values = JSON.parse(sessionStorage.getItem(DRAFT_KEY) || 'null'); } catch (e) { return; }
+    if (!values || typeof values !== 'object') return;
+
+    // Reihenfolge wichtig: Fahrzeugart baut die Gruppen auf, Uhrzeiten vor den Daten (Zeitlisten)
+    const set = (id, ev = 'change') => {
+        const el = form.querySelector('#' + id);
+        if (!el || typeof values[id] !== 'string') return;
+        el.value = values[id];
+        if (el.value !== values[id]) return; // Wert existiert nicht (mehr), z.B. alte Gruppe
+        el.dispatchEvent(new Event(ev, { bubbles: true }));
+    };
+    ['fahrzeug', 'fahrzeugkategorie', 'zugfahrzeug', 'getriebe', 'anhaengkupplung'].forEach(id => set(id));
+    set('fahrtstrecke', 'input');
+    ['abholung_uhrzeit', 'rueckgabe_uhrzeit', 'abholung_datum', 'rueckgabe_datum', 'anrede'].forEach(id => set(id));
+    ['vorname', 'nachname', 'telefon', 'email', 'nachricht'].forEach(id => set(id, 'input'));
+
+    const note = document.getElementById('prefill-note');
+    if (note) {
+        note.querySelector('.prefill-note-text').textContent = 'Wir haben Ihre bisherigen Angaben wiederhergestellt.';
+        note.hidden = false;
+        note.querySelector('.prefill-note-reset').addEventListener('click', () => {
+            form.reset();
+            clearFormDraft();
+            note.hidden = true;
+        }, { once: true });
     }
 }
 
@@ -1327,7 +1468,7 @@ function prefillFormFromUrl() {
 
     // Fahrzeuggruppe direkt ins Dropdown setzen wenn mitgegeben
     if (gruppeRaw) {
-        const gruppe = decodeURIComponent(gruppeRaw.replace(/\+/g, ' '));
+        const gruppe = gruppeRaw; // URLSearchParams hat bereits dekodiert (nochmal dekodieren bricht bei "%")
         const gruppeSel = document.getElementById('fahrzeugkategorie');
         if (gruppeSel) {
             gruppeSel.value = gruppe;
@@ -1655,20 +1796,27 @@ function setupCounterAnimation() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  setupFaqAccordion();
-  setupMobileNavToggle();
-  setupContactForm();
-  setupShortNoticeHint();
-  setupTimeSelects();
-  setupRangeCalendar();
-  setupTestimonialsSlider();
-  setupFuhrparkFinder();
-  setupMapConsent();
-  setupCookieConsent();
-  setupFahrzeugkategorie();
-  prefillFormFromUrl();
-  setupScrollReveal();
-  setupCounterAnimation();
+  // Jede Funktion einzeln absichern: ein Fehler in einem Teil (z.B. ein kaputter Link)
+  // darf nicht den Rest der Seite lahmlegen (sonst bleiben z.B. .reveal-Abschnitte unsichtbar).
+  [
+    setupFaqAccordion,
+    setupMobileNavToggle,
+    setupContactForm,
+    setupShortNoticeHint,
+    setupTimeSelects,
+    setupRangeCalendar,
+    setupTestimonialsSlider,
+    setupFuhrparkFinder,
+    setupMapConsent,
+    setupCookieConsent,
+    setupFahrzeugkategorie,
+    prefillFormFromUrl,
+    restoreFormDraft,
+    setupScrollReveal,
+    setupCounterAnimation,
+  ].forEach(fn => {
+    try { fn(); } catch (err) { console.error(`${fn.name} fehlgeschlagen:`, err); }
+  });
 });
 
 // ── 9. Öffnungszeiten-Anzeige (in der Utility Bar direkt unter dem Header) ──
@@ -1829,6 +1977,7 @@ function showValidationToast(message) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'validation-toast';
+    toast.setAttribute('role', 'alert');
     document.body.appendChild(toast);
   }
   toast.textContent = message;
@@ -2016,7 +2165,9 @@ function setupFahrzeugkategorie() {
             left = f.left + parseFloat(cs.paddingLeft);
             width = f.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         }
-        tooltip.style.top = `${rect.bottom + scrollY + 10}px`;
+        // Unterkante des sichtbaren Textes, ohne die unsichtbar vergrößerte Tippfläche
+        const textBottom = rect.bottom - (parseFloat(getComputedStyle(infoLink).paddingBottom) || 0);
+        tooltip.style.top = `${textBottom + scrollY + 10}px`;
         tooltip.style.left = `${left + scrollX}px`;
         tooltip.style.width = `${width}px`;
         const arrowX = Math.min(Math.max(rect.left + rect.width / 2 - left, 16), width - 16);
